@@ -1,0 +1,41 @@
+Common Linux Commands:
+======================
+
+NTP setup
+---------
+
+    $ sudo apt install -y ntp ntpdate
+    $ sudo ntpdate -u 0.ubuntu.pool.ntp.org
+    $ sudo timedatectl set-timezone Asia/Kolkata
+    $ sudo systemctl enable ntp
+    $ sudo systemctl restart ntp
+
+Setting up hosts:
+-----------------
+
+    - Change the host name if need using the below command:
+
+        $ hostnamectl set-hostname <new-name>
+
+    - Example:
+
+        $ hostnamectl set-hostname puppet-master
+
+        $ hostnamectl set-hostname puppet-agent-1
+
+        $ hostnamectl set-hostname Docker-Host
+
+        $ hostnamectl set-hostname Kubernetes-Host
+
+Network tools:
+--------------
+
+    $ sudo apt install net-tools
+
+    $ sudo apt install openssh-server
+
+
+Change UUID of VM
+-----------------
+
+  % VBoxManage internalcommands sethduuid 'salt-minion.vdi'

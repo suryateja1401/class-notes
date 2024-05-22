@@ -1,0 +1,174 @@
+Overview
+---------
+
+Keywords
+--------
+ 1. 2-Pizza Rule : “If you can’t feed a team with two large pizzas, it’s too large.” -Jeff Bezos
+
+ 	The idea of two pizza team was coined by Jeff Bezo, the founder of Amazon.com, and it's become something of a mantra in the business world. He beautifully defined the size of a perfect team. From his statement, he made clear that if your team size is more than the servings of Two Large Pizzas, you have already made it too large.
+	In this way, it is concluded that the “Two Large Pizza” team is the team with the size of not more than 8 or 9 people.
+
+ 2. Gene Kim (The Phoenix Project) - Follow him and read about his project
+ 3. Silos => Barriers
+ 4. Technical Debt => Technical debt is a concept in programming that reflects the extra development work that arises when code that is easy to implement in the short run is used instead of applying the 						 best overall solution. Technical debt is commonly associated with extreme programming, especially in the context of refactoring.
+ 5. DSL => Domain Specific Language
+ 6. JSON/YAML
+ 7. Imperative vs Declarative - “You know, imperative programming is like how you do something, and declarative programming is more like what you do something.”
+ 8. Shift left (TDD) - Shift Left is a practice intended to find and prevent defects early in the software delivery process. The idea is to improve quality by moving tasks to the left as early in the 						  lifecycle as possible. Shift Left testing means testing earlier in the software development process.
+ 9. Agent based => Chef/Puppet => Pull based
+ 10. Agent less => Ansible/Salt => Push based
+
+SDLC Methodologies
+-------------------
+
+1. Waterfall Model 
+	- New phase in the development process begins only if the previous phase is complete. 
+		1. Requirement gathering
+		2. System Design 
+		3. System Implementation
+		4. System Testing
+		5. System Deployment
+		6. System Maintenance
+
+	Devlopers Perspective
+	---------------------
+		challenges (Developers)
+			- Huge waiting time for code deployment
+			- Pressure of work on old, pending and new code
+
+		Solutions (Developers)
+			- Use systen with little or no waiting time
+			- Use system with updated code
+
+		DevOps Solution (Developers)
+			- Continuous Integration (CI) ensures quick deployment, faster testing and speedy feedback mechanism
+			- Since there is no waiting time to deploy the code. Hence, the developer focuses on building the current code
+
+	Operations Perspective
+	----------------------
+		Challenges (Operations)
+			- Diffficult maintaining production environment uptime
+			- Ineffective tools for infrastructure automation management
+			- Continuous increase in the number of servers to be monitored
+			- Difficult to diagnose and provide feedback on the product
+
+		Solution (Operations)
+			- System should be up and running most of the time
+			- System required for easy administration
+			- Effective monitoring and feedbacks system should be established
+
+		DevOps Solutions (Operations)
+			- Containerization / Virtualization ensures simulated environment to run the software as containers in turn offering great reliability for service uptime
+			- Configuration management helps you to organize and execute configuration plan, consistently provision the system and proactively manage their infrastucture
+			- Continuous Monitoring
+			- Effective monitoring and feedbacks system is established through DevOps monitoring tools like Nagios, etc., 
+
+What is DevOps?
+
+	- DevOps is not a goal, but never-ending process of continual improvement
+	- It is about Automation
+	- It is about implementing best practices with the help of tools
+	- It's a culture
+	- It's about implementing agility in information
+
+What Does DevOps does?
+
+	- Integrate Developers and Operations teams
+	- Improves colaboration and productivity by:
+		- Automating infrastructure
+		- Automating Workflows
+		- Continuously measures application performance
+		
+DevOps Tool Chain:
+
+	- Source Code Management (SCM) => GIT, SVN
+	- Continuous Integration & Continuous Delivery (CI /CD) => Jenkins, Bamboo, CircleCI
+	- Configuration Management (CM) => Ansible, Puppet, Chef, SaltStack
+	- Containers => Docker, Docker Swarm, Kubernetes, Apache Mesos
+	- Continuous Monitoring => Nagios, Zenoss, SumoLogic
+
+
+DevOps Life Cycle:
+
+	1. Plan:
+		- First stage of DevOps Cycle where you plan, track, visualize and summarize your project before working/starting it
+	2. Code: (Eclipse, Pycharm)
+		- Second stage of DevOps cycle where the developers write their code
+	3. Build: (Maven, Ant, Docker, Kubernetes)
+		- Build is pre-release version and is identified by a build number, rather than by a release number
+	4. Test: (Selenium, JUnit)
+		- Process of executing automated tests as a part of the software delivery pipeline in order to obtain feedback on the business risks associated with a software release as rapidly as possible
+	5. Release: (Jenkins, Bamboo)
+		- This phase helps to integrade code into a shared repository using which you can detect and locate errors quickly and easily
+	6. Deploy: (Puppet, Ansible, Chef, Saltstack, AWS)
+		- Manage and maintain development and deployment of a software systems and servers in any computational environment
+	7. Operate: (Puppet, Ansible, Chef, Saltstack, AWS)
+		- This phase is to keep system upgraded with the latest update
+	8. Monitor: (Nagios, Splunk, Zenoss)
+		- It ensures that the application is performing as desired and the environment is stable
+		- It quickly determines when a service is unavailable and understand the underlying causes
+
+What is Version Control?
+	- System that records the changes to documents, computer programs, large websites and other collection of information over time
+
+What is continuous Integration?
+	- A development practice that requires the developers to integrate code into a shared repository several times a day
+	- By integrating regularly, you can detect errors quickly, and locate them more easily
+
+	code -> committed/pushed/checked-in -> Build Process triggered -> automated testing -> Reports captured and stake holders notified
+
+What is continuous Testing?
+	- Process of executing automated tests as a part of the software delivery pipeline to obtain immediate feedback
+
+What is Continuous Deployment?
+	- Is a DevOps practice where the code changes are automatically built, tested and prepared for a release to production
+
+Continuous Deployment vs Continuous Delivery
+---------------------------------------------
+
+	Pipeline : Dev -> Application Test -> Integration Test -> Acceptance Test -> Production
+
+	Key Difference : 
+
+		Manual trigger to Production environment - Continuous Delivery  - Every artifacts are deployable (Just to click of a button in workflows)
+		Automatic Trigger to Production environment - Continuous Deployment - Every artifacts are deployed
+
+What is Configuration Management?
+	- Process of standardizing resource configurations and enforcing their state across IT infrastructure in an automated manner
+
+What is Containerization?
+	- Is a light weight alternative to full machine virtualization which involves encapsulating an application in a container with its working environment
+
+What is Continuous Monitoring:
+	- It is required to get the following benefits:
+
+		1. Management visibility
+		2. Metrics and Reporting
+		3. Automated feedback mechanism
+		4. Monitor operational effectiveness
+		5. Regulatory Landscape
+		6. Risk-based decision making 
+
+DevOps Delivery Pipeline
+------------------------
+
+VCS --> BUILD --> Unit Test --> DEPLOY --> AUTO TEST --> DEPLOY TO PRODUCTION 
+
+
+
+Topics that are covered in the course:
+	
+	- GIT
+	- Jenkins
+	- Selenium
+	- Ansible
+	- Puppet
+	- Docker
+	- Docker Compose
+	- Docker Swarm 
+	- Kubernetes
+	- Nagios
+	- AWS
+
+
+Two machines required - Centos/Ubuntu running in VMware

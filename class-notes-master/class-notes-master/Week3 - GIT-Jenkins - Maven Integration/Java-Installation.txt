@@ -1,0 +1,23 @@
+UBUNTU
+------
+
+Installation
+------------
+
+sudo apt update
+
+sudo apt install openjdk-11-jdk
+
+Configuration
+-------------
+
+touch ~/.bash_profile
+vim ~/.bash_profile
+
+	- Add the below lines in it:
+
+		# JAVA PATH SETUP
+
+		export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+		export PATH=$PATH:/usr/lib/jvm/java-11-openjdk-amd64/bin
+

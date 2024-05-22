@@ -1,0 +1,36 @@
+Puppet Master
+Host Name: server.itzgeek.local
+
+IP Address: 192.168.1.10
+
+Puppet client
+Host Name: client.itzgeek.local
+IP Address: 192.168.1.20
+
+==========================================================
+sudo apt install -y ntp ntpdate
+sudo ntpdate -u 0.ubuntu.pool.ntp.org
+timedatectl list-timezones
+sudo timedatectl set-timezone Asia/Kolkata
+
+hostnamectl set-hostname <new-name>
+
+
+wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+dpkg -i puppet-release-bionic.deb
+apt update
+apt install puppetserver
+
+
+wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+dpkg -i puppet-release-bionic.deb
+apt update
+apt install puppet-agent
+
+Server
+------
+/opt/puppetlabs/bin/puppetserver ca list
+
+/opt/puppetlabs/bin/puppetserver ca sign --certname <node-name>
+
+export PATH=/opt/puppetlabs/bin:$PATH

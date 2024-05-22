@@ -1,0 +1,64 @@
+Installation
+------------
+
+CENTOS
+------
+	sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+	sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+	sudo yum install jenkins
+
+	sudo chkconfig --add jenkin
+
+	Configuration
+	----------------
+
+	vi /etc/sysconfig/jenkins
+
+	Find out the line JENKINS_PORT="8080" (It is the default port number that will be set up during the installation)
+
+	- Since the tomcat is running on the port "8080", and no two applications should run on the same port. So, change the port number to "8082".
+
+	Now it should be like JENKINS_PORT="8082"
+
+UBUNTU (18.04)
+--------------
+
+	sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+	sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+	sudo apt update
+
+	sudo apt install jenkins
+
+	sudo systemctl start jenkins
+
+	sudo systemctl status jenkins
+
+
+	Configuration
+	-------------
+
+		sudo vim /etc/default/jenkins	- Find out the line JENKINS_PORT="8080" (It is the default port number that will be set up during the installation)
+
+
+Installation on AWS
+-------------------
+
+	1.	Launch an EC2 Instance (Amazon Linux)
+	2.	https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-16-04 for Ubuntu
+	3.	http://bhargavamin.com/how-to-do/install-jenkins-on-amazon-linux-aws/ for Amazon linux
+
+
+Access the application
+------------------------
+ 
+1. Go to the browser
+
+2. http://<Your IP Address>:8082
+Note - 8081 post should be added in the security groups
+
+3. Follow the UI now
+  

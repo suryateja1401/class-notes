@@ -1,0 +1,611 @@
+Jenkins
+--------
+
+**************************************************************************************************************************************************************************
+Important Paths:
+
+	/etc/defult/Jenkins
+	/var/lib/jenkins/
+
+
+installation
+------------
+
+Pre-requisites: Java Installation is required
+
+Java 1.8 Installation:
+
+	$ sudo yum install java-1.8* -y
+
+Configuration:
+
+	#sudo su
+	# vi /root/.bash_profile
+	Add the below lines in it:
+	export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+	export PATH=$PATH:/usr/lib/jvm/java-8-openjdk-amd64/bin
+
+
+
+UBUNTU (18.04)
+--------------
+
+	sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+	sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+	sudo apt update
+
+	sudo apt install jenkins
+
+	sudo systemctl start jenkins
+
+	sudo systemctl status jenkins
+
+
+	Configuration
+	----------------
+
+	vi /etc/sysconfig/jenkins
+
+	Find out the line JENKINS_PORT="8080" (It is the default port number that will be set up during the installation)
+
+	- Since the tomcat is running on the port "8080", and no two applications should run on the same port. So, change the port number to "8082".
+
+	Now it should be like JENKINS_PORT="8082"
+
+
+	Access the application
+	------------------------
+
+	1. Go to the browser
+
+	2. http://<Your IP Address>:8080
+
+	3. Follow the UI now
+
+
+
+*****************************************************************************************************************************************************************************
+
+Jenkins
+--------
+
+- A Continuous Integration server which manages and control processes such as
+
+	- Plan
+	- Code
+	- Build
+	- Test
+	- Deploy
+	- Operate
+	- Monitor
+
+- It is so popular because of the following:
+
+	- Open Source
+	- Good Plugin Support
+	- Good Community Support
+	- Fast and Reliable
+	- Good OS support
+	- Scripted Builds
+
+Feature of Jenkins
+
+	- Easy Installation Process
+	- Upgrades are easily available
+	- Provides advance security
+	- Lightweight container support
+	- Optimized Performance
+	- Distributed Team Management
+
+Jenkins Workflow
+
+	1.  Code will be committed to Source Control Management (GIT)
+	2.	Jenkins will pick up the changed source code, trigger a build and run any tests if required
+	3.	The build output will be available in the Jenkins dashboard and automatic notifications can also be sent back to the users (developers).
+
+
+Plugin management in Jenkins
+----------------------------
+
+	Update
+
+		- Shows updates to plugins already installed
+
+	Available
+
+		- Shows plugins that are available for installation
+
+	Installed
+
+		- Displays plugins installed that have no updates
+
+	Advanced
+
+		- Lists configuration of HTTP Proxy, allows manual upload of plugin and URL of plugin site
+
+
+Jenkins Projects
+----------------
+
+	Free Style Project
+
+		- This is the central feature of Jenkins. Jenkins will build your project combining any SCM with any build system.
+
+	Pipeline
+
+		- Suitable for building pipelines or organizing complex activities that do not easily fit in free style
+
+	Multi configuration Project
+
+		- Suitable for projects that needs large number of different configurations, such as testing on multiple environment, platform specific builds etc..
+
+	Folder
+
+		- Creates a container and stores nested items in it. Useful for grouping things together.
+
+	GitHub Organization
+
+		- Scans a GitHub organization (or user account) for all repositories matching some defined markers
+
+	Multibranch Pipeline
+
+		- Creates a set of Pipeline projects according to detected branches in one SCM repository.
+
+=========================================================================================================================================================================================================================================
+
+The 3 A's of security: (AAA)
+
+	1. Authentication:
+
+		- Before a system can determine what you are allowed to do, it first has to determine who you are.
+
+			1. The identification of a user, person or device
+			2. Confirming that something is true, valid and accurate
+
+		- Authentication procedures test your ability to prove you are who you say you are via:
+
+			* Something you know (user names, passwords, PINs, etc)
+			* Something you have (physical keys, smart cards, digital certificates, ability to answer a call to specific telephone, etc)
+			* Something you 'are' (through biometrics - facial recognition, fingerprint or palm scanners, etc)
+
+	2. Authorization
+
+		- Once authenticated, whenever a user attempts to access part of a system, or issue instructions for it to perform certain actions, authorization controls match those requests against predefined privileges or authorities granted
+
+			1. "Is this user permitted to access this file?" or
+
+			2. "Is this user permitted to send email to the 'all staff' distribution group?".
+
+
+	3. Accounting or Auditing
+
+		- This can include the amount of system time or the amount of data a user has sent and/or received during a session. Accounting is carried out by logging of session statistics and usage information and is used for authorization control, billing, trend analysis, resource utilization, and capacity planning activities.
+
+Securing Jenkins
+
+	- In jenkins "Security" can be taken care by the "Configure Global Security" option under "Manage Jenkins"
+
+	Configure Global Security
+
+		- One can manage security level in Jenkins environment and projects through Jenkins security
+
+		Security Realm
+
+			- It is about the authentication purpose on How the Jenkins is going to authenticate the users (For Example, "Admin")
+
+			- "Jenkins is using it's own database" is the commonly used option for this purpose
+
+		Manage Authorization
+
+			- Anyone can do anything : This is the least security setup allowing anyone to perform any operation in jenkins server
+
+			- Legacy Mode : This authorization uses existing projects. For example, if you have the "admin" role, you'll be granted full control over the system, and otherwise (including anonymous users) you'll only have the read access.
+
+			- Logged-in user can do anything : User who have logged in can do anything within the authorization option
+
+			- Matrix-based security : Matrix-based security is the best practice among different modes of authorization. This is the most commonly used option in PROD environment
+
+			- Project based matrix authorization strategy - This authorization strategy helps in managing the users access for various task with respect to the projects. This is the most commonly used option in PROD environment
+
+Difference between Project, Job and Build in Jenkins?
+
+	Project/job
+
+		- A project is a special case of a job, i.e. all projects are jobs, but not all jobs are projects
+		- They are nothing but pipelines
+
+	Build
+
+		- Iterations of an individual job or projects
+
+
+Jenkins Auditing (Audit Trail)
+
+	- We can audit the jenkins log files using the plugin "Audit Trail"
+	- All the log files will get saved as we configured in the main jenkins configuration page.
+	- Content would be as follows once the job is successfully completed:
+
+		osboxes@osboxes:/var/lib/jenkins/logs$ cat JenkinsAudit.log.0
+		Jul 3, 2019 6:05:42,617 AM job/Test/ #3 Started by user Naveen Noorbhasha
+		Jul 3, 2019 6:05:43,871 AM Test #3 Started by user Naveen Noorbhasha on node Jenkins started at 2019-07-03T10:05:42Z completed in 1234ms completed: SUCCESS
+		osboxes@osboxes:/var/lib/jenkins/logs$
+
+Notifications in the Jenkins
+
+	- Jenkins has the "Email Extension Plugin" which enables Jenkins to send the email to the developer to inform about the job.
+	- Email notification setup
+
+		1. SMTP server needs to be mentioned
+		2. user has to enter email address and password of that email
+		3. SMTP port number should be mentioned (Ex: for gmail server it's 465)
+		4. Jenkins send the mail in plain text format (Charset = UTF-8, Default Content Type = Plain Text)
+		5. Subject in the mail is set default in jenkins (Default Subject = Leave as it was)
+		6. Default format in which jenkins will send an email (Default Content = Leave as it was)
+
+	- Post build actions
+
+		- Mentioned email ids in the Recipients under Post-Build Actions -> Email Notification will  receives mails from jenkins for different build information
+
+Jenkins Backup Folders/Files
+
+	- Jenkins folders/files that are commonly backed up are :
+
+		- Jobs Folder
+		- Plugin folder
+		- nodes
+		- logs
+		- workspace
+
+	- It's recommend to do this task using respective backup plugins
+
+================================================================================================================================================================================================================================
+
+Jenkins Master
+
+	- Jenkins Master performs basic installation and handles task related to builds and configuration
+	- Schedules builds
+	- Monitors slaves
+	- Records and present the build results
+
+Jenkins Slaves
+
+	- Slaves are basically setup to offload builds from the master and distribute the workload
+	- They listen to the master’s request
+	- Slaves can run on a variety of operating systems
+	- They mainly execute build jobs which are dispatched by Jenkins Master instance
+	- Jenkins Slaves are generally required to provide the desired environment. It works on the basis of requests received from Jenkins Master
+
+Setup master-slave nodes in Jenkins
+-----------------------------------
+
+	- Login to the Jenkins Dashboard
+	- Click on Build Execution Status
+	- Add New Node
+
+		- Node Name (Ex: node1)
+		- select Permanent agent
+		- Click on "OK" and it will take you to the configuration page
+
+			- Name = node1
+			- Provide some Description
+			- # of executors = 2 (The maximum number of concurrent builds that Jenkins may perform on this node.)
+			- Remote root directory = "/tmp" (Agents do not maintain important data; all job configurations, build logs and artifacts are stored on the master, so it would be possible to use a temporary directory)
+			- Labels = test (Labels (or tags) are used to group multiple agents into one logical group.)
+
+				- Examples:
+
+					- If you have multiple Windows agents and you have a job that must run on Windows, then you could configure all your Windows agents to have the label windows, and then tie that job to this label.
+					- This would ensure that your job runs on one of your Windows agents, but not on any agents without this label.
+
+						- Ubuntu (host1, host2, host3)
+						- windows (host4, host5)
+						- Centos (host6, host7)
+
+			- Usage = Use this node as much as possible (Controls how Jenkins schedules builds on this node.)
+			- Launch Method = Launch agent via SSH (Controls how Jenkins starts this agent.)
+
+				- Host = <IP Address of the slave machine> (Ex: 192.168.56.108)
+				- Credentials = username/password (Select the credentials to be used for logging in to the remote host)
+				- Host Key Verification Strategy = Known host file verification strategy
+					- Controls how Jenkins verifies the SSH key presented by the remote host whilst connecting.
+					- Note : You need to do SSH at least once before using this option, because when the first time ssh it asks "yes" in the terminal and we need to manually enter "yes"
+
+			- Availability = Keep this agent as much as possible (Controls when Jenkins starts and stops this agent)
+			- Click on "save"
+
+			- Click on Launch agent once it shows in the list of nodes
+
+=========================================================================================================================================================================================================================
+
+Run jobs in the slave nodes from master node:
+---------------------------------------------
+
+Create any "Free Style Project"
+
+	- Under "General" section select "Restrict where this project can be run"
+
+			- Label expression = "give the name of the label that is available" (Ex: "maven" - Label maven is serviced by 1 node.....)
+
+	Save and Build the project from the dashboard
+
+===========================================================================================================================================================================================================================
+
+Jenkins Pipeline
+----------------
+
+	- In Jenkins, a pipeline is a group of events or jobs which are interlinked with one another in a sequence.
+	- Pipeline is a combination of plugins that support the integration and implementation of continuous delivery pipelines using Jenkins
+	- A pipeline has an extensible automation server for creating simple or complex delivery pipelines "as code," via pipeline Groovy DSL (Domain-specific Language).
+
+
+	How to Create Jenkins Pipeline:
+
+		- Install "Build Pipeline" plugin
+		- There should be a "Build Pipeline View" option available when click on "+" from the dashboard
+		- You will be asked to give a name to the pipeline view. Example: Sample view
+		- Select "Build a pipeline view" under options
+		- Click ok
+		- In the next page, you will be asked for some more details to configure your Jenkins pipeline. Just accept the default settings, and make sure you choose the first job under the settings.
+		- Click on Apply and then OK
+		- This will show you the sample pipeline view of your item
+
+	How to run a pipeline build:
+
+		- For running a pipeline build, you need to chain your jobs first. For this, go to your first job and click on configure.
+		- Now, under Build Triggers, check the Build after other projects are built option. Thus, a chain for all your jobs has been created.
+		- Install the Build Pipeline view plugin if you don't have it installed already.
+		- Go to your Jenkins dashboard and create a view by clicking on the "+" button. Select the Build Pipeline View option and click OK.
+		- Under Pipeline view configuration, locate Pipeline Flow.
+		- Under Pipeline flow, select the initial job to run. Now choose the job which has chains to other jobs
+		- So, one by one, the jobs will run in the pipeline.
+		- When the Jenkins pipeline is running, you can check its status with the help of Red and Green status symbols. Red means the pipeline has failed, while green indicates success.
+
+	What is Continuous Delivery Pipelines? How it Works?
+
+		- In a Jenkins pipeline, every job or event has some sort of dependency on at least one or more events.
+		- continuous delivery pipeline in Jenkins would have the below structure:
+
+			" Build ==> Deploy ==> Test ==> Release "
+
+		- It contains a group of states called build, deploy, test and release.
+		- These events are interlinked with each other.
+		- Every state has its events, which work in a sequence called a continuous delivery pipeline.
+
+		Use Case:
+
+			- Suppose I’m developing a small application on Jenkins and I want to build, test and deploy it.
+			- To do this, I will allot 3 jobs to perform each process.
+			- So, job1 would be for build, job2 would perform tests and job3 for deployment.
+			- I can use the Jenkins build pipeline plugin to perform this task.
+			- After creating three jobs and chaining them in a sequence, the build plugin will run these jobs as a pipeline.
+			- This approach is effective for deploying small applications.
+
+	But what happens when there are complex pipelines with several processes (build, test, unit test, integration test, pre-deploy, deploy, monitor) running 100’s of jobs?
+
+		- The maintenance cost for such a complex pipeline is huge and increases with the number of processes.
+		- It also becomes tedious to build and manage such a vast number of jobs.
+		- To overcome this issue, a new feature called "Jenkins Pipeline Project" was introduced.
+
+	Jenkins Pipeline Project:
+
+		- The key feature of this pipeline is to define the entire deployment flow through code.
+		- It means that all the standard jobs defined by Jenkins are manually written as one whole script and they can be stored in a version control system
+		- It basically follows the ‘pipeline as code’ discipline.
+		- Instead of building several jobs for each phase, you can now code the entire workflow and put it in a Jenkinsfile.
+
+	Jenkins Pipeline Advantages:
+
+		- It models simple to complex pipelines as code by using Groovy DSL (Domain Specific Language)
+		- The code is stored in a text file called the Jenkinsfile which can be checked into a SCM (Source Code Management)
+		- Improves user interface by incorporating user input within the pipeline
+		- It is durable in terms of unplanned restart of the Jenkins master
+		- It can restart from saved checkpoints
+		- It supports complex pipelines by incorporating conditional loops, fork or join operations and allowing tasks to be performed in parallel
+		- It can integrate with several other plugins
+
+	What is JenkinsFile?
+
+		- A Jenkinsfile is a text file that stores the entire workflow as code and it can be checked into a SCM on your local system.
+		- This enables the developers to access, edit and check the code at all times.
+		- The Jenkinsfile is written using the Groovy DSL and it can be created through a text/groovy editor or through the configuration page on the Jenkins instance.
+		- It is written based on two syntaxes:
+
+			1. Declarative pipeline syntax
+
+				- The Declarative pipeline is a new feature that is added to create the pipeline.
+				- This is basically written in a Jenkinsfile which can be stored into a source code management system such as Git.
+				- Declarative pipelines is an ideal solution for the simple continuous delivery pipeline as it has very limited and pre-defined structure.
+
+				The Declarative pipeline code will looks like this:
+
+					- In Declarative Pipeline syntax, there is concept of Pipeline block which defines all the work done throughout the entire Pipeline
+
+								pipeline {
+								  agent any
+								  stages {
+								    stage('Build') {
+								      steps {
+								        git 'https://github.com/Naveennb18/test-dev.git''
+								      }
+								    }
+								    stage('Test') {
+								      steps {
+								        echo "Running Test phase"
+								      }
+								    }
+								  }
+								}
+
+			2. Scripted Pipeline
+
+				- The scripted pipeline is a traditional way of writing the Jenkins pipeline as code.
+				- Ideally, Scripted pipeline is written in Jenkins file on web UI of Jenkins.
+				- Unlike Declarative pipeline, the scripted pipeline strictly uses groovy based syntax
+				- Since this, The scripted pipeline provides huge control over the script and can manipulate the flow of script extensively.
+				- This helps developers to develop advance and complex pipeline as code.
+
+				The Scripted pipeline code will looks like this:
+
+					- In a Scripted Pipeline, the node blocks does core work for the entire Pipeline
+					- Adding the Pipeline’s work inside a node block does two things:
+
+						1. Schedules the steps contained within the block to run when an executor is free on a node
+						2. Creates a workspace where work can be done on files checked out from source control
+
+								node {
+										stage ('Build'){......}
+										stage ('Test') {......}
+										stage ('QA') {......}
+										stage ('Deploy') {.....}
+										stage ('Monitor') {....}
+									}
+
+	Pipeline concepts:
+
+		1. Pipeline (Required)
+
+			- This is a user defined block which contains all the processes such as build, test, deploy, etc.
+			- It is a collection of all the stages in a Jenkinsfile.
+			- All the stages and steps are defined within this block.
+			- It is the key block for a declarative pipeline syntax.
+			- Syntax:
+
+				pipeline {
+
+				}
+
+		2. Node (Required)
+
+			- A node is a machine that executes an entire workflow.
+			- It is a key part of the scripted pipeline syntax.
+			- Syntax:
+
+				node {
+
+				}
+
+		- There are various mandatory sections which are common to both the declarative and scripted pipelines, such as agent, stages and steps that must be defined within the pipeline.
+
+		3. Agent (Required)
+
+			- The Agent is where the whole pipeline runs. Example, Docker. The Agent has following parameters:
+
+				- any – Which mean the whole pipeline will run on any available agent.
+				- none – Which mean all the stages under the block will have to declared with agent separately.
+				- label –  Executes the pipeline/stage on the labeled agent.
+				- docker –  this is to run the pipeline in Docker environment.
+
+			- Example:
+
+				pipeline {
+					agent {
+					docker {
+					image 'ubuntu'
+							}
+						}
+					}
+
+		4. stages (Required)
+
+			- This block contains all the work that needs to be carried out.
+			- The work is specified in the form of stages.
+			- There can be more than one stage within this directive.
+			- Each stage performs a specific task.
+			- Example
+
+				pipeline {
+				agent any {
+				stages {
+						stage ('Build'){......}
+						stage ('Test') {......}
+						stage ('QA') {......}
+						stage ('Deploy') {.....}
+						stage ('Monitor') {....}
+						}
+					}
+				}
+
+		5. steps
+
+			- A series of steps can be defined within a stage block.
+			- These steps are carried out in sequence to execute a stage.
+			- There must be at least one step within a steps directive.
+			- Steps have various purposes, such as cloning a repository, building code, running tests, uploading artifacts to the repository server, performing static code analysis, and so on
+			- Example:
+
+				pipeline {
+				agent any {
+				stages {
+						stage ('Build'){
+								steps {
+								echo "Running Build phase"
+								}
+							}
+						}
+					}
+				}
+
+
+==================================================================================================================================================================================================================================
+
+Jenkins Webhooks:
+-----------------
+
+Webhooks:
+---------
+
+	- A webhook is an HTTP callback, an HTTP POST that occurs when something happens through a simple event-notification via HTTP POST.
+	- Webhooks provide a way for notifications to be delivered to an external web server whenever certain actions occur on a repository
+	- Webhooks can be triggered whenever a variety of actions are performed on a repository
+	- For example, you can configure a webhook to execute whenever:
+
+		- A repository is pushed to
+		- A pull request is opened
+		- A GitHub Pages site is built
+		- A new member is added to a team
+
+	- Using the GitHub API, you can make these webhooks update an external issue tracker, trigger CI builds, update a backup mirror, or even deploy to your production server.
+
+How to install and use Ngrok:
+-----------------------------
+
+	- Ngrok is tunneling tool that can make your localhost accessible on the internet, it's a good way to test your local web app.
+	- If you are web developer you probably want to try ngrok, it can make your life easier.
+	- Linux Installation:
+
+		- Download the file from https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+		- Unzip to install (unzip /path/to/ngrok.zip)
+		- Connect your account (Ex: ./ngrok authtoken 1PolCZNcYr6ZYQc1xlsNR4c6PAk_4QXJkZdJw6TPEfqdCBCUt) ==> Sign up if account not exists
+		- To start a HTTP tunnel on port 80, run this next: ./ngrok http 80
+
+			./ngrok http <PORT>
+
+		- copy the url from the console (Ex: http://4f730ffc.ngrok.io)
+
+Adding a GitHub Webhook in Your Jenkins Pipeline:
+-------------------------------------------------
+
+	- GitHub webhooks in Jenkins are used to trigger the build whenever a developer commits something to the master branch.
+	- Let’s see how to add build a webhook in GitHub and then add this webhook in Jenkins.
+
+		- Go to your project repository.
+		- Go to "settings" in the right corner.
+		- Click on "webhooks."
+		- Click "Add webhooks."
+		- Write the Payload URL as
+
+			https://4f730ffc.ngrok.io/github-webhook/
+
+		- Here, Payload URL is the URL where our Jenkins is running add github-webhook to tell GitHub that it is a webhook.
+		- Click Create and a webhook will be created.
+
+	- Now let’s see how to use this webhook in Jenkins.
+
+		- Go to Manage Jenkins -> Configure System
+		- Scroll down and you will find the GitHub Pull Requests checkbox. In the Published Jenkins URL, add the repository link
+		- Click on "Save."
+		- Now go to the Jenkins pipeline and select "GitHub hook trigger for GITScm polling."
+
+======================================================================================================================================================================================================================

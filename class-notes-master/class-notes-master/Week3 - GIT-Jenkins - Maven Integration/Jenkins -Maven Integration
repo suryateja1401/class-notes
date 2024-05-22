@@ -1,0 +1,294 @@
+Continuous Integration
+----------------------
+
+	- It is the process of automating the building and testing of code, each time one of the team member commits changes to version control.
+	- Frequency is the most important element of Continuous integration
+
+
+Traditional Integration vs Continuous Integration
+
+	- Traditional Integration
+
+		- Greater time gap in case of Traditional Integration
+		- Relatively greater risk or change in conflicts
+
+	- Continuous Integration
+
+		- Integration time gap is relatively much lesser
+		- Relatively lesser risk or change in conflicts
+
+Importance of Continuous Integration 
+
+	1. Improves Quality
+
+		- Improves the quality by running multiple unit tests and analyzing various static code
+
+	2. Increases Productivity 
+
+		- Automating build of code saves a lot of time, thereby increasing productivity
+
+	3. Reduces Risk
+
+		- Eliminate the risk of potential human errors by automating test
+
+Popular Continuous Integration tools
+
+	- Jenkins
+	- Gitlab CI 
+	- CodeShip
+	- TeamCity
+	- Bamboo
+	- Travis CI
+
+=========================================================================================================================================================================
+
+Jenkins
+--------
+
+- A Continuous Integration server which manages and control processes such as 
+
+	- Plan
+	- Code 
+	- Build 
+	- Test
+	- Deploy 
+	- Operate
+	- Monitor 
+
+- It is so popular because of the following:
+
+	- Open Source 
+	- Good Plugin Support
+	- Good Community Support 
+	- Fast and Reliable
+	- Good OS support 
+	- Scripted Builds
+
+Feature of Jenkins
+
+	- Easy Installation Process
+	- Upgrades are easily available
+	- Provides advance security
+	- Lightweight container support
+	- Optimized Performance
+	- Distributed Team Management
+
+Jenkins Workflow
+
+	1.  Code will be committed to Source Control Management (GIT)
+	2.	Jenkins will pick up the changed source code, trigger a build and run any tests if required
+	3.	The build output will be available in the Jenkins dashboard and automatic notifications can also be sent back to the users (developers).
+
+
+Plugin management in Jenkins
+----------------------------
+
+	Update
+
+		- Shows updates to plugins already installed
+
+	Available
+
+		- Shows plugins that are available for installation
+
+	Installed
+
+		- Displays plugins installed that have no updates
+
+	Advanced
+
+		- Lists configuration of HTTP Proxy, allows manual upload of plugin and URL of plugin site
+
+
+Jenkins Projects
+----------------
+
+	Free Style Project
+
+		- This is the central feature of Jenkins. Jenkins will build your project combining any SCM with any build system.
+
+	Pipeline
+
+		- Suitable for building pipelines or organizing complex activities that do not easily fit in free style
+
+	Multi configuration Project
+
+		- Suitable for projects that needs large number of different configurations, such as testing on multiple environment, platform specific builds etc..
+
+	Folder
+
+		- Creates a container and stores nested items in it. Useful for grouping things together. 
+
+	Github Organization
+
+		- Scans a GitHub organization (or user account) for all repositories matching some defined markers
+
+	Multibranch Pipeline
+
+		- Creates a set of Pipeline projects according to detected branches in one SCM repository.
+
+===========================================================================================================================================================================================================================
+
+Maven
+------
+
+	- Maven is a tool that is used to compile, validate codes, and analyses the test cases in the code.
+	- Manages the building, reporting and documentation from Source Control Management (SCM)
+	- Maven projects are configured through Project Object Model (POM)
+	- pom.xml file contains documentation for all of the objects, properties, methods, and events
+
+	
+	Maven is capable of:
+
+		- Information of project is centralized through Maven
+		- Our software project is modeled by it
+		- Build process is managed
+		- Data about the software project is gathered and then build itself
+		- Document the software, and our project
+		- Deployable artifacts can be generated from source code
+		- Your source code is compiled, packed, test and distributed
+		- Reports are created, website is generated for the project
+
+	Objectives of Maven
+
+		- Make the build process easy
+		- Provide uniform build system
+		- Gives quality project information
+		- Provide guidelines for best practices development
+		- Allow transparent migration to new features
+
+
+Maven Build Life cycle
+
+	There are three built-in build life cycles
+
+		- Default	: handles project building and deployment
+
+		- clean 	: handles project cleaning
+
+		- Site 		: handles project's site generation
+
+Maven Artifacts
+
+	- An artifact is a file resulting from packaging a project
+	- Can be a jar, war, ear, .xml file, for example
+	- Artifacts are deployed in repositories, so they can be used, as dependencies, by other projects
+	- Artifacts are identified by three components:
+
+		1. Group ID
+
+			- An unique identifier for a group of related artifacts. Usually named like Java packages (Ex: pt.jpereira.mobile )
+
+		2. Artifact ID
+
+			- An unique identifier, within the context of GroupId , that identifies the artifact (project). (Ex: puzzle)
+
+		3. Version
+
+			- Version : It is an identifier for the release or build number of project
+
+Maven Repository Flow
+
+	step-1: Developer to Local repo
+	step-2: Developer to Remote Repo
+	step-3: Remote repo to Local repo
+	step-4: Developer to Local repo
+
+Maven Repositories
+
+	- Maven repository stores all the versions of all the dependencies
+	- There are three types of maven repository:
+
+		1. Local : 
+
+			- It is located in developers machine. 
+			- By default, it is created in home directory and whenever dependencies are downloaded from remote server, it is saved into the developers machine
+
+		2. Central Repository : 
+
+			- The location of this repository is http://repo.maven.apache.org/maven 2 //. 
+			- Whenever build job is run, maven try to find it from local repository but when it s not there, they download the dependencies from central repository
+
+		3. Remote : 
+
+			- Sometimes, there are objects and modules which are specific to organization, for which remote repositories are created which are accessible within the organization.
+
+Project Object Model (POM)
+
+	- XML file located at the root of the project (pom.xml)
+	- It includes configuration for your project, including
+
+		- Information about the project
+		– Configuration details to build the project
+		– Contains default values for most of the projects. Ex: Source dir , target dir
+		– Dependencies of the project
+		– Configuration about plugins and goals
+		– Used repositories
+
+
+===============================================================================================================================================================================================================================
+
+Build Java Project using Maven from Jenkins
+-------------------------------------------
+
+1. Configure Java and Maven in the Jenkins
+
+	- Manage Jenkins 
+
+		- Global Tool Configurations
+
+			- JDK
+		
+				- JDK Installations
+
+					- Provide Name and JAVA_HOME (Ex: Name=local-jdk, JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/)
+
+			- Maven
+
+				- Maven Installations
+
+					- Provide Name and MAVEN_HOME (Ex: Name=local-maven, MAVEN_HOME=/opt/maven/)
+
+2. Create New Free Style Project with below configurations:
+
+	- Name = sample-project
+
+	- Source Code Management 
+
+		-GIT
+
+			- Repositories 
+
+				- Provide repository URL (Ex: https://github.com/Naveennb18/addressbook.git)
+
+			- Branches to build 
+
+				- Provide branch name (Ex: */master)
+
+	- Build
+
+		- Invoke top-level Maven targets
+
+			- Maven Version (Ex: local-maven)
+			- Goals (Ex: compile, test, package)
+
+	- Post-build Action 
+
+		- Archive the Artifacts
+
+			- Files to archive (Ex: **/*/addressbook.war)
+
+3. Build Now
+
+Output
+------
+
+4. Login to the Jenkins server and check weather the war file gets created or not 
+
+	- cd /var/lib/jenkins/workspace/address-book/addressbook_main/target
+
+		- A war file with name "addressbook.war"should be present under this path
+		- This war file is the deployable artifact that we can use anywhere we need
+		- This is being done by developers using pom.xml file
+
+==================================================================================================================================================================================================================

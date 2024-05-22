@@ -1,0 +1,1994 @@
+
+Evolution of Server Workloads:
+
+    - Physical Machines => Virtual Machines => Containers => Serverless
+
+Container Orchestration Engines:
+
+    Docker Swarm
+
+    Kubernetes  (Earlier a Google project which was later open sourced)
+
+        - There are cloud vendors for Kubernetes. They are:
+
+            - AKS (Azure Kubernetes Service)
+            - GKE (Google Kubernetes Engine)
+            - EKS (Amazon's Elastic Kubernetes service)
+
+    RedHat OpenShift (In the backend it uses Kubernetes)
+
+    Apache Mesos
+
+
+Orchestration:
+--------------
+
+    - Managing and controlling multiple docker containers as a single service. Tools like Docker Swarm, Kubernetes, Apache Mesos will be used
+
+
+Monolithic vs Microservices
+---------------------------
+
+    Monolithic Application:
+
+        - A monolithic application is built as a single unit
+        - Enterprise Monolith Applications are built in three parts:
+
+            - a database (consisting of many tables usually in a relational database management system)
+            - a client-side user interface (consisting of HTML pages and/or JavaScript running in a browser)
+            - a server-side application
+
+        - This server-side application will handle HTTP requests, execute some domain-specific logic, retrieve and update data from the database, and populate the HTML views to be sent to the browser.
+        - It is a monolith – a single logical executable.
+        - Monolith applications are typically huge – more 100,000 line of code
+
+    Microservices Application:
+
+        - Microservices is an approach to software architecture that builds a large, complex application from multiple small components that each perform a single function, such as authentication, notification, or payment processing.
+        - Each microservice is a distinct unit within the software development project, with its own codebase, infrastructure, and database.
+        - The microservices work together, communicating through web APIs or messaging queues to respond to incoming events.
+        - Microservices take a complex monolithic application and turn it into a set of services, which are faster to develop, and much easier to understand and maintain.
+        - Each of these services can also be developed independently by a team that is focused on that service.
+        - It also allows for continuous deployment, because each microservice can be deployed independently.
+        - Following are the benefits of Microservices:
+
+            - Load Balancing        :   Safely scale out your app using advanced load balancing
+            - Faster Development    :   Silo the dev teams and less dependence
+            - Flexible Deployment   :   Deploy piece by piece without affecting other systems
+            - Simpler               :   Easier to develop & maintain
+            - Cache                 :   Improve performance while reducing load on your app with flexible content caching
+            - Troubleshooting       :   Easily identify failures in service
+            - Agnostic              :   Run in containers, on your existing hardware, or in the cloud
+
+
+Difference between Containers and virtual machines?
+
+    - Virtual Machines = Hardware level virtualization
+
+     	- Example 	: 	we allocate hardware resource like RAM, Hard disk etc.,
+
+    - Containers = OS level virtualization
+
+    	- Examples	:	We don't allocate any hardware resources. The allocation happens only through OS kernel.
+
+
+********************************************************************************************************************************************************************************************************************
+
+Docker Installation: (Ubuntu 18.06)
+
+    Ref:    https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+
+    Steps:
+
+        sudo apt update
+
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+        sudo apt update
+
+        sudo apt install docker-ce (ce = community edition)
+
+        sudo systemctl status docker
+
+    There are 2 different installation components in Docker. They are:
+
+        1. Docker CE (Community Edition)
+        2. Docker EE (Enterprise Edition)
+
+        Docker CE
+        ---------
+
+            - Docker CE is a free and open source containerization platform.
+            - It is a rebranded version of the Docker open source solution that has been freely available since the launch of Docker in 2013.
+            - CE can run on Windows 10 and Mac, on Azure and AWS, as well as CentOS, Debian, Fedora, and Ubuntu.
+            - CE can be downloaded directly from the Docker Store.
+
+        Docker EE
+        ---------
+
+            - Docker EE, on the other hand, is a premium version of CE.
+            - Docker EE is an integrated, fully supported, and certified container platform that runs on Red Hat Enterprise Linux (RHEL), SUSE Linux Enterprise Server (SLES), Oracle Linux, Ubuntu, Windows Server 2016, as well as Azure and AWS.
+
+        Difference between CE & EE:
+        ---------------------------
+
+        While both editions offer the same core features, Docker EE comes with additional features that can help enterprises launch, manage, and secure their containers more efficiently.
+
+            - Gain access to certified Docker images and plugins
+            - View your container clusters in a single pane view
+            - Access controls for cluster and image management
+            - Receive official same-day support from Docker
+            - Run vulnerability scans on your Docker images
+            - Run Docker EE engine with FIPS 140-2 certification
+            - Advanced image and container management, LDAP/AD user integration, and role-based access control (formerly available only through Docker Datacenter, which is now part of the Docker EE plan)
+            - Continuous vulnerability monitoring and Docker Security Scanning (formerly available only through Docker Datacenter, which is now part of the Docker EE plan)
+
+The underlying technology
+-------------------------
+
+    - Docker is written in "Go" and takes advantage of several features of the Linux kernel to deliver its functionality.
+
+        - "Go" is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+
+    - Namespaces:
+
+        - Docker uses a technology called namespaces to provide the isolated workspace called the container.
+        - When you run a container, Docker creates a set of namespaces for that container. These namespaces provide a layer of isolation.
+        - Each aspect of a container runs in a separate namespace and its access is limited to that namespace
+        -Docker Engine uses namespaces such as the following on Linux:
+
+            - The pid namespace: Process isolation (PID: Process ID).
+            - The net namespace: Managing network interfaces (NET: Networking).
+            - The ipc namespace: Managing access to IPC resources (IPC: InterProcess Communication).
+            - The mnt namespace: Managing filesystem mount points (MNT: Mount).
+            - The uts namespace: Isolating kernel and version identifiers. (UTS: Unix Timesharing System).
+
+    - Control Groups: (cgroups)
+
+        - Docker Engine on Linux also relies on another technology called control groups (cgroups).
+        - A cgroup limits an application to a specific set of resources.
+        - Control groups allow Docker Engine to share available hardware resources to containers and optionally enforce limits and constraints.
+        - For example, you can limit the memory available to a specific container.
+
+    - Union file systems:
+
+        - Union file systems, or UnionFS, are file systems that operate by creating layers, making them very lightweight and fast.
+        - Docker Engine uses UnionFS to provide the building blocks for containers.
+        - Docker Engine can use multiple UnionFS variants, including AUFS, btrfs, vfs, and DeviceMapper.
+
+    - Container format:
+
+        - Docker Engine combines the namespaces, control groups, and UnionFS into a wrapper called a container format.
+        - The default container format is libcontainer.
+        -
+
+****************************************************************************************************************************************************************************************************************************************************
+
+Docker
+-------
+
+    - “BUILD, SHIP & RUN ANY SOFTWARE ANY WHERE"
+    - Docker is a tool designed to create, deploy, and run applications with ease by using containers
+    - It allows a developer packaging of an application with all of the requirements such as libraries and other dependencies, ship it all as one package
+    - It ensure that your application works seamlessly in any environment; be it Development, Test or Production
+
+Who uses Docker?
+
+    - Developers    :   Helps developer to focus only on building great software by automating the repetitive tasks of setting up and configuring development environment
+    - Sysadmin      :   Helps sysadmin to streamline the software delivery, such as develop and deploy bug fixes, new features without any roadblock
+    - Enterprise    :   Works in the cloud just as well as on premise; supports both traditional and microservices architectures.
+
+The Docker platform:
+--------------------
+
+    - Docker provides the ability to package and run an application in a loosely isolated environment called a container.
+    - The isolation and security allow you to run many containers simultaneously on a given host.
+    - Containers are lightweight because they don’t need the extra load of a hypervisor, but run directly within the host machine’s kernel.
+    - This means you can run more containers on a given hardware combination than if you were using virtual machines.
+    - You can even run Docker containers within host machines that are actually virtual machines!
+    - Docker provides tooling and a platform to manage the lifecycle of your containers:
+
+        - Develop your application and its supporting components using containers.
+        - The container becomes the unit for distributing and testing your application.
+        - When you’re ready, deploy your application into your production environment, as a container or an orchestrated service.
+        - This works the same whether your production environment is a local data center, a cloud provider, or a hybrid of the two.
+
+Docker File
+-----------
+
+    - A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.
+    - Docker file is a file with a set of instructions and forms the basis for any Docker Image
+    - Docker file is the basic building block of Docker containers
+    - Every time, base image is going to be based upon another image. You are going to pick up a base image and build up on that image
+    - A Dockerfile is a text file that Docker reads in from top to bottom. It contains a bunch of instructions which informs Docker HOW the Docker image should get built.
+
+Docker image
+------------
+
+    - Docker image is the source of Docker container. In other words, Docker images are used to create containers.
+    - Docker images are created using Docker file.
+    - "docker build" is the command to create a docker image out of docker file and they’ll produce a container when started with run.
+    - It is possible to create multiple isolated containers from a single image
+    - Docker image doesn't have a state whereas container has it's execution state
+    - Docker image is a read-only file. It cannot be changed. If we need any changes in the existing image, we should have to change it's respective DockerFile and create fresh image
+
+    - Use case:
+
+        - In ubuntu machine, install Java 9
+        - Configure Apache Tomcat server
+        - Put the Application code in the server
+        - create users as per the requirement
+
+            CentOS + Java 9 + Apache Tomcat + Application + users
+
+        - we can do the above task in case of single machine with no pain
+        - Assume if we want these all configurations to be configured in the 1000s of machines
+        - Do we require to do the same configuration in each single machine on every single time? - Answer is NO
+        - Docker has the capability to provide the solution for such cases in the form of Images
+        - It is easy to configure all the above in one machine and use it as image
+        - All together can be converted into an Docker image
+
+    - There are different vendors who have the same capability in different forms:
+
+        - AWS        -> AMI
+        - Vagrant   ->  Box
+        - VMWare    ->  Templates
+        - OpenStack ->  Flavors/images
+        - Docker    ->  images
+
+    - Here, we can compare docker images with AWS AMIs and Containers as Instances which have preconfigured as per the requirement
+    - Docker images are read only templates used to create Containers
+    - Docker images build by docker users
+    - They are stored in Docker Hub or in a local registry
+
+
+    Basic Commands:
+    ---------------
+
+        $ docker pull <image_name:tag_name>    -   To pull the image from the repository (Ex: local repo or docker hub)
+
+            - Note: If nothing given in the tag name then it assumes to pull the image from the repository with tag "latest"
+
+            - Examples :
+
+                $ docker pull ubuntu
+                $ docker pull ubuntu:disco
+
+        $ docker images -  Displays a list of existing images in Docker system (In the local machine). It also displays the following details:
+
+            - REPOSITORY: Name of the repository
+            - TAG: Every image has an attached tag
+            - IMAGE ID: Each image is assigned a unique ID
+            - CREATED: The date when the image was created
+            - SIZE: The size of the image
+
+        $ docker image rm <image_id/image_name:TAG>  or $ docker rmi <image_id/image_name:TAG>    -   To remove one or more docker image
+
+        $ docker image inspect <image_id>   -   Display detailed information on one or more images
+
+        $ docker image prune                -   Remove unused Images
+
+        $ docker history image-name:TAG- Shows the history of an image
+
+            - Syntax : $ docker history [options] <Image_name/id>:TAG
+
+            - Example: $ docker history ubuntu:latest
+
+            root@osboxes:/home/osboxes# docker history naveen:latest
+
+            IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+            68216a0873bf        3 days ago          /bin/sh -c #(nop)  CMD ["echo" "Hello Naveen…   0B
+            9251790f0941        3 days ago          /bin/sh -c #(nop)  EXPOSE 24                    0B
+            fe4a999d26fb        3 days ago          /bin/sh -c #(nop)  EXPOSE 80                    0B
+            19392ec81126        3 days ago          /bin/sh -c #(nop)  ENV COMPANY=Infor            0B
+            b44f06e26fef        3 days ago          /bin/sh -c apt-get update                       27.2MB
+            bf232597864f        3 days ago          /bin/sh -c #(nop)  MAINTAINER naveen naveen.…   0B
+            2ca708c1c9cc        4 days ago          /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+            <missing>           4 days ago          /bin/sh -c mkdir -p /run/systemd && echo 'do…   7B
+            <missing>           4 days ago          /bin/sh -c set -xe   && echo '#!/bin/sh' > /…   745B
+            <missing>           4 days ago          /bin/sh -c [ -z "$(apt-get indextargets)" ]     987kB
+            <missing>           4 days ago          /bin/sh -c #(nop) ADD file:288ac0434f65264f3…   63.2MB
+
+            Note:   - Here, in the above example all the "<missing>" (IMAGE ID) lines are coming from the generic ubuntu Image i.e., from the execution of "FROM ubunut:latest" code
+                    - The rest (with IMAGE ID) are coming from the created image
+
+
+Docker Container:
+-----------------
+
+    - The act of running a Docker image creates a Docker container by using the command "docker run <image-name/id>"
+    - A Docker container is a running instance of a Docker image
+    - Docker containers include the application and all of its dependencies, but share the kernel with other containers, running as isolated processes in user space on the host operating system.
+    - Docker containers are not tied to any specific infrastructure: they run on any computer, on any infrastructure, and in any cloud.
+    - Docker containers can be created by either creating a Docker image and then running it or you can use Docker images that are present on the Docker hub
+
+    Basic Commands:
+    ---------------
+
+        $ docker ps  -a     -  Displays the list of active containers. It also displays the following details:
+
+            - CONTAINER ID: Each container is assigned a unique ID
+            - IMAGE: Every image has an attached tag.
+            - COMMAND: Each image is assigned a unique ID
+            - CREATED : The date when the image was created
+            - STATUS: This shows whether the container is active or not
+            - PORTS: The number of exposed ports (needed for networking)
+            - NAMES: Name of container which is automatically assigned by Docker. It contains first name, “_” and last name
+
+Container - Connection modes:
+-----------------------------
+
+    - Containers can be connected in the two modes:
+
+        1. Detached mode
+
+            Command: Command:$ docker run -itd ubuntu:xenial
+
+                i = interactive
+                t = connected to terminal
+                d = detached mode
+
+            - User manages from a daemon
+            - Container does not exit after the process within the container is over
+            - Container could be stopped at a later stage
+            - Using the "$docker attach" command user can attach as a root user
+            - Allows control over other containers
+
+        2. Root user mode
+
+            Command: $ docker run -it ubuntu:xenial
+
+                i = interactive
+                t = connected to terminal
+
+            - User manages from the Root
+            - Container exits after the process within the container is over
+            - Container can be restarted at a later stage
+            - "$docker exit" command attaches to the daemon
+            - Allows control over the container to which user is attached
+
+    - Detached mode use cases:
+
+        - Containers started in detached mode exit when the root process used to run the container exits
+        - A container in detached mode cannot be automatically removed when it stops
+        - If this is not your use case and you do wish to automatically remove them, then you would not use the detached mode option
+        - The detached mode is used when you want to run one command and (possibly) have the output of the commands sent to some shared data volume for processing later
+
+    - Root mode use cases:
+
+        - The use of Dockers plugins in Jenkins where we want to remove the containers after a Jenkins job is executed. This runs in a root user mode with attaching to the foreground and pretending
+          to be a pseudo terminal and on completion close the container
+        - Another example will be the starting of a service where we need to start the service However, using “service nginx start” with the d option starts the nginx server but this cannot be used as the container stops
+          after the command is executed
+
+Basic commands
+==============
+
+    $ docker pull ubuntu        -   This pulls the ubuntu image from docker hub repository with the tag: latest
+
+    $ docker run -i ubuntu      -   This command helps you to get inside the container in interactive mode
+
+    $ docker run -t ubuntu      -   The "t" command line options calls a terminal from inside the container. This prevents the container from exiting.
+
+    $ docker run -it ubuntu     -   This allows the docker container to run in the interactive mode as well as prevent it from exiting
+
+    $ docker run -d ubuntu      -   This allows the container to run a service in the background
+
+
+    Naming Containers:
+    ------------------
+
+        - Docker assigns default names to the container. The usual format would be firstname_secondname
+        - Docker gives us the privilege to name our containers. This can be done with the use of the name command
+
+            $ docker ps -a
+
+            root@osboxes:/opt/Dockerfile# docker ps -a
+            CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
+            550eff2fa112        naveen              "echo 'Hello Naveen.…"   23 seconds ago      Exited (0) 21 seconds ago                       festive_solomon
+
+            $ docker run -d --name=naveen-container naveen:latest
+            779893d1c4d4946f98f34bfa6cce348cd62aedbb7ea434d7d08bd6cb2112d117
+
+            root@osboxes:/opt/Dockerfile# docker ps -a
+            CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS               NAMES
+            779893d1c4d4        naveen:latest       "echo 'Hello Naveen.…"   6 seconds ago       Exited (0) 5 seconds ago                           naveen-container
+
+        - Note: Here, "-d" is optional, The command can work without this option also
+
+        - Rename the running container
+
+            $ docker rename <container-old-name> <container-new-name>
+
+            $ docker rename naveen-container myapp
+
+            root@osboxes:/opt/Dockerfile# docker ps -a
+            CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS               NAMES
+            779893d1c4d4        naveen:latest       "echo 'Hello Naveen.…"   6 seconds ago       Exited (0) 5 seconds ago                           nmyapp
+
+
+    Attach to a container:
+    ----------------------
+
+        - When we are running containers in Detached mode (Daemonised Mode) we can still attach to the container if required.
+        - It is similar to Linux SSH or Windows RDP
+
+        $ docker run -itd ubuntu
+        5f9510b64d4e0fee3616317bda7b6980ee5852ffb0c03c9e7909ecf90afc2067
+
+        $ docker ps -a
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+        5f9510b64d4e        ubuntu              "/bin/bash"         24 seconds ago      Up 22 seconds                           objective_hoover
+        root@osboxes:/opt/Dockerfile#
+
+        $ docker attach 5f9510b64d4e
+        root@5f9510b64d4e:/#
+
+            - Here we are inside the container with root user
+
+    Stopping a Container:
+    ---------------------
+
+        - When container is initiated in detached mode. It keeps running. It can be stopped in following two ways:
+
+            - Get attached to the root and exit
+            - Stop the container using the “stop” command : docker stop <container id>
+
+            Example:
+
+                $ docker stop 5f9510b64d4e
+                $ docker ps -a
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS                   NAMES
+                5f9510b64d4e        ubuntu              "/bin/bash"         24 seconds ago      Exited (0) 3 seconds ago                            objective_hoover
+
+
+
+    Restarting a Container:
+    -----------------------
+
+        - Start a stopped container by using the “start” command: $ docker start <container id>
+
+            Example:
+
+                $ docker start 5f9510b64d4e
+                $ docker ps -a
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS                   NAMES
+                5f9510b64d4e        ubuntu              "/bin/bash"         24 seconds ago      Up 2 seconds                                        objective_hoover
+
+    Inspect Container:
+    ------------------
+
+        - Inspect containers is to view important information regarding config, IP address etc., where both, the running and stopped containers can be inspected by the command: $ docker inspect <container id>
+
+            Example:
+
+                $ docker inspect 5f9510b64d4e
+
+                - Output should be the configuration, network settings, images info, etc., in the json format
+
+        - We can inspect not only containers but several object in the docker using "inspect" command
+
+            - Docker object = container / image / networkid / volume id
+
+                Syntax :    docker inspect <object name/id>
+
+
+Docker Hub: (Docker Registry)
+-----------------------------
+
+    - Docker Hub is a cloud based service provided by Docker for finding and sharing container images with your team. It provides the following major features:
+
+        - Repositories: Push and pull container images.
+        - Teams & Organizations: Manage access to private repositories of container images.
+        - Official Images: Pull and use high-quality container images provided by Docker.
+        - Publisher Images: Pull and use high-quality container images provided by external vendors. Certified images also include support and guarantee compatibility with Docker Enterprise.
+        - Builds: Automatically build container images from GitHub and Bitbucket and push them to Docker Hub
+        - Webhooks: Trigger actions after a successful push to a repository to integrate Docker Hub with other services.
+
+************************************************************************************************************************************************************************************************************************************
+
+Sharing & Copying:
+------------------
+
+    Docker Volume:
+    --------------
+
+        - Traditionally a volume is a logical drive which is a storage area accessible within a file system and typically resident in a partition of a hard disk.
+        - Volumes are the preferred mechanism for persisting data generated by and used by Docker containers.
+        - Volumes are stored in a part of the host filesystem which is managed by Docker i.e., /var/lib/docker/volumes/ on Linux
+        - Docker volumes are the preferred way to save data over restarts of a Docker container.
+        - Use the v option of docker run to mount a host volume into a container
+        - Advantages of Volumes:
+
+            - Volumes are easier to back up and migrate.
+            - Managing volumes can done from the Docker CLI or Docker API.
+            - They work on Linux and Windows.
+            - Volumes are safer to share among containers.
+            - Volume drivers allow volumes to be stored on remote hosts or cloud providers or to be encrypted.
+            - New volumes can be pre-populated by the container.
+            - Volumes do not increase the size of the container.
+
+        - We can create and manage volumes outside the scope of any container.
+
+        Basic commands:
+        ---------------
+
+            $ docker volume create <volume-name>    -   Creates a volume under the location "/var/lib/docker/volumes/" in the host machine
+
+            $ docker volume ls                      -   List out all the volumes
+
+            $ docker volume inspect <volume-name>   -   To inspect the volume
+
+            $ docker volume prune                   -   Remove all unused local volumes
+
+            $ docker volume rm <volumes>            -   Remove one or more Volumes
+
+        - Example1:
+
+            - Create a docker volume from nginx image and start the container with a volume
+
+                $ docker run -itd --name=datatest -v /app nginx /bin/bash
+
+            - check the container
+
+                $ docker ps -a
+
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+                7b49adce415e        nginx               "/bin/bash"         4 seconds ago       Up 3 seconds                80/tcp              datatest
+
+            - Check the volume inside the container
+
+                root@osboxes:~# docker attach 7b49adce415e
+
+                root@7b49adce415e:/# df -h
+                Filesystem      Size  Used Avail Use% Mounted on
+                overlay         217G  8.1G  198G   4% /
+                tmpfs            64M     0   64M   0% /dev
+                tmpfs           2.0G     0  2.0G   0% /sys/fs/cgroup
+                shm              64M     0   64M   0% /dev/shm
+                /dev/sda1       217G  8.1G  198G   4% /app
+                tmpfs           2.0G     0  2.0G   0% /proc/asound
+                tmpfs           2.0G     0  2.0G   0% /proc/acpi
+                tmpfs           2.0G     0  2.0G   0% /proc/scsi
+                tmpfs           2.0G     0  2.0G   0% /sys/firmware
+
+            - Here the folder "app" folder has been created under the filesystem "/dev/sda1"
+
+            - Create the file and add some content in it
+
+                $ touch test1.txt
+
+                $ echo "This is the test file created in the datatest container" >> test1.txt
+
+            - Keep running the container and come out by using Ctrl+P+Q
+
+            - Check the volume and filesystem from the host machine
+
+                $ cd /var/lib/docker/volumes/
+
+                root@osboxes:/var/lib/docker/volumes# ls
+                27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0  metadata.db
+
+                $ cd 27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0
+
+                root@osboxes:/var/lib/docker/volumes/27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0# ls
+                _data
+
+                root@osboxes:/var/lib/docker/volumes/27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0# cd _data/
+
+                root@osboxes:/var/lib/docker/volumes/27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0/_data# ls
+                test1.txt
+
+            - Check the content in the file
+
+                root@osboxes:/var/lib/docker/volumes/27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0/_data# cat test1.txt
+                This is the test file created in the datatest container
+
+            - Add the content to the file from host machine
+
+                root@osboxes:/var/lib/docker/volumes/27bcd6a1634ed723b2a7729757a07b70229e252f499dca3fc0f3432f8e1650c0/_data# echo "This line is added in the host" >> test1.txt
+
+            - Check the added content from the container
+
+                root@osboxes:~# docker attach 7b49adce415e
+
+                root@7b49adce415e:/# cd /app/
+
+                root@7b49adce415e:/app# ls
+                test1.txt
+
+                root@7b49adce415e:/app# cat test1.txt
+                This is the test file created in the data1 container
+                This line is added in the host
+
+                root@7b49adce415e:/app#
+
+            - Note:  We can also create files from the host machine to the docker container volumes during the container in running mode or exited mode
+
+
+    Mounting:
+    ---------
+
+        - Mounting is the attaching of an additional filesystem to the currently accessible filesystem of a computer.
+        - A filesystem is a hierarchy of directories that is used to organize files on a computer or storage media
+
+        Bind mounts:
+        ------------
+
+            - Bind mounts may be stored anywhere on the host system. They may even be important system files or directories.
+            - Non Docker processes on the Docker host or a Docker container can modify them at any time
+            - Bind mounts have limited functionality compared to volumes. When you use a bind mount, a file or directory on the host machine is mounted into a container.
+            - The created folders/files(in the custom location) will get deleted once the docker machine is shutdown/restarted. So, its recommended to mount the volumes in the default location.
+
+            - Syntax:
+
+                $ docker run -v [host directory]:[container directory] image_name [OPTIONS]
+
+            - Example-2: Create a bind mount
+
+                - To mount a specific directory on your host machine as a Docker volume on the container
+
+                    $ docker run -it -v /tmp/myapp:/app --name=myapp nginx /bin/bash
+
+                    root@f51426d95ab8:/# cd /app/
+
+                    - Create required app files inside the folder
+
+                        root@f51426d95ab8:/app# touch myapp.log
+                        root@f51426d95ab8:/app# touch myapp.bin
+                        root@f51426d95ab8:/app# touch myapp.csv
+                        root@f51426d95ab8:/app# touch myapp.py
+
+                    - Check the files in the host machine
+
+                        root@osboxes:~# cd /tmp/myapp/
+                        root@osboxes:/tmp/myapp# ls
+                        myapp.bin  myapp.csv  myapp.log  myapp.py
+
+                    - So here all the application files are stored in the custom location instead of the default location (/var/lib/docker/volumes/)
+
+                - Now create another container with same volume
+
+                    $ docker run -it -v /tmp/myapp:/app --name=myapp1 nginx /bin/bash
+
+                    $ docker ps -a
+
+                    root@osboxes:/tmp/myapp# docker ps -a
+                    CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
+                    d3f6d5a89d53        nginx               "/bin/bash"         About a minute ago   Up 59 seconds       80/tcp              myapp1
+                    f51426d95ab8        nginx               "/bin/bash"         35 minutes ago       Up 26 minutes       80/tcp              myapp
+
+                    $ docker attach myapp
+
+                    root@f51426d95ab8:/app# ls
+                    myapp.bin  myapp.csv  myapp.log  myapp.py
+
+                    Here the changes whatever made in the files will be reflected everywhere (In the docker host machine and myapp container)
+
+                - ** Note: The created folders/files(in the custom location) will get deleted once the docker machine is shutdown/restarted. So, its recommended to mount the volumes in the default location.
+
+    Copying:
+    --------
+
+        - The "docker cp" command serves for copying files and folders between Docker container and a host machine.
+        - It is possible to copy a file or folder from host to container as well as from container to host.
+        - Syntax:
+
+            $ docker cp [OPTIONS] CONTAINER:SOURCE_PATH DESTINATION_PATH | -
+
+            $ docker cp [OPTIONS] SOURCE_PATH_IN_HOST|- CONTAINER:DESTINATION_PATH
+
+        - If "-" is specified for either the SRC_PATH or DEST_PATH and "|" specifies "or"
+
+        - **NOTE: The CONTAINER can be a running or stopped container
+
+        - Example:
+
+            1. Copy files/folders from a running container to the local filesystem or host machine
+
+                    root@osboxes:~# docker ps -
+                    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+                    dfdb211cb9c9        nginx               "/bin/bash"         24 hours ago        Exited (0) 5 minutes ago                       myapp2
+                    d3f6d5a89d53        nginx               "/bin/bash"         46 hours ago        Up 13 minutes              80/tcp              myapp1
+                    f51426d95ab8        nginx               "/bin/bash"         46 hours ago        Up 12 minutes              80/tcp              myapp
+
+                    root@osboxes:~# docker attach d3f6d5a89d53
+
+                    root@d3f6d5a89d53:~# cd /app/
+
+                    root@d3f6d5a89d53:/app# ls
+                    test.log  test.py  test.sls  test.txt
+
+                    root@osboxes:~# docker cp d3f6d5a89d53:/app/test.log /tmp/docker_test/
+
+                    root@osboxes:~# cd /tmp/docker_test/
+
+                    root@osboxes:/tmp/docker_test# ls
+                        test.log  test.txt
+
+            2. Copy files/folders from host machine to the running container
+
+                    root@osboxes:/tmp/docker_test# mkdir test
+
+                    root@osboxes:/tmp/docker_test# ls
+                    test  test.txt
+
+                    root@osboxes:/tmp/docker_test# cd test
+                    root@osboxes:/tmp/docker_test/test# touch test.py
+                    root@osboxes:/tmp/docker_test/test# cd ..
+
+                    root@osboxes:/tmp/docker_test# docker ps -a
+                    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+                    dfdb211cb9c9        nginx               "/bin/bash"         24 hours ago        Exited (0) 11 minutes ago                       myapp2
+                    d3f6d5a89d53        nginx               "/bin/bash"         46 hours ago        Up 19 minutes               80/tcp              myapp1
+                    f51426d95ab8        nginx               "/bin/bash"         46 hours ago        Up 18 minutes               80/tcp              myapp
+
+                    root@osboxes:/tmp/docker_test# docker cp test f51426d95ab8:/app/
+
+                    root@osboxes:/tmp/docker_test# docker attach f51426d95ab8
+
+                    root@f51426d95ab8:/app# ls
+                    test  test.log  test.py  test.sls  test.txt
+
+                    root@f51426d95ab8:/app# cd test
+                    root@f51426d95ab8:/app/test# ls
+                    test.py
+                    root@f51426d95ab8:/app/test#
+
+            3. Copy files/folder from host to the stopped container
+
+                    root@osboxes:/tmp/docker_test# docker ps -a
+                    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+                    d3f6d5a89d53        nginx               "/bin/bash"         46 hours ago        Exited (127) 11 seconds ago                       myapp1
+                    f51426d95ab8        nginx               "/bin/bash"         46 hours ago        Exited (130) 6 seconds ago                        myapp
+
+                    root@osboxes:/tmp/docker_test# ls
+                    test  test.txt
+
+                    root@osboxes:/tmp/docker_test# docker cp test d3f6d5a89d53:/opt/
+
+                    root@osboxes:/tmp/docker_test# docker attach d3f6d5a89d53
+                    You cannot attach to a stopped container, start it first
+
+                    root@osboxes:/tmp/docker_test# docker start d3f6d5a89d53
+                    d3f6d5a89d53
+
+                    root@osboxes:/tmp/docker_test# docker attach d3f6d5a89d53
+
+                    root@d3f6d5a89d53:/# cd /opt/
+                    root@d3f6d5a89d53:/opt# ls
+                    test
+                    root@d3f6d5a89d53:/opt# cd test/
+                    root@d3f6d5a89d53:/opt/test# ls
+                    test.py
+                    root@d3f6d5a89d53:/opt/test#
+
+            4. Copy the file/folder from stopped container to the host machine
+
+                    root@d3f6d5a89d53:/opt# mkdir abc
+                    root@d3f6d5a89d53:/opt# cd abc/
+                    root@d3f6d5a89d53:/opt/abc# touch abc.txt
+                    root@d3f6d5a89d53:/opt/abc# echo "This file is created in the container d3f6d5a89d53"
+                    This file is created in the container d3f6d5a89d53
+                    root@d3f6d5a89d53:/opt/abc# echo "This file is created in the container d3f6d5a89d53" >> abc.txt
+                    root@d3f6d5a89d53:/opt/abc# cat abc.txt
+                    This file is created in the container d3f6d5a89d53
+                    root@d3f6d5a89d53:/opt/abc# exit
+                    exit
+                    root@osboxes:/tmp/docker_test# docker ps -a
+                    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+                    d3f6d5a89d53        nginx               "/bin/bash"         46 hours ago        Exited (0) 4 seconds ago                         myapp1
+                    f51426d95ab8        nginx               "/bin/bash"         47 hours ago        Exited (130) 4 minutes ago                       myapp
+                    root@osboxes:/tmp/docker_test# docker cp d3f6d5a89d53:/opt/abc /tmp/
+                    root@osboxes:/tmp/docker_test# cd ..
+                    root@osboxes:/tmp# ls
+                    abc                 jetty-0.0.0.0-8083-war-_-any-13760799769056779062.dir                   systemd-private-fec440dfc860444388b21bce9df546ea-ModemManager.service-1e5Yiv       winstone8296501946970928080.jar
+                    docker_test         jna--1712433994                                                         systemd-private-fec440dfc860444388b21bce9df546ea-systemd-resolved.service-ID7DYF
+                    hsperfdata_jenkins  myapp                                                                   systemd-private-fec440dfc860444388b21bce9df546ea-systemd-timesyncd.service-K6MWn2
+                    hsperfdata_root     systemd-private-fec440dfc860444388b21bce9df546ea-colord.service-HWGGz7  systemd-private-fec440dfc860444388b21bce9df546ea-upower.service-krpjYY
+                    root@osboxes:/tmp# cd abc/
+                    root@osboxes:/tmp/abc# ls
+                    abc.txt
+                    root@osboxes:/tmp/abc# cat abc.txt
+                    This file is created in the container d3f6d5a89d53
+                    root@osboxes:/tmp/abc#
+
+************************************************************************************************************************************************************************************************************************************************************
+
+BASE IMAGE
+----------
+    - Docker base image is the basic image on which you add layers (which are basically filesystem changes) and create a final image containing your App.
+    - A base image is the image that is used to create all of your container images.
+    - Your base image can be an official Docker image, such as Centos, Ubuntu, etc.,
+    - you can modify an official Docker image to suit your needs, or you can create your own base image from scratch.
+    - For example,
+
+        - In order to run a LAMP stack as a Docker containers, you might use either an Ubuntu 14.04 or Ubuntu 12.04 or CentOS 7, or any of your Linux OSes as a base image.
+        - Then, you would install Apache, MySQL and PHP on it and the result would be your final LAMP Docker image which can be run as a container.
+
+    - Image Layers:
+
+        - Images are comprised of multiple layers
+        - Basically, a layer, or image layer is a change on an image
+        - Every image contains a base layer
+        - Docker uses a copy on write system
+        - Layers are just read only image
+        - Every command you specify (FROM, RUN, COPY, etc.) in your Dockerfile causes the previous image to change, thus creating a new layer.
+
+    - Image Selection
+
+        - When creating your own images, you will need to decide which base image to start from
+        - The best case scenario is that you don’t need to create an image at all; you can just use an existing one and mount your configuration files and/or data into it
+        - This is likely to be the case for common application software, such as databases and web servers, where there are official images available
+        - In general, you are much better off using an official image than rolling your own
+        - Always use Base Image
+
+**************************************************************************************************************************************************************************************************************************************************************
+
+Docker File
+-----------
+
+    - A Dockerfile is a text document that contains commands that are used to assemble an image.
+    - We can use any command that call on the command line.
+    - Docker builds images automatically by reading the instructions from the Dockerfile.
+    - The docker build command is used to build an image from the Dockerfile.
+    - You can use the -f flag with docker build to point to a Dockerfile anywhere in your file system.
+    - Syntax:
+
+        $ docker build -f /path/to/a/Dockerfile .
+
+
+        Dockerfile Instructions:
+        ------------------------
+
+            - The instructions are not case-sensitive but you must follow conventions which recommend to use uppercase.
+            - Docker runs instructions of Dockerfile in top to bottom order.
+            - The first instruction must be FROM in order to specify the Base Image.
+            - A statement begin with # treated as a comment.
+            - You can use RUN, CMD, FROM, EXPOSE, ENV etc instructions in your Dockerfile.
+            - Here, we are listing some commonly used instructions.
+
+                - FROM
+
+                    - Every Docker file starts with this command
+                    - It shows where is the base image coming from
+                    - Will pick up an image from Docker hub or some other repository and make some changes for ex: environmental changes, or expose your ports etc., and then save the file
+                    - Example
+
+                        FROM ubuntu:latest
+
+                - MAINTAINER
+
+                    - The section of the Docker file shows the maintainer or the owner of the Docker file
+                    - It requires certain formats i.e., the name and the email id
+                    - Syntax:
+
+                        MAINTAINER <maintainer_name> <maintainer_email_id>
+
+                    - Example:
+
+                        MAINTAINER Naveen naveen.nb@outlook.com
+
+                - LABEL
+
+                    - We can add labels to an image to organize images of our project.
+                    - We need to use LABEL instruction to set label for the image.
+                    - Example:
+
+                        LABEL vendor = "Infor"
+
+                - RUN
+
+                    - This instruction is used to execute any command of the current image.
+                    - Example:
+
+                        RUN apt-get update
+                        RUN apt-get install –y nginx
+
+                - ENV
+
+                    - Environment Variables in docker are declared with ‘ENV’ statement
+                    - The ENV instruction sets the environment variable <key> to the value <value>.
+                    - Environment variables are notated in Dockerfile as $ variable_name or {variable_name}
+                    - Example:
+
+                        ENV COMPANY Infor
+
+                    - When you run the container this value will have to be passed using “echo $COMPANY”
+
+                - EXPOSE
+
+                    - EXPOSE: Let the service in the container is not accessible from outside Docker, but from inside other Docker containers
+                    - It is good for inter container communication
+                    - Ports are set up in the Docker file to be exposed
+                    - When you run docker ps for this container you will see the information for the ports which are exposed
+                    - Example:
+
+                        EXPOSE 80
+                        EXPOSE 24
+
+                        - Note: You need to map the port after EXPOSE to make it work
+
+                            - Example : $ docker run -itd -P nginx
+
+                                - It will map the port of nginx server and we can then be able to access it from outside world
+                - CMD
+
+                    - This is used to execute application by the image
+                    - There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
+                    - If CMD is used to provide default arguments for the ENTRYPOINT instruction, both the CMD and ENTRYPOINT instructions should be specified with the JSON array format.
+                    - Example:
+
+                        CMD ["/bin/bash"]
+                        CMD ["echo", "Hello Naveen...! This is your first docker image"]
+
+                - COPY
+
+                    - This instruction is used to copy new files or directories from source to the filesystem of the container at the destination.
+                    - Copies new files or directories from <src> and adds them to the filesystem of the image at the path <dest>.
+                    - <src> may contain wildcards and matching will be done using Go’s filepath.Match rules.
+                    - <dest> is an absolute path, or a path relative to WORKDIR.
+                    - If <dest> doesn’t exist, it is created along with all missing directories in its path.
+                    - Example:
+
+                        COPY abc/ /xyz
+
+                - WORKDIR
+
+                    - The WORKDIR is used to set the working directory for any RUN, CMD and COPY instruction that follows it in the Dockerfile.
+                    - If work directory does not exist, it will be created by default.
+                    - We can use WORKDIR multiple times in a Dockerfile.
+                    - Example:
+
+                        WORKDIR /var/www/html
+
+            Building A Docker Image
+            -----------------------
+
+            - Example-1:
+
+                - Create any text file named "Dockerfile" in any location (Ex: /opt/docker/)
+                - Note: It's a case sensitive. Name exactly as "Dockerfile"
+
+                    touch Dockerfile
+
+                - Add instructions to the docker file as follows:
+
+                    $ vim Dockerfile
+
+                    # Getting base image ubuntu
+                    FROM ubuntu
+                    MAINTAINER Naveen Noorbhasha
+                    RUN apt-get update
+                    CMD ["echo", "Hello Naveen...! This is your first docker image"]
+
+                - Build Dockerfile to create docker image
+
+                    cd /opt/docker/
+                            docker build -t naveen:latest .
+
+                    - Here, "-t" indicates the TAG
+
+                - Check the docker images
+
+                    $ docker images
+
+                    root@osboxes:/opt/Dockerfile# docker images
+                    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                    naveen              latest              e98d3b690c55        2 minutes ago       91.3MB
+
+                - Run image to create container
+
+                    $ docker run <REPOSITRY or IMAGE ID>
+                    $ docker run naveen
+
+                - Check the Containers
+
+                    $ docker ps -a
+
+                    root@osboxes:/opt/Dockerfile# docker ps -a
+                    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
+                    550eff2fa112        naveen              "echo 'Hello Naveen.…"   23 seconds ago      Exited (0) 21 seconds ago                       festive_solomon
+
+            - Example-2:
+
+                root@osboxes:/tmp/docker_file_demo# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                nginx               latest              ab56bba91343        7 days ago          126MB
+
+                root@osboxes:/tmp/docker_file_demo# ls
+                Dockerfile
+
+                root@osboxes:/tmp/docker_file_demo# cat Dockerfile
+                # This is a demo file for docker file demo
+
+                FROM ubuntu:latest
+                MAINTAINER naveen naveen.nb@outlook.com
+                RUN apt-get update
+                ENV COMPANY Infor
+                EXPOSE 80
+                EXPOSE 24
+                CMD ["echo", "Hello Naveen...! This is your first docker image"]
+
+                root@osboxes:/tmp/docker_file_demo# docker build -t naveen .
+
+                root@osboxes:/tmp/docker_file_demo# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                naveen              latest              68216a0873bf        2 minutes ago       91.4MB
+                ubuntu              latest              2ca708c1c9cc        15 hours ago        64.2MB
+                nginx               latest              ab56bba91343        7 days ago          126MB
+                root@osboxes:/tmp/docker_file_demo#
+
+                root@osboxes:/tmp/docker_file_demo# docker ps -a
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+                d3f6d5a89d53        nginx               "/bin/bash"         2 days ago          Exited (0) 3 hours ago                         myapp1
+                f51426d95ab8        nginx               "/bin/bash"         2 days ago          Exited (130) 3 hours ago                       myapp
+                root@osboxes:/tmp/docker_file_demo# docker run -itd naveen /bin/bash
+                fac63ac680ac0ab27c885889994c7855d5c545d0253a8b1ff7e93cb480a0ff46
+                root@osboxes:/tmp/docker_file_demo# docker ps -a
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+                fac63ac680ac        naveen              "/bin/bash"         4 seconds ago       Up 3 seconds               24/tcp, 80/tcp      cool_agnesi
+                d3f6d5a89d53        nginx               "/bin/bash"         2 days ago          Exited (0) 3 hours ago                         myapp1
+                f51426d95ab8        nginx               "/bin/bash"         2 days ago          Exited (130) 3 hours ago                       myapp
+
+                root@fac63ac680ac:/# echo $COMPANY
+                Infor
+                root@fac63ac680ac:/#
+
+
+************************************************************************************************************************************************************************************************************************************************
+
+Working with Containers:
+------------------------
+
+    - Docker commit:
+
+        - Create a new image from a container’s changes
+        - Syntax:
+
+            docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+        - The purpose of docker commit is whenever the container gets exit, All the changes made in the container will be lost.
+        - In such cases, we can commit those changes/configurations and define the new image
+
+        - Example:
+
+            - Run a container from the image, make required changes and commit it to the new image
+
+            root@osboxes:/home/osboxes# docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            naveen              latest              68216a0873bf        17 hours ago        91.4MB
+            ubuntu              latest              2ca708c1c9cc        32 hours ago        64.2MB
+            nginx               latest              ab56bba91343        7 days ago          126MB
+            root@osboxes:/home/osboxes# docker run -itd naveen /bin/bash
+            7e5699a2e8762e9b9bcc05b2b652c04110f60d3615b142b26b136bc982665302
+            root@osboxes:/home/osboxes# docker ps
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+            7e5699a2e876        naveen              "/bin/bash"         8 seconds ago       Up 5 seconds        24/tcp, 80/tcp      mystifying_chebyshev
+            root@osboxes:/home/osboxes# docker attach 7e5699a2e876
+            root@7e5699a2e876:/# ls
+            bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+            root@7e5699a2e876:/# mkdir app
+            root@7e5699a2e876:/# cd app
+            root@7e5699a2e876:/app# touch app.py
+            root@7e5699a2e876:/app# touch app.log
+            root@7e5699a2e876:/app# touch app.txt
+            root@7e5699a2e876:/app# ls
+            app.log  app.py  app.txt
+            root@7e5699a2e876:/app# cd
+            root@7e5699a2e876:~# read escape sequence
+            root@osboxes:/home/osboxes# docker commit 7e5699a2e876 naveen-image:v1
+            sha256:a355e1cae8934a769329f8beeb67dece633da3bb69031a5e1a8eb724302eec4c
+            root@osboxes:/home/osboxes# docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            naveen-image        v1                  a355e1cae893        4 seconds ago       91.4MB
+            naveen              latest              68216a0873bf        17 hours ago        91.4MB
+            ubuntu              latest              2ca708c1c9cc        32 hours ago        64.2MB
+            nginx               latest              ab56bba91343        7 days ago          126MB
+            root@osboxes:/home/osboxes# docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            naveen-image        v1                  a355e1cae893        6 minutes ago       91.4MB
+            naveen              latest              68216a0873bf        17 hours ago        91.4MB
+            ubuntu              latest              2ca708c1c9cc        32 hours ago        64.2MB
+            nginx               latest              ab56bba91343        7 days ago          126MB
+
+            - Check the changes in the created new image by running it
+
+                root@osboxes:/home/osboxes# docker run -it a355e1cae893 /bin/bash
+                root@dec069c9006f:/# ls
+                app  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+                root@dec069c9006f:/# cd app/
+                root@dec069c9006f:/app# ls
+                app.log  app.py  app.txt
+
+        - Docker Diff:
+
+            - Inspect changes to files or directories on a container’s filesystem
+            - Syntax:
+
+                docker diff <container-id>
+
+            - Example:
+
+                root@osboxes:/home/osboxes# docker diff d3f6d5a89d53
+                A /app
+                C /root
+                A /root/.bash_history
+                C /opt
+                A /opt/abc
+                A /opt/abc/abc.txt
+                root@osboxes:/home/osboxes#
+
+            - Here, "C" indicates "change", "A" indicates "Addition", "D" indicated "Delete" and "M" indicates "Modify"
+            - whatever the changes showing here are respective to the changes that are made on the actual base image
+
+        - Docker Export:
+
+            - Export a container’s filesystem as a tar archive
+            - The docker export command does not export the contents of volumes associated with the container
+            - If a volume is mounted on top of an existing directory in the container, docker export will export the contents of the underlying directory, not the contents of the volume.
+            - Syntax:
+
+                docker export [OPTIONS] CONTAINER > TAR_FILE_NAME.tar
+
+            - Example:
+
+                root@osboxes:~# docker ps -a
+                CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+                dec069c9006f        a355e1cae893        "/bin/bash"         3 days ago          Exited (0) 16 minutes ago                       frosty_villani
+                d3f6d5a89d53        nginx               "/bin/bash"         5 days ago          Exited (0) 4 days ago                           myapp1
+                f51426d95ab8        nginx               "/bin/bash"         5 days ago          Exited (130) 4 days ago                         myapp
+
+                root@osboxes:~# docker export d3f6d5a89d53 > nginx_update.tar
+
+                root@osboxes:~# ls
+                nginx_update.tar
+
+                root@osboxes:~#
+
+        - Docker Import:
+
+            - Import the contents from a tarball to create a filesystem image
+            - We can import the tar file from remote location or from the local file system
+            - Syntax:
+
+                docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+
+            - Example:
+
+                root@osboxes:~# cd /opt/docker/tar_files/
+                root@osboxes:/opt/docker/tar_files# ls
+                nginx_update.tar
+                root@osboxes:/opt/docker/tar_files# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        3 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        10 days ago         126MB
+
+                root@osboxes:/opt/docker/tar_files# docker import - import-test < nginx_update.tar
+                sha256:b30e112b608ff746e6e34faee6faa7db748a9a49b0e4558f46b21c63fbc02dd4
+
+                root@osboxes:/opt/docker/tar_files# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                import-test         latest              b30e112b608f        7 seconds ago       124MB
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        3 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        10 days ago         126MB
+                root@osboxes:/opt/docker/tar_files#
+
+        - Docker Save:
+
+            - Save one or more images to a tar archive
+            - Syntax:
+
+                docker save [OPTIONS] IMAGE [IMAGE...]
+
+            - Example:
+
+                root@osboxes:/opt/docker/tar_files# ls
+                nginx_update.tar
+
+                root@osboxes:/opt/docker/tar_files# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                import-test         latest              b30e112b608f        6 minutes ago       124MB
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        3 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        10 days ago         126MB
+
+                root@osboxes:/opt/docker/tar_files# docker save -o naveen-image.tar naveen-image
+
+                root@osboxes:/opt/docker/tar_files# ls
+                naveen-image.tar  nginx_update.tar
+
+                root@osboxes:/opt/docker/tar_files#
+
+
+        - Docker Load:
+
+            - Load an image from a tar archive or STDIN
+            - Syntax:
+
+                docker load [OPTIONS]
+
+            - Example:
+
+                root@osboxes:/opt/docker/tar_files# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                import-test         latest              b30e112b608f        12 minutes ago      124MB
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        3 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        10 days ago         126MB
+
+                root@osboxes:/opt/docker/tar_files# docker load < naveen-image.tar
+                Loaded image: naveen-image:v1
+
+                root@osboxes:/opt/docker/tar_files# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                import-test         latest              b30e112b608f        13 minutes ago      124MB
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        3 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        10 days ago         126MB
+
+                root@osboxes:/opt/docker/tar_files#
+
+            - If you have to deal with images that you have already committed, you can use the load and save commands
+
+        - Docket TAG:
+
+            - Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+            - A copy of an image will be created with different given name
+            - Syntax:
+
+                - docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+            - Example:
+
+                root@osboxes:~# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                import-test         latest              b30e112b608f        3 hours ago         124MB
+                naveen-image        v1                  a355e1cae893        3 days ago          91.4MB
+                naveen              latest              68216a0873bf        4 days ago          91.4MB
+                ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx               latest              ab56bba91343        11 days ago         126MB
+
+                root@osboxes:~# docker tag naveen-image:v1 naveennb18/naveen-image
+
+                root@osboxes:~# docker images
+                REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+                import-test               latest              b30e112b608f        3 hours ago         124MB
+                naveen-image              v1                  a355e1cae893        3 days ago          91.4MB
+                naveennb18/naveen-image   latest              a355e1cae893        3 days ago          91.4MB
+                naveen                    latest              68216a0873bf        4 days ago          91.4MB
+                ubuntu                    latest              2ca708c1c9cc        4 days ago          64.2MB
+                nginx                     latest              ab56bba91343        11 days ago         126MB
+                root@osboxes:~# docker
+
+****************************************************************************************************************************************************************************************************************************************************
+
+Docker Hub:
+-----------
+
+    - It is a cloud based registry service which allows you to link to code repositories, build images and test them, stores manually pushed images, and links to Docker Cloud so you can deploy images to your hosts.
+    - Publish/Share an image on the docker hub using the following steps:
+
+        - Create an account on the Docker Hub
+        - Login into the hub from the Docker Host
+        - Push your image
+
+    - Example:
+
+        - Create an image and push it to the Docker Hub from Host machine
+
+            root@osboxes:~# docker login
+            Authenticating with existing credentials...
+            WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+            Configure a credential helper to remove this warning. See
+            https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+            Login Succeeded
+
+            root@osboxes:~# docker images
+            REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+            import-test               latest              b30e112b608f        3 hours ago         124MB
+            naveen-image              v1                  a355e1cae893        3 days ago          91.4MB
+            naveennb18/naveen-image   latest              a355e1cae893        3 days ago          91.4MB
+            naveen                    latest              68216a0873bf        4 days ago          91.4MB
+            ubuntu                    latest              2ca708c1c9cc        4 days ago          64.2MB
+            nginx                     latest              ab56bba91343        11 days ago         126MB
+
+            root@osboxes:~# docker push naveennb18/naveen-image
+            The push refers to repository [docker.io/naveennb18/naveen-image]
+            7c5e201a31cc: Pushed
+            88546d2c1446: Pushed
+            e80c789bc6ac: Mounted from library/ubuntu
+            6c3332381368: Mounted from library/ubuntu
+            ef1a1ec5bba9: Mounted from library/ubuntu
+            a1aa3da2a80a: Mounted from library/ubuntu
+            latest: digest: sha256:7169d659d0a03882f46673961fc2793c702202783ca7965023ee4ea5467fd5e2 size: 1571
+            root@osboxes:~#
+
+        - Note: The name of an image should be in the form of REPOSITORY_NAME i.e., "LOGIN_USER_NAME/IMAGE_NAME"
+        - Here in the above example a repository will gets created with the name "naveennb18/naveen-image"
+
+    - Example-2:
+
+        - Give different tag to the same image and push it to the Docker hub
+
+            root@osboxes:~# docker tag naveen naveennb18/naveen-image:v1
+
+            root@osboxes:~# docker images
+            REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+            import-test               latest              b30e112b608f        3 hours ago         124MB
+            naveen                    latest              68216a0873bf        4 days ago          91.4MB
+            naveennb18/naveen-image   v1                  68216a0873bf        4 days ago          91.4MB
+            ubuntu                    latest              2ca708c1c9cc        4 days ago          64.2MB
+            nginx                     latest              ab56bba91343        11 days ago         126MB
+
+            root@osboxes:~# docker push naveennb18/naveen-image:v1
+            The push refers to repository [docker.io/naveennb18/naveen-image]
+            88546d2c1446: Layer already exists
+            e80c789bc6ac: Layer already exists
+            6c3332381368: Layer already exists
+            ef1a1ec5bba9: Layer already exists
+            a1aa3da2a80a: Layer already exists
+            v1: digest: sha256:8620bc00ba0b17f774e607d2cb97aff6f0097cd237d4b4ce29426c2c81bc6233 size: 1364
+            root@osboxes:~#
+
+        - Now, the repository naveennb18/naveen-image contains an image "naveen-image" with two different tags
+        - Once the image is pushed to docker hub, it can be downloaded via pull command
+
+    - Example-3:
+
+        - Pull the image that has created in the docker Hub
+
+            root@osboxes:~# docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            import-test         latest              b30e112b608f        3 hours ago         124MB
+            ubuntu              latest              2ca708c1c9cc        4 days ago          64.2MB
+            nginx               latest              ab56bba91343        11 days ago         126MB
+
+            root@osboxes:~# docker pull naveennb18/naveen-image:v1
+            v1: Pulling from naveennb18/naveen-image
+            5667fdb72017: Already exists
+            d83811f270d5: Already exists
+            ee671aafb583: Already exists
+            7fc152dfb3a6: Already exists
+            3d2fb8a6eeeb: Pull complete
+            Digest: sha256:8620bc00ba0b17f774e607d2cb97aff6f0097cd237d4b4ce29426c2c81bc6233
+            Status: Downloaded newer image for naveennb18/naveen-image:v1
+            docker.io/naveennb18/naveen-image:v1
+
+            root@osboxes:~# docker images
+            REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+            import-test               latest              b30e112b608f        3 hours ago         124MB
+            naveennb18/naveen-image   v1                  68216a0873bf        4 days ago          91.4MB
+            ubuntu                    latest              2ca708c1c9cc        4 days ago          64.2MB
+            nginx                     latest              ab56bba91343        11 days ago         126MB
+
+            root@osboxes:~#
+
+    - So, Docker hub is a Registry and Repositories are the docker images with different tag names
+
+Running a Private Repository:
+-----------------------------
+
+    - Pull the official registry image and run it as a detached container
+    - Tag the image with the proper naming convention for use with a private registry
+    - In this case the registry is running at http://localhost:5000 , so we will prefix our tag with localhost:5000 and then push this image to the private registry
+
+***********************************************************************************************************************************************************************************************************************************************************
+
+Containerization with Docker: (Ecosystem & Networking)
+--------------------------------------------------------
+
+    - Docker Ecosystem:
+
+        - Docker is more powerful because of its large and vibrant ecosystem
+
+        - Docker Toolbox:
+
+            - The Docker Toolbox is an installer to quickly and easily install and setup a Docker environment on your computer
+            - Docker toolbox contains:
+
+                - Docker Machine for running docker machine commands
+                - Docker Engine for running the docker commands
+                - Docker Compose for running the docker compose commands
+                - Kitematic Desktop GUI for Docker
+
+                    - Kitematic is an open source project built to simplify and streamline using Docker on a Mac or Windows PC.
+                    - Kitematic automates the Docker installation and setup process and provides an intuitive graphical user interface (GUI) for running Docker containers.
+                    - Instead of using the command line to manage your containers locally, you can use Kitematic UI which is a graphical interface.
+
+                - A shell preconfigured for a Docker command line environment
+
+            - Note: Docker toolbox is available only for mac and windows
+
+            - Docker Engine:
+
+                - Docker engine is the part of Docker which creates and runs Docker containers
+                - It helps you in creating multiple nodes
+                - It is a core of a Docker platform which acts as a lightweight runtime that runs Docker containers.
+                - Docker Engine knows how to talk to the kernel, makes the system calls to create, operate and manage containers, which we as users of docker don't have to worry about.
+
+            - Docker Machine:
+
+                - Docker Machine is a tool that lets you install Docker Engine on virtual hosts, and manage the hosts with docker machine commands
+                - You can use Machine to install Docker Engine on one or more virtual systems.
+                - Using docker machine commands, you can :
+
+                    - Start, Inspect, Stop, Restart a managed host
+                    - Upgrade the Docker client and daemon
+                    - Configure a Docker client to talk to your host
+
+            - Docker Daemon:
+
+                - The Docker Daemon runs on your host operating system. This is typically your main computer or a server on the cloud.
+                - It currently only runs on Linux but there are ways to run Docker on MacOS and Windows too.
+                - It is the brains of the operation when it comes to managing Docker containers.
+                - Provides core Docker functionality. It must be running on every host you plan to run Docker on.
+
+            - Docker CLI:
+
+                - The Docker CLI is one way to interact with the Docker Daemon.
+                - The Docker Daemon exposes an API and the Docker CLI is one tool you can use to consume that API.
+                - Use Case:
+
+                    - When you want to CRUD (create, read, update, destroy) various components of Docker, such as your Docker images, containers, networks and volumes.
+
+            - Docker Compose:
+
+                - Docker Compose is a quality of life improvement tool over the Docker CLI but still uses the Docker CLI in the background.
+                - It lets you declare Docker CLI commands in the form of YAML and has its own CLI which lets you easily manage 1 or more Docker containers.
+                - Docker Compose makes it easier to configure and run applications made up of multiple containers
+
+                - Installing Docker Compose
+
+                    $ sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+                    $ sudo chmod +x /usr/local/bin/docker-compose
+
+                    $ docker-compose --version (Verify the Installation)
+
+                - Use case:
+
+                    - imagine being able to define three containers WordPress, MySQL and PHP all in one YAML file and then running those three connected containers with a single command
+
+                        $ docker compose up -d
+
+                        Containers = WordPress, MySQL, PHP => Docker Compose File => You can run these three containers with a single docker command
+
+                - Example:
+
+                    - Create docker-compose.yml files
+
+                        $ cd /opt/
+                        $ mkdir wordpress
+                        $ cd wordpress
+                        $ touch docker-compose.yml
+                        $ vim docker-compose.yml
+
+                            version: '3.3'
+
+                            services:
+                               db:
+                                 image: mysql:5.7
+                                 volumes:
+                                   - db_data:/var/lib/mysql
+                                 restart: always
+                                 environment:
+                                   MYSQL_ROOT_PASSWORD: somewordpress
+                                   MYSQL_DATABASE: wordpress
+                                   MYSQL_USER: wordpress
+                                   MYSQL_PASSWORD: wordpress
+
+                               wordpress:
+                                 depends_on:
+                                   - db
+                                 image: wordpress:latest
+                                 ports:
+                                   - "2000:80"
+                                 restart: always
+                                 environment:
+                                   WORDPRESS_DB_HOST: db:3306
+                                   WORDPRESS_DB_USER: wordpress
+                                   WORDPRESS_DB_PASSWORD: wordpress
+                                   WORDPRESS_DB_NAME: wordpress
+                            volumes:
+                                db_data: {}
+
+                    - Build the project:
+
+                        $ docker-compose  up -d
+
+                    - It will download and install all the required images and starts the respective containers
+
+                        root@osboxes:/opt/docker-compose/wordpress# docker images
+                        REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                        wordpress           latest              3ee8f0d4f2c0        4 days ago          541MB
+                        mysql               5.7                 383867b75fd2        12 days ago         373MB
+
+                        root@osboxes:/opt/docker-compose/wordpress# docker ps
+                        CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                          NAMES
+                        2833f4b2e0c7        wordpress:latest    "docker-entrypoint.s…"   55 seconds ago      Up 52 seconds       80/tcp, 0.0.0.0:8085->85/tcp   wordpress_wordpress_1
+                        2b52b40f6599        mysql:5.7           "docker-entrypoint.s…"   57 seconds ago      Up 55 seconds       3306/tcp, 33060/tcp            wordpress_db_1
+                        root@osboxes:/opt/docker-compose/wordpress#
+
+                    - Now access the WordPress applications from the browser using the url (http://192.168.56.106:2000/)
+
+                    - Shutdown and cleanup:
+
+                        - The command "$ docker-compose down" removes the containers and default network, but preserves your WordPress database.
+                        - The command "$ docker-compose down --volumes" removes the containers, default network, and the WordPress database.
+
+**********************************************************************************************************************************************************************************************************************************************************
+
+===========================================================
+Docker Networking
+===========================================================
+
+    - Docker Network:
+
+        - Networks in docker can be configured to provide complete isolation for containers
+        - This enables building web applications that work together securely
+
+        - Network Namespace:
+
+            - Provides a way of having separate network stack for each instance of a container
+
+        - Docker0 Bridge:
+
+            - Default bridge created by Docker to provide communication across Docker containers and external world including the host
+
+        - Port Mapping:
+
+            - Mechanism to map a port in the host machine with the Docker container’s networking stack
+
+            - Example-1:
+
+                $ docker run -itd -P nginx
+
+                    root@osboxes:/home/osboxes# docker run -itd -P nginx
+                    41f873a6d98f91e02ade7991345461eb340ab8e5af04f0dc85d53fdf9876b9e9
+                    root@osboxes:/home/osboxes# docker ps
+                    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
+                    41f873a6d98f        nginx               "nginx -g 'daemon of…"   4 seconds ago       Up 2 seconds        0.0.0.0:32768->80/tcp   zealous_tu
+
+                    - Now, we can be able to access the ngnix server from outside the container using docker host machine IP address (http://192.168.56.106:32769/)
+                    - Here, port "80" of container has assigned to the port 32768 of docker host machine
+                    - In docker we have dynamic port Mapping. whenevr the container gets restarted, the mapped port will gets changed by default
+
+            - Example-2:
+
+                - We can also exclusively mention the port number for mapping using the below command:
+
+                    $ docker run -itd -p <MAPPED_HOST_PORT_NUMBER>:<MAPPED_CONTAINER_PORT_NUMBER> IMAGE_NAME
+
+                        root@osboxes:/home/osboxes# docker run -itd -p 8787:80 nginx
+                        b4a6ec6e62baaeb32a9e9e8175111690598b49e3b7387cde04f8efe3139e0695
+                        root@osboxes:/home/osboxes# docker ps
+                        CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
+                        b4a6ec6e62ba        nginx               "nginx -g 'daemon of…"   5 seconds ago       Up 3 seconds        0.0.0.0:8787->80/tcp    infallible_lederberg
+                        41f873a6d98f        nginx               "nginx -g 'daemon of…"   25 minutes ago      Up 23 minutes       0.0.0.0:32769->80/tcp   zealous_tu
+                        c2cd00f2580b        wordpress:latest    "docker-entrypoint.s…"   24 hours ago        Up 12 minutes       0.0.0.0:2000->80/tcp    wordpress_wordpress_1
+                        4261aa4711a4        mysql:5.7           "docker-entrypoint.s…"   24 hours ago        Up 12 minutes       3306/tcp, 33060/tcp     wordpress_db_1
+                        root@osboxes:/home/osboxes#
+
+                    - Now we can be able to access the nginx from the port "8787" using the host ip address (http://192.168.56.106:8787/)
+
+
+        - Veth Pair:
+
+            - Veth is a special, logical, virtual interface which is similar to a link pipe
+            - It has two ends, which are logical interfaces and provide connectivity across two different network elements
+
+    - Docker Network Types:
+
+        [ $ docker network --help ]
+
+        - Bridge:
+
+            - This is default Network driver if the driver is not being specified
+            - They are implemented on the containers which run on the same docker daemon host
+            - User define d custom bridge networks can also be created and are superior to default bridge network
+
+        - Host:
+
+            - Host Network driver are used when isolation of container network stack from the docker host is not required
+            - If a container is running on some port and Host Network is being used, then application will be available on the same port on host’s IP address
+            - It works only on Linux OS and not on Windows or Mac OS
+
+        - Overlay:
+
+            - Creates a distributed network and helps multiple docker daemons in communication
+            - Allows secure communication
+            - Helps docker swarm services to communicate
+            - Below is the command to create overlay network in Docker
+
+                $ docker network create -d overlay myoverlay
+
+        - Macvlan:
+
+            - Macvlan assign a Mac Address to a container which helps it to appear as a physical device on the network
+            - This type of network is used by legacy applications or applications which are supposed to be directly connected to physical network
+            - Macvlan networks can be isolated by using various physical network interfaces
+            - Below is the command to create macvlan network in Docker
+
+                docker network create -d macvlan mymacvlan
+
+        - None:
+
+            - It helps to disable all the networking stack on a container
+            - It is not available for swarm services
+            - "network --none" flag is used while starting the container to completely disable the networking stack
+
+
+==============================================================================================================================================================================================================================================
+Docker swarm (Works in Docker version 1.12 or later)
+==============================================================================================================================================================================================================================================
+
+    - Docker swarm is a service which allows users to create and manage a cluster of docker nodes and schedule containers
+    - Docker swarm is a cluster of machines all running docker which provides scalable and reliable platform to run many Containers
+    - Each node of a docker swarm is a docker daemon and all docker daemons interact using the docker APIs
+    - Docker daemon interacts with the operating system in order to create or manage docker containers
+    - Here, services can be deployed and accessed by nodes of same cluster
+    - With swarm, IT administrators and developers can establish and manage a cluster of docker nodes as a single virtual system
+    - A cluster of one or more docker engines called a Docker Swarm. A swarm consists of one or more nodes.
+
+    - Node: A node is nothing but a physical or virtual machine running Docker engine in it. There are two type of nodes:
+
+        1. Manager Nodes:
+
+            - Manager nodes handle cluster management tasks:
+
+                - Maintaining cluster state
+                - Scheduling services
+                - Serving swarm mode HTTP API endpoints
+
+            - Every swarm has at least one manager. Generally, the one which is initialized first
+            - Port 2377 is the default port
+            - Docker recommends a maximum number of Seven manager nodes for a swarm according to the organization’s high-availability requirements
+
+        2. Worker Nodes:
+
+            - Worker nodes are also instances of Docker Engine whose sole purpose is to execute containers.
+            - You can create a swarm of one manager node, but you cannot have a worker node without at least one manager node.
+            - By default, all managers are also workers.
+            - You can promote a worker node to be a manager by running "docker node promote"
+            - For example, you may want to promote a worker node when you take a manager node offline for maintenance.
+
+    - The role of manager nodes is to manage the cluster; you can execute Swarm management commands on manager nodes.
+    - The role of worker nodes is to run your containers that do the actual job (like running a web server).
+    - Docker swarm provides high availability of resources
+    - Swarm node has a back up folder. In case the main node fails, it can be used to restore the data onto a new swarm
+
+    - Features of Docker Swarm:
+
+        - Fully Decentralized : which means it makes easy for the teams to be able to access and manage the environment
+        - Highly Secure: The communication happens between the manager and client nodes within the Swarm is highly secured
+        - Auto Load Balancing:  You can expose the ports for services to an external load balancer. Internally, the swarm lets you specify how to distribute service containers between nodes.
+        - High Scalability:  For each service, you can declare the number of tasks you want to run. When you scale up or down, the swarm manager automatically adapts by adding or removing tasks to maintain the desired state.
+        - Roll-back a task: we can safely rollback to the previously stable environment if any disasters happen
+
+    - In Swarm containers are launched using services
+    - A service is a group of containers of the same image
+    - Services enable to scale your application
+    - Before you can deploy a service in docker swarm, you must at least one node deployed
+
+Working with Docker Swarm:
+
+    - Manager node knows the status of all the worker nodes in a cluster
+    - There is a two way communication happens between the master and worker
+    - Worker node accept tasks sent from manager node
+    - Every worker node has an agent , which reports on the state of the node's task to the manager
+    - The worker nodes communicate with the manager node using API over HTTP
+    - In docker swarm, services can be deployed and accessed by any node of same cluster
+    - While creating a service user has to specify which container image to use.
+
+    - Here a service is either global or replicated
+
+        - A global service will run on every Swarm node
+        - In a replicated service, the manager node distributes tasks to worker nodes
+        - Note: Agent task and service are not the same
+
+    - Service is the description of the task or the state , whereas a task does the actual work
+    - Docker enables a user to create services which can start tasks
+    - When a task is assigned to a node, the same task cannot be assigned to another node
+    - It is possible to have multiple manager nodes in a Docker swarm, but there will be only one primary manager node, which gets elected by the other Manager nodes
+
+    - Workflow:
+
+        - Manager node
+
+            1. API
+
+                - Based on the CLI command a service is created
+
+            2. Orchestration
+
+                - Creates task for each service
+
+            3. Task allocation
+
+                - Allocates IP address (of worker nodes) to tasks
+
+            4. Dispatcher and Scheduler
+
+                - Assigns and instructs worker nodes to run tasks
+
+        - Worker node
+
+            5. Checks for the task
+
+                - Connects to manager node and checks for new tasks
+
+            6. Executes the task
+
+                - Executes the task that are assigned by the manager node
+
+    Demonstration
+    -------------
+
+        - First get the IP address of the Master node (Ex: 192.168.56.106)
+        - Execute the below command to initialize the docker swarm
+
+            $ docker swarm init --advertise-addr <MASTER-NODE-IP-ADDRESS>
+
+        - The --advertise-addr flag configures the manager node to publish its address as 192.168.56.106
+        - The other nodes in the swarm must be able to access the manager at the IP address.
+
+        - Example:
+
+            root@master:/home/osboxes# docker swarm init --advertise-addr 192.168.56.106
+            Swarm initialized: current node (vfvcqxn1jx1vlwyf9pnx4zitt) is now a manager.
+
+            To add a worker to this swarm, run the following command:
+
+                docker swarm join --token SWMTKN-1-1y0u1l8pod8ly5kxfai601ndrtg6bxrjqhv8v0en2u5q1xxjwy-d03ciy0912sn1lxxogtdrlqd5 192.168.56.106:2377
+
+            To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+        - Once you’ve created a swarm with a manager node, you’re ready to add worker nodes.
+        - Copy the output command in the initialization step and rut it in the worker node (Worker node IP : 192.168.56.108)
+
+        - Here it is:
+
+            $ docker swarm join --token SWMTKN-1-1y0u1l8pod8ly5kxfai601ndrtg6bxrjqhv8v0en2u5q1xxjwy-d03ciy0912sn1lxxogtdrlqd5 192.168.56.106:2377
+
+            root@worker:/home/osboxes# docker swarm join --token SWMTKN-1-1y0u1l8pod8ly5kxfai601ndrtg6bxrjqhv8v0en2u5q1xxjwy-d03ciy0912sn1lxxogtdrlqd5 192.168.56.106:2377
+            This node joined a swarm as a worker.
+            root@worker:/home/osboxes#
+
+        - Like the way, we can add any number of worker nodes to the master node using the about output command
+
+        - Now, check the list of connected nodes to the master in the docker swarm using the below commands
+
+            $ docker node ls
+
+            root@master:/home/osboxes# docker node ls
+            ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+            vfvcqxn1jx1vlwyf9pnx4zitt *   master              Ready               Active              Leader              19.03.3
+            pwvcbrso8h128wmwf1i99qkjx     worker              Ready               Active                                  19.03.3
+            root@master:/home/osboxes#
+
+    Demo - 1: Create and Deploy Apache service over swarm
+
+        - Create a service using below command
+
+            $ docker service create –-name apache -–mode global -d -p 8000:80 httpd
+
+            - "docker service create" = "docker run"
+            - "--name apache" = Name of the Service
+            - "--mode global" = This is a service that should run either in global or replicated one
+            - "-d" = Detached mode
+            - "-p 8000:80" = Port forwarding
+            - "httpd" = Image name
+
+
+        - Check whether the service has been created or not check the no. of replicas.
+
+            $ Docker service ls
+
+        - Example:
+
+            - In Master node:
+
+                root@master:/home/osboxes# docker service create --name apache-test --mode global -d -p 8003:80 httpd
+                zivmnqkla68u6v3uqtzc89lwi
+
+                root@master:/home/osboxes# docker service ls
+                ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+                qwzauuun7qir        apache              global              2/2                 httpd:latest        *:8000->80/tcp
+                zivmnqkla68u        apache-test         global              2/2                 httpd:latest        *:8003->80/tcp
+
+                root@master:/home/osboxes#
+
+            - In worker node:
+
+                root@worker:/home/osboxes# docker images
+                REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+                httpd               <none>              19459a872194        4 weeks ago         154MB
+
+                root@worker:/home/osboxes# docker ps -a
+                CONTAINER ID        IMAGE               COMMAND              CREATED              STATUS              PORTS               NAMES
+                e57cf1f4172e        httpd:latest        "httpd-foreground"   About a minute ago   Up About a minute   80/tcp              apache-test.pwvcbrso8h128wmwf1i99qkjx.opjyl22sm12l7d9vz5ctjw8ro
+
+                root@worker:/home/osboxes#
+
+        - Now, Open the browser and access the server using the links:
+
+            - http://192.168.56.106:8000/ (From Master Node)
+            - http://192.168.56.108:8000/ (From Worker Node)
+
+            - Here the apache server can be accessible from both (Master and Worker) the nodes since there are containers with apache server are running entire the cluster
+
+    Demo - 2: Create and deploy a multi-tier application over swarm cluster.
+
+        - Create an overlay network
+
+            $ docker network create -d overlay myoverlay1
+
+        - Create a service webapp1 and use the network you have created to deploy this service over the swarm cluster.
+
+            $ docker service create --name webapp1 -d --network myoverlay1 -p 8020:80 hshar/webapp
+
+        - Check if the services are created by checking it with the below command
+
+            $ docker service ls
+
+        - Create a service mysql and use the network you have created to deploy the service over the swarm cluster.
+
+            $ docker service create --name mysql -d --network myoverlay1 -p 3306:3306 hshar/mysql:5.5
+
+        - Check which container is running on your master node and go inside the hshar/webapp container.
+
+            $ docker ps
+
+            $ docker exex -it container_id bash
+
+            $ nano var/www/html/index.php
+
+        - Change $servername from "db" to "mysql" and $password to "root" and save your index.php file by typing ctrl+x and then y to save and press enter.
+
+        - Go inside mysql container which is running on other node
+
+            $ docker exec -it container_id bash
+
+        - Use the below commands to use database in mysql
+
+            $ mysql -u root -proot
+
+            Note: If there is any access denied issue occurs, follow the below:
+
+                - Open & Edit /etc/mysql/my.cnf
+                - Add skip-grant-tables under [mysqld]
+                - Restart Mysql or Container
+
+        - Create a database and a table in mysql which will be used to get data from webapp
+
+            CREATE DATABASE docker;
+            USE docker;
+            CREATE TABLE emp (name VARCHAR(10), phone VARCHAR(11));
+
+        - Now exit the mysql and container as well
+
+        - Now go to your browser and enter the address as localhost:8020/index.php
+
+        - Enter the data and click on submit query.
+
+        - Now go to that node in which your mysql service is running. Go inside the container.
+
+            docker exec -it container_id bash
+
+            mysql -u root -pedureka
+
+            use docker;
+
+            show tables;
+
+        - Example:
+
+            - In Master Node:
+
+                root@master:/home/osboxes# docker network create -d overlay myoverlay1
+                oeoo7rg8ycywjw3s22onsktal
+
+                root@master:/home/osboxes#
+
+
+                root@master:/home/osboxes# docker service create --name webapp1 -d --network myoverlay1 -p 8020:80 hshar/webapp
+                f9ri0f6tri9vtb440k8vau492
+                root@master:/home/osboxes#
+
+                root@master:/home/osboxes# docker service ls
+                ID                  NAME                  MODE                REPLICAS            IMAGE                 PORTS
+                qwzauuun7qir        apache                global              2/2                 httpd:latest          *:8000->80/tcp
+                n5bmo62uvq3f        apache-replica-test   replicated          1/1                 httpd:latest          *:8005->80/tcp
+                zivmnqkla68u        apache-test           global              2/2                 httpd:latest          *:8003->80/tcp
+                f9ri0f6tri9v        webapp1               replicated          1/1                 hshar/webapp:latest   *:8020->80/tcp
+                root@master:/home/osboxes#
+
+                root@master:/home/osboxes# docker service create --name mysql -d --network myoverlay1 -p 3306:3306 hshar/mysql:5.5
+                3sifwhmguplu72defd37mwul7
+                root@master:/home/osboxes#
+
+                root@master:/home/osboxes# docker exec -it 3222bc4479af bash
+                root@3222bc4479af:/# nano var/www/html/index.php
+
+                root@master:/home/osboxes# docker ps -a
+                CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES
+                3222bc4479af        hshar/webapp:latest   "/bin/sh -c 'apachec…"   About an hour ago   Up About an hour    80/tcp              webapp1.1.caxz272acb3mf1pyhfqsuac75
+                8c949e6b967a        httpd:latest          "httpd-foreground"       3 hours ago         Up 3 hours          80/tcp              apache-test.vfvcqxn1jx1vlwyf9pnx4zitt.9pwou9uywejqle1p1dujdstmd
+                bb1352b107c9        httpd:latest          "httpd-foreground"       3 hours ago         Up 3 hours          80/tcp              apache.vfvcqxn1jx1vlwyf9pnx4zitt.bum7820ljftdf60pnki2kmumi
+                root@master:/home/osboxes#
+
+            - In Worker Node:
+
+                root@worker:/home/osboxes# docker ps -a
+                CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
+                23f752681f1f        hshar/mysql:5.5     "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes               3306/tcp            mysql.1.plksdc9vv8g3vgmd5zbfddqs4
+
+                root@23f752681f1f:/# mysql -u root -proot
+
+
+    - Scaling in Docker
+
+        - When a service is deployed over a swarm cluster, the number of containers in the service can be scaled
+        - Container that are running within a service are called tasks
+        - Below is the command which is used to scale a service
+
+            $ docker service scale service_id = <no. of
+
+    - Scaling of a service over a Docker swarm
+
+        - Check the services running with docker service ls command and then use the scale command to scale a service.
+
+            $ docker service ls
+
+            $ docker service scale mysql=2
+
+        - Now you can see the no. of running replicas.
+
+        - To get the full information regarding the images running on cluster, use the below commands.
+
+            $ docker service ps mysql
+
+        - Example:
+
+            root@master:/home/osboxes# docker service ls
+            ID                  NAME                MODE                REPLICAS            IMAGE                 PORTS
+            n315n9a1il03        mysql               replicated          1/1                 hshar/mysql:5.5       *:3306->3306/tcp
+            bu8a4lbmsivm        webapp1             replicated          1/1                 hshar/webapp:latest   *:8020->80/tcp
+
+            root@master:/home/osboxes# docker service scale mysql=2
+            mysql scaled to 2
+            overall progress: 2 out of 2 tasks
+            1/2: running   [==================================================>]
+            2/2: running   [==================================================>]
+            verify: Service converged
+
+            root@master:/home/osboxes# docker service ls
+            ID                  NAME                MODE                REPLICAS            IMAGE                 PORTS
+            n315n9a1il03        mysql               replicated          2/2                 hshar/mysql:5.5       *:3306->3306/tcp
+            bu8a4lbmsivm        webapp1             replicated          1/1                 hshar/webapp:latest   *:8020->80/tcp
+
+            root@master:/home/osboxes# docker service ps mysql
+            ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+            xth0ihdsg710        mysql.1             hshar/mysql:5.5     worker              Running             Running 2 hours ago
+            lzws1lx33z26         \_ mysql.1         hshar/mysql:5.5     worker              Shutdown            Complete 2 hours ago
+            q4gjp58s3060        mysql.2             hshar/mysql:5.5     master              Running             Running 27 seconds ago
+            root@master:/home/osboxes#
+
+
+==============================================================================================================================================================================================================================================
+
+Integrating Docker With Jenkins
+-------------------------------

@@ -1,0 +1,58 @@
+What is GitLab?
+
+	- Git is a tool and GilLab is a hosting service for GIT repositories
+
+Designed an automated monitoring system to monitor AWS resources
+
+	- Used CloudWatch to achieve this.
+	- We have 14 EC2 servers and configured different alarms based on different metrics in CloudWatch
+
+What is ORM?
+
+	- ORM stands for Object Relational Mapper
+	- It gives the application developers the full power and flexibility of SQL
+	- Ex: SQLAlchemy in Flask, DAL in Web2PY
+
+Explain about python modules like  requests, urllib, urllib2 and Differences between them?
+
+Requests
+
+	- Requests is a Python module that you can use to send all kinds of HTTP requests.
+	- For Ex:
+	import requests
+	req = requests.get('https://www.edureka.co/')
+
+Urllib
+
+	- Urllib module is the URL handling module for python. It is used to fetch URLs (Uniform Resource Locators).
+	-  It uses the urlopen function and is able to fetch URLs using a variety of different protocols.
+	- For Ex:
+	import urllib.request
+	request_url = urllib.request.urlopen('https://www.geeksforgeeks.org/')
+	print(request_url.read())
+
+Urllib2
+
+	- It defines functions and classes to help with URL actions (basic and digest authentication, redirections, cookies, etc)
+	- For Example
+	import urllib2
+	f = urllib2.urlopen('http://www.python.org/')
+	print f.read(100)
+
+Difference between requestsm urllib and urllib2:
+
+	- urllib and urllib2 are both Python modules that do URL request related stuff but offer different functionalities.
+
+	1) urllib2 can accept a Request object to set the headers for a URL request, urllib accepts only a URL.
+
+	2) urllib provides the urlencode method which is used for the generation of GET query strings, urllib2 doesn't have such a function. This is one of the reasons why urllib is often used along with urllib2.
+
+	3) Requests - Requests’ is a simple, easy-to-use HTTP library written in Python.
+
+What is web crawling?
+
+	- It is a program or automated script which browses the World Wide Web in a methodical, automated manner.
+
+What is data parsing and how Python can handle it?
+
+	-

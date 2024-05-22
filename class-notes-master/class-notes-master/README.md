@@ -1,0 +1,2 @@
+# class-notes
+Self preperation

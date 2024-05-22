@@ -1,0 +1,581 @@
+GIT
+---
+
+Git installation & configuration in Amazon Linux Machine
+
+ - Before proceeding with the process, first create git account by using the link:
+	
+			https://github.com/
+
+===========================================================================================
+
+Installation:
+
+# sudo yum install git -y
+
+Configuration:
+
+# ssh-keygen -t rsa -b 4096 -C “naveen.nb18@outlook.com”
+Note: Just press Enter button until it asks for anything
+
+# cat .ssh/id_rsa.pub
+Copy the output and put it in the github account>settings>SSH and GPG keys section
+
+# eval "$(ssh-agent -s)"
+
+# ssh-add -k ~/.ssh/id_rsa
+
+#  ssh -T git@github.com
+Warning: Permanently added the RSA host key for IP address '192.30.253.112' to the list of known hosts.
+Hi Naveennb18! You've successfully authenticated, but GitHub does not provide shell access.
+
+# git config --global user.name "Naveennb18"
+# git config --global user.email "naveen.nb18@outlook.com"
+
+Validation
+# git config --global user.name
+# git config --global user.email
+
+Install GIT-GUI
+
+ # sudo yum install git-gui -y
+
+
+Now Clone the repository using ssh to the directory wherever we need
+
+Note - Cloning should be happened only with "SSH" not with "HTTPS"
+
+
+********************************************************************************************************************************************
+
+What is Version Control?
+
+	- Version control is a system that documents changes made to a file or a set of files
+	- It allows multiple users to manage multiple revisions of the same unit of the information
+	- It is a snapshot of your project over time
+
+Why VCS?
+
+	- Versioning Capability
+	- Collaboration
+
+Types of VCS?
+
+	1. LVC - Local Version Control System
+		- The practice of having the Version database in the local computer
+		- Local Database keeps a record of the changes made to files in version database
+			- Issue -> Multiple people parallelly working on the same project
+			- Solution -> Centralized Version Control
+
+	2. CVC - Centralized Version Control System (SVN, TFS, Accurev, Perforce)
+		- A central repository is maintained where all the version files are kept
+		- New users can checkout and check-in files from different computers at any time
+			- Issue -> In case of central server failure, whole system goes down
+			- Solution -> Distributed Version Control System
+
+	3. DVC - Distributed Version Control System (GIT, Mercurial)
+		- Version database is stored at every user's local system and at remote server
+		- Users manipulate the local files and then upload the changes to the remote server
+		- If any of the server dies, a client server can be used to restore
+
+What is a GIT?
+	- Git is a open source distribution version control system which records changes made to the files laying emphasis on speed, data integrity and distributed, non-linear workflows 
+
+GIT workflow (Keywords)
+-----------------------
+
+Remote Repository 
+
+	- The remote repository is the server where all the collaborators upload changes made to the files
+
+Local Repository
+
+	- Is a user copy of the version database 
+	- The user access all the files through local repository and then push the change made to the "Remote Repository"
+
+Workspace
+
+	- "Workspace" is user's activity directory
+	- The user modifies existing files and creates new files in the space. Git track these changes compared to your local repository
+
+Staging
+
+	- Staging is a place where all the modified files marked to be committed are placed
+
+Clone
+
+	- Clone command creates a copy of an existing remote repository inside the local repository
+
+Commit 
+
+	- commit command commits all the files in the staging area to the local repository
+
+Push
+
+	- push command pushes all the changes made in the local repository to the remote repository
+
+Fetch
+
+	- Fetch command collect the changes made in the remote repository and copies them to the local repository. This command doesn't effect our workspace
+	- Operation to download the new data from remote repository to local but doesn’t merge them with the local data (Branches/files). 
+	- It acts same as git pull but no merge whereas "git pull = git fetch + git merge"
+
+Pull
+	
+	- pull command works like fetch, gets all the changes from the remote repository and copies them to local repository
+	- pull merges those changes to the current working directory
+
+HEAD
+
+	- Is a pointer which always points to the latest commit in the branch. Whenever you make a commit, HEAD is updated with latest commit
+
+Rebase
+
+	- which will merge another branch into the branch where you are currently working and move all the local commits that are ahead with of the rebased branch to the top of the history on that branch.
+	- It is an alternative to the merge command
+
+Cherry pick
+
+	- Applying the changes introduced by some existing commit. 
+	- A cherry pick will look at a previous commit in the repository’s history and apply the changes to the current working tree.
+
+Index
+	
+	- Is where you place files you want committed to the git repository. Also known  as cache, directory cache, current directory cache, staging area.
+
+==============================================================================================================================================================================================================
+
+GIT common commands 
+-------------------
+ 
+ Setting up an user 
+
+ 	git config --global user.name "user_name"
+ 	git config --global user.email "user_email"
+
+ create local repository
+
+ 	- Select or create the directory where you want to initialize the git
+ 	- Initialize the git in the directory
+
+ 		command : 	git init 
+
+ Adding files and checking status
+
+ 	- To add a file to the staging area
+
+ 		git add <file_name>
+
+ 	- To check the working tree status
+
+ 		git status
+
+ committing changes
+
+ 	- To commit the staged files to your local repository
+
+ 		git commit -m "first commit"
+
+Tracking changes
+
+	- To display all the changes made to the tracked files 
+
+		git diff
+
+Staging and committing multiple files
+
+	- To change and commit multiple files at once, we use flag "-a" with the commit command
+
+		git commit -a -m "message"
+
+	- Commit with "a" flag automatically stages all the modified files and commits changes to the local repository
+
+Removing Files from repository
+
+	- The "git rm" command deletes the file from git repository as well as user system
+
+		git rm <file_name>
+
+	- To remove the file from git repository but not from the system, we use "--cached" option
+
+		git rm --cached <file_name>
+
+	- To force remove a staged file, use "-f" flag
+
+		git rm -f <file_name>
+
+Git Log
+
+	- The "git log" command shows all the commits so far on the current branch
+
+		git log
+
+Git Amend
+
+	- When you made a mistake in the last commit message, you can change it using "--amend" option
+
+		git commit --amend 
+
+Commit Tags
+
+	- If you want to access a particular commit, you can use commit tags as aliases and keep the track of different commits
+	- Commit tags provide an aliases for commitID
+
+		Syntax :	git tag -a <annotation> -m <message>
+		Example:	git tag -a v1.0 -m "Version 1.0"
+
+	- You can also view all the tags you have created using the command 	
+
+		git tag  
+
+	- Adding a tag to one of the previous commits
+
+		Syntax : 	git tag -a <annotation> <commit id> -m <message> 
+
+			Note : Commit id can be obtained from git logs
+
+		Example:	git tag -a v1.0 0b691fc1cf0a979795f2237b4ff779752c30070f -m "Added tag to one of the commits to Test Tags command"
+
+	- All these tags can be viewed in git
+
+		Syntax : 	git show <tag_name>
+		Example: 	git show v1.0
+
+Working with remote repository
+-------------------------------
+
+	- Mostly the users work on a local repository. But in order to collaborate with other people, we use a remote repository. 
+	- A remote repository is place where the users upload and share their commits with other collaborators.
+
+Adding remote to local 
+
+	- To add remote repository to local use "git remote add " followed by remote link
+
+		Syntax : 	git remote add origin <remote_link>
+		Example: 	git remote add origin git@github.com:Naveennb18/DemoRepo.git
+
+Push local repository to remote
+
+	- To push local repository to remote use "push" command
+
+		git push origin master
+
+Pushing Tags
+
+	- Tags can be pushed, viewed and shared on remote repository
+
+		git push origin --tags
+
+Remote List
+
+	- To list all the remotes attached to your local repository 
+
+		git remote -V
+
+Fetch
+
+	- Fetch command copies the changes from remote to local repository
+
+		git fetch
+
+	- Fetch doesn't effect the present working directory
+
+pull
+
+	- Pull copies all the changes from remote repository to local repository
+	- It then merges the changes with the present working directory
+
+		git pull origin
+
+==============================================================================================================================================================================================================================
+
+GIT Branching and Merging
+--------------------------
+
+Create branch 
+
+	- To create a new branch
+
+		git branch <branch_name> 
+	
+	- To create and switch to that branch 
+
+		git checkout -b <branch_name>
+
+	- To push the created branch from local to remote repository, 
+
+		1. you need to set upstream first as follows
+
+			git branch --set-upstream-to=origin<branch_name> test_branch
+
+		2. Take a pull to the newly created branch
+
+			git pull
+
+		3. Push branch from local to remote repository
+
+			git push origin HEAD
+
+Delete branch
+
+	- To delete a local branch 
+
+		git branch -D <branch_name>
+
+	- To delete a remote branch 
+
+		git push origin --delete <branch_name>
+
+	- Deleting a local remote-tracking branch:
+
+		git branch --delete --remotes <remote>/<branch>
+		git branch -dr <remote>/<branch> # Shorter
+
+		git fetch <remote> --prune # Delete multiple obsolete tracking branches
+		git fetch <remote> -p      # Shorter
+
+List branches
+
+	_ To list out all the branches 
+
+		git branch
+
+Rename branch
+
+	1. Rename your local branch
+
+		- If you are on the branch you want to rename:
+
+			git branch -m <new-name>
+
+		- If you are on a different branch:
+
+			git branch -m old-name new-name
+
+	2. Delete the old-name remote branch and push the new-name local branch.
+
+		git push origin :old-name new-name
+
+	3. Reset the upstream branch for the new-name local branch.
+
+		- Switch to the branch and then:
+
+			git push origin -u new-name
+
+		- Or you as a fast way to do that, you can use these 3 steps: command in your terminal
+
+			git branch -m old_branch new_branch         # Rename branch locally    
+
+			git push origin :old_branch                 # Delete the old branch    
+
+			git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
+
+
+Git Merging
+
+	- Merging integrates the changes made in different branches into one single branch
+
+		Syntax : git merge <branch name that needs to be merged>
+
+		Example : 
+
+			git checkout master
+
+			git merge develop - Here all changes in the "develop" branch will get merged into the "master" branch
+
+
+	Merge Conflicts
+
+		- Merge conflicts arise when two files having the same content modified are merged
+		- Merge conflicts can occur on merging branches or when merging forked history together
+
+	Resolving Merge Conflicts
+
+		- Merge Conflicts are resolved manually by users
+		- Git provides different Merge Tools to compare and choose the required changes
+		- User can also use third party Merge Tools with Git
+
+
+Git Rebasing
+------------
+
+	- Git rebasing is used, when changes made in one branch needs to be reflected in another branch
+	- The rebase command integrates changes from one branch into another. 
+	- It is an alternative to the better known "merge" command. 
+	- Most visibly, rebase differs from merge by rewriting the commit history in order to produce a straight, linear succession of commits.
+	- It helps keep your git history cleaner and more understandable.
+
+		Syntax : git rebase <rebase-branch-name>
+		
+		Example : 	git checkout feature_branch
+					git rebase master 
+
+						- This moves the entire feature branch to begin on the tip of the master branch, effectively incorporating all of the new commits in master.
+						-  But, instead of using a merge commit, rebasing re-writes the project history by creating brand new commits for each commit in the original branch.
+
+	When to rebase? When to Merge?
+
+		- If the feature branch you are getting changes from is shared with other developers, rebasing is not recommended, because the rebasing process will create inconsistent repositories. 
+		- If you want to see the history completely same as it happened, you should use merge. Merge preserves history whereas rebase rewrites it.
+
+		- Note: It's not recommend to use rebase command to the public branches that are downloaded from the repository
+
+Git Revert
+----------
+
+	- Revert or undo the changes made in the previous commit
+	- New commit is created without the changes made in the other commit
+
+		Syntax :	git revert <commit-id>
+
+		Example:	git revert 	0e7c595 - Reverts the changes whatever done in the commit with id "0e7c595"
+
+					git revert HEAD 	- To revert last commit
+
+					git revert HEAD~3	- To revert 3 commits back
+
+	- Note : Old commit still resides in the history
+
+GIT reset
+----------
+
+	- Reset command can be used to undo changes at different levels
+	- The git reset command is a complex and versatile tool for undoing changes. 
+	- It has three primary forms of invocation. 
+	- These forms correspond to command line arguments --soft, --mixed, --hard. 
+
+		1. --hard :  	Moves HEAD and updates the index and working directory—this is the only version of reset that can cause data loss.
+
+		2. --soft : 	Only changes HEAD, but doesn’t change staged files in index or working files.
+
+		3. --mixed:		Moves HEAD and updates the index with the contents of the revision to which HEAD now points. 
+
+	Syntax : 	git reset <modifier> <commit-id>
+
+	example:	git reset --hard 0e7c595
+
+				git reset HEAD~5 - Resets all the changes that are done from last 5 commits	
+
+
+
+
+
+
+=====================================================================================================================================================================================================
+
+Gitignore File
+--------------
+
+	- The ".gitignore" file is a text file that tells Git which files or folders to ignore in a project.
+	- A local ".gitignore" file is usually placed in the root directory of a project. 
+	- You can also create a global ".gitignore" file and any entries in that file will be ignored in all of your Git repositories.
+	- To create a local .gitignore file, create a text file and name it .gitignore (remember to include the . at the beginning). 
+	- Then edit this file as needed. Each new line should list an additional file or folder that you want Git to ignore.
+	- The entries in this file can also follow a matching pattern.
+
+			* is used as a wild card match
+			/ is used to ignore pathnames relative to the .gitignore file
+			# is used to add comments to a .gitignore file
+
+	- Example:
+
+		# Ignore Mac system files
+		.DS_store
+
+		# Ignore node_modules folder
+		node_modules
+
+		# Ignore all text files
+		*.txt
+
+		# Ignore files related to API keys
+		.env
+
+		# Ignore SASS config files
+		.sass-cache 
+
+	- .git/info/exclude --> this works locally
+
+	- ~.gitignore --> will work in all the developer machines
+
+Git Stashing
+------------
+
+	- Git Stashing is a way of creating a checkpoint for non committed changes. 
+	- It saves all the changes to a temporary location so that user can perform other tasks such as switching branches, reverting etc. 
+	- These changes can then be reapplied anywhere. 
+
+		•	If you want to switch branches, but don’t want to commit what you’ve been working on yet; so, you’ll stash the changes. To push a new stash onto your stack, run "git stash"
+		•	At this point, you can easily switch branches and do work elsewhere; your changes are stored on your stack. To see which stashes you’ve stored, you can use "git stash list"
+		•	You can reapply the one you just stashed by using the command "git stash apply"
+		•	If you want to apply one of the older stashes, you can specify it by naming it, like this: "git stash apply stash@{2}"
+		•	If you don’t specify a stash, Git assumes the most recent stash and tries to apply it
+		•	The apply option only tries to apply the stashed work — you continue to have it on your stack. To remove it, you can run "git stash" drop with the name of the stash to remove
+		•	You can also run "git stash pop" to apply the stash and then immediately drop it from your stack.
+
+
+
+Cherry Picking
+--------------
+
+	- When you are working with a team of developers on a medium to large sized project, managing the changes between a number of git branches can become a complex task. 
+	- Sometimes you don't want to merge a whole branch into another, and only need to pick one or two specific commits. This process is called 'cherry picking'
+	- Let’s say you are working in an project where you are making changes in a branch called “new-features”. You have already made a few commits but want to move just one of them into the “master” branch.
+	- From new-features branch run "git log --oneline"  to get a better log of your commits history. Note that the commit hash is what we need to start the cherry picking. 
+	- For example:
+
+		> osboxes@osboxes:~/Desktop/Edureka/GIT/DemoRepo/.git/info$ git log --oneline
+
+			6710595 (HEAD -> develop) Donot cherry pick this commit
+			0e7c595 This commit is for cherry pick test
+			e9f6cd2 Second Commit
+			10d5454 first commit
+
+	- Checkout the branch where you want to cherry pick the specific commits. In this case master branch:
+
+		git checkout master
+
+	- Now we can cherry pick from new-features branch
+
+		syntax: 	git cherry-pick <commit-id>
+		example: 	git cherry-pick 0e7c595
+
+		- This will cherry pick the commit with hash d467740 and add it as a new commit on the master branch. Note: it will have a new (and different) commit ID in the master branch.
+
+	- If you want to cherry pick more than one commit in one go, you can add their commit IDs separated by a space:
+
+		git cherry-pick 0e7c595 6710595 e9f6cd2
+
+	- If the cherry picking gets halted because of conflicts, resolve them and
+
+		git cherry-pick --continue
+
+	- If you want to bail of this step out altogether, just type:
+
+		git cherry-pick --abort
+
+	- After all this is done, you can simply push the new commits to the upstream repository (e.g origin)
+
+	- In case you needed to cherry pick a merge instead of a commit, you can use:
+
+		git cherry-pick -m 1 <hash>
+
+
+Git Prune
+---------
+	
+	- Prune means "cut off branches from a tree" in generic
+	- The git prune command is an internal housekeeping utility that cleans up unreachable or "orphaned" Git objects. 
+	- Unreachable objects are those that are inaccessible by any refs. 
+	- Any commit that cannot be accessed through a branch or tag is considered unreachable. 
+	- "git prune" is generally not executed directly. Prune is considered a garbage collection command and is a child command of the "git gc" command.
+
+	Syntax : git prune
+
+	example: 
+
+		git remote prune  - To delete the refs to the branches that don't exist on the remote
+		git fetch --prune - connects to the remote and fetches its current branches before pruning.
+
+===================================================================================================================================================================================================================================
+

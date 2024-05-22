@@ -1,0 +1,26 @@
+CI/CD Process of current project
+================================
+
+Build phase:
+
+    - configured source code repository in the GitHub
+
+    - once the commit happens, a Jenkins job will gets triggered Automatically
+
+    - An artifact or war file will gets generated and will be uploaded to S3 bucket (Post Build action)
+
+Deploy Phase:
+
+    - CF template to create Linux machines and other infrastructure services
+
+    - we have our own dedicated Linux AMIs along with Docker
+
+    - Once the EC2 instances gets started, The build files will get extracted in the Instances
+
+    - A docker file will be available in the build files and it gets executed during deployment job
+
+    - Here all the files will get copied to the respective containers and required web/application servers will be installed
+
+        - Install basic applications stuff
+
+    -

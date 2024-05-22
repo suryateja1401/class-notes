@@ -1,0 +1,53 @@
+Tomcat-Installation
+-------------------
+
+UBUNTU
+-------
+
+	Download & Install
+
+		cd /opt/
+
+		sudo wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.21/bin/apache-tomcat-9.0.21.tar.gz
+
+		sudo tar xvzf apache-tomcat-9.0.21.tar.gz
+
+		sudo mv apache-tomcat-9.0.21 tomcat
+
+	Configuration
+
+		open the context files from the below path and modify as follows: (|.*	)
+
+		- vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
+
+		The file should look like this now - "allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|.*"
+
+		- vi /opt/tomcat/webapps/manager/META-INF/context.xml
+		The file should look like this now - "allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|.*"
+
+	Set-Up Users
+
+		vi /tomcat/conf/tomcat-users.xml
+
+		Add the folloing lines at the end 
+
+		<role rolename="admin-gui"/>
+		<role rolename="manager-gui"/>
+		<role rolename="manager-script"/>
+		<user username="tomcat" password="redhat@123" roles="admin-gui,manager-gui,manager-script"/>
+
+
+ 	Start the tomcat server
+ 
+		 cd /tomcat/bin/
+		 ./startup.sh
+		 
+		To restart the server, the command is:
+
+			1. ./shutdown.sh
+			2. ./startup.sh
+		 
+		goto the browser and access the application using public ip - http://<your public ip address>:8080/
+
+		Note : Set custom TCP Rule for 8080 in security groups in AWS (In case of AWS machine)
+		 

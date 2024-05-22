@@ -1,0 +1,974 @@
+=============================
+PUPPET
+=============================
+
+Configuration Management
+-------------------------
+
+    - Configuration management is the process of maintaining software and computer systems (example servers, storage, networks) in a known, desired and consistent state.
+    - It also allows access to an accurate historical record of system state for project management and audit purposes.
+    - System Administrators mostly perform repetitive tasks like installing servers, configuring those servers, etc.,
+    - These professionals can automate this task, by writing scripts.
+    - However, it is a difficult job when they are working on a massive infrastructure.
+    - The Configuration Management tool like a Puppet was introduced to resolve such issues.
+
+=========================================================================================
+        Traditional Languages       Puppet          Ansible             Chef            =
+                                                                                        =
+        Packages                    Modules	        Roles               Cookbooks       =
+        Code Files (.java, .py)     Manifests(.pp)	Playbooks(.yaml)	Recipes(.rb)    =
+        Functions	                Resources	    Modules             Resources       =
+        Supported OS                Only Linux      Any OS              Only linux      =
+=========================================================================================
+
+Puppet
+------
+
+    - Puppet is an open source DevOps systems management tool for centralizing and automating the configuration management process.
+    - It is used to configure, manage, deploy, and orchestrate various applications and services across the whole infrastructure of an organization.
+    - Puppet is specially designed to manage the configuration of Linux and Windows systems.
+    - It is written in Ruby and uses its unique Domain Specific Language (DSL) to describe system configuration.
+
+    - Puppet Versions:
+
+        - Puppet comes in two versions:
+
+            1. Open Source Puppet:
+
+                - It is a basic version of Puppet configuration management tool, which is also known as Open Source Puppet.
+                - It is available directly from Puppet's website and is licensed under the Apache 2.0 system.
+
+            2. Puppet Enterprise:
+
+                - Commercial version that offers features like compliance reporting, orchestration, role-based access control, GUI, API and command line tools for effective management of nodes.
+
+What Puppet can do?
+
+    - Example:
+
+        - You have an infrastructure with about 100 servers. As a system admin, it's your role to ensure that all these servers are always up to date and running with full functionality.
+        - To do this, you can use Puppet, which allows you to write a simple code which can be deployed automatically on these servers.
+        - This reduces the human effort and makes the development process fast and effective.
+
+    - Puppet performs the following functions:
+
+        - Puppet allows you to define distinct configurations for every host.
+        - The tool allows you to continuously monitor servers to confirm whether the required configuration exists or not and it is not altered
+        - If the config is changed, Puppet tool will revert to the pre-defined configuration on the host.
+        - It also provides control over all the configured system, so a centralized change gets automatically effected.
+        - It is also used as a deployment tool as it automatically deploys software to the system.
+        - It implements the infrastructure as a code because policies and configurations are written as code.
+
+Why Puppet?
+
+    - Provisioning:
+
+        - Easy deployment of application on large number of servers
+        - Resources and their configurations can be defined at node level
+
+    - Consistent:
+
+        - Maintains consistency across nodes which means if any change is done locally, it is rolled back to the original configuration
+
+    - Ecosystem:
+
+        - Puppet provides the suitable ecosystem to support and meet the needs of any company irrespective of its size
+
+    - Scalable:
+
+        - Scaling across multiple teams and thousands of resources is easily done
+
+Puppet DSL and Programming Paradigms:
+
+    - Before we learn Puppet DSL, let's understand programming paradigms:
+
+        - A programming paradigm is a style you are using in computer programming
+        - Four types of paradigms are:
+
+            - Imperative
+            - Declarative
+            - Functional (which is considered a subset of that declarative paradigm)
+            - Object-oriented
+
+        - We will focus on Imperative and Declarative.
+
+        - Imperative:
+
+            - This programming paradigm expresses the logic of a computation(What to do) and describes its control flow(How to do)
+            - Example:
+
+                - Assume you are going to your office, you book a cab and start giving step by step directions to the driver until you reach the office.
+                - Specifying what to do and how to do is an imperative style.
+
+        - Declarative:
+
+            - This programming paradigm expresses the logic of a computation(What to do) without describing its control flow(How to do)
+            - Example:
+
+                - Assume you are going to your office, you book Uber cab and specify the final destination (Office).
+                - Specifying what to do not how to do is a declarative style.
+
+        - Puppet uses a declarative programming paradigm approach
+        - Example:
+
+            - Create a user on the system
+            - It can be done using Imperative programming pattern by a shell script:
+
+                - Here we specify how to create the user and what commands to use on the operating system
+
+                    #!/bin/sh
+                    for i in `more userlist.txt `
+                    do
+                    echo $i
+                    echo $i | change -d 0 "$i"
+                    echo; echo "User $i will be forced to change password on next login!"
+                    done
+
+                - However, it can be done using Declarative programming pattern with only a few lines of puppet code, Puppet domain specific language (DSL), and still achieve the same result.
+
+                    user {
+                    "puppetuser": ensure => "present"
+                    }
+
+Deployment models of configuration management tools:
+
+    - There are two deployment models for configuration management tools:
+
+        1. Push-based deployment model: Initiated by a master node
+
+            - In this deployment model master server pushes the configurations and software to the individual agents.
+            - After verifying a secure connection, the master runs commands remotely on the agents.
+            - For example, Ansible and Salt Stack
+
+        2. Pull-based deployment model: Initiated by agents
+
+            - In this deployment model, individual servers contact a master server, verify and establish a secure connection, download their configurations and software and then configure themselves accordingly
+            - For example, Puppet and Chef
+
+How Puppet Works?
+
+    - Puppet is based on a Pull deployment model, where the agent nodes check in regularly after every 1800 seconds with the master node to see if anything needs to be updated in the agent.
+    - If anything needs to be updated the agent pulls the necessary puppet codes from the master and performs required actions.
+    - Example:
+
+        - The Master:
+
+            - A Linux based machine with Puppet master software installed on it.
+            - It is responsible for maintaining configurations in the form of puppet codes.
+            - The master node can only be Linux.
+            - It applies the configuration to nodes using the Puppet agent.
+
+        - The Agents:
+
+            - Puppet Agents are the actual working machines which are managed by the Puppet master
+            - They have the Puppet agent daemon service running inside them.
+            - The target machines managed by a puppet with the puppet agent software installed on them.
+            - The agent can be configured on any supported operating system such as Linux or Windows or Solaris or Mac OS.
+            - The communication between master and agent is established through secure certificates.
+
+        - Communication between the master and agent:
+
+            Step-1: (Agent Sends Facts to Master)
+
+                - Once the connectivity is established between the agent and the master, the Puppet agent sends the data about its state to the Puppet master server.
+                - These are called Facts: This information includes the hostname, kernel details, IP address, file name details, etc.…
+
+            Step-2: (Master sends a catalog to Agent)
+
+                - Puppet Master uses this data and compiles a list with the configuration to be applied to the agent.
+                - This list of configuration to be performed on an agent is known as a "catalog".
+                - This could be changed such as package installation, upgrades or removals, File System creation, user creation or deletion, server reboot, IP configuration changes, etc.
+
+            Step-3: (Agent applies configuration)
+
+                - The agent uses this list of configuration to apply any required configuration changes on the node.
+                - In case there are no drifts in the configuration, Agent does not perform any configuration changes and leaves the node to run with the same configuration.
+
+            Step-4: (Agents report back to master)
+
+                - Once it is done the node reports back to puppet master indicating that the configuration has been applied and completed.
+
+Keywords:
+---------
+
+    Facts:
+
+        - Facts are the details related to the node or the master machine, which are basically used for analyzing the current status of any node.
+        - On the basis of facts, changes are done on any target machine.
+        - There are pre-defined and custom facts in Puppet.
+
+    Catalog:
+
+        - All the manifest files or configuration which are written in Puppet are first converted to a compiled format called catalog and later those catalogs are applied on the target machine.
+
+    Config Repository:
+
+        - This is the repo where all nodes and server-related configurations are saved and pulled when required.
+
+========================================================================================================================================================================================================================================================
+
+Installation
+============
+
+    - Pre-requisites:
+
+        - Master and Agent nodes should be connected and communicating
+        - Every command should run as root
+        - Setup ntp in master as well as hosts as follows:
+
+            $ sudo apt install -y ntp ntpdate
+            $ sudo ntpdate -u 0.ubuntu.pool.ntp.org
+            $ sudo timedatectl set-timezone Asia/Kolkata
+            $ sudo systemctl enable ntp
+            $ sudo systemctl restart ntp
+
+    - Setting up hosts:
+
+        - Change the host name if need using the below command:
+
+            $ hostnamectl set-hostname <new-name>
+
+        - Example:
+
+            $ hostnamectl set-hostname puppet-master
+
+            $ hostnamectl set-hostname puppet-agent-1
+
+        - Add the Puppet Server IP to all the server, naming it "puppet"
+
+            $ nano /etc/hosts
+
+        - Also add the IP address of the agent itself naming it "puppet-agent"
+
+        - Example:
+
+            root@osboxes:/home/osboxes# cat /etc/hosts
+            127.0.0.1       localhost
+            127.0.1.1       puppet-master
+
+            192.168.56.110  puppet
+            192.168.56.106  puppet-agent
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    - Puppet Server Setup:
+
+        - Puppet Server manages all the agent nodes and is responsible for pushing configurations to them
+        - It is only installed on the master machine
+        - Download the puppet package for ubuntu using
+
+            $ wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+            $ dpkg -i puppet-release-bionic.deb
+            $ apt update
+            $ apt install puppetserver
+
+        - Configure memory allocation: (If Required)
+
+            $ sudo nano /etc/default/puppetserver
+
+            JAVA_ARGS="-Xms3g -Xmx3g -XX:MaxPermSize=256m"
+
+        - Open the firewall
+
+            $ sudo ufw allow 8140
+
+        - Start Puppet server
+
+            $ sudo systemctl start puppetserver
+
+            $ sudo systemctl status puppetserver
+
+            $ sudo systemctl enable puppetserver
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+    - Puppet Agent Setup:
+
+        - Download and install the Puppet Package similar to the way in Puppet Server Setup
+
+            $ wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+            $ dpkg -i puppet-release-bionic.deb
+            $ apt update
+            $ apt install puppet-agent
+
+        - Open the firewall
+
+            $ sudo ufw allow 8140
+
+        - Start Puppet agent
+
+            $ sudo systemctl start puppet
+
+            $ sudo systemctl enable puppet
+
+            $ sudo systemctl status puppet
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    - Signing Certificates on Puppet Master:
+
+        - Running the puppet service on a Puppet Agent generates and sends a "certificate" signing request to the Puppet Server
+        - The Master Node must sign the certificates in order to configure the Agent Nodes
+        - To show the all the Unsigned Certificates on Puppet Server use cert list command
+
+            $ sudo /opt/puppetlabs/bin/puppetserver ca list
+
+        - There should be one request for each host you set up, that looks something like the following:
+
+            - Output:
+
+                "node1"  (SHA256) 46:19:79:3F:70:19:0A:FB:DA:3D:C8:74:47:EF:C8:B0:05:8A:06:50:2B:40:B3:B9:26:35:F6:96:17:85:5E:7C
+                "node2" (SHA256) 9D:49:DE:46:1C:0F:40:19:9B:55:FC:97:69:E9:2B:C4:93:D8:A6:3C:B8:AB:CB:DD:E6:F5:A0:9C:37:C8:66:A0
+
+    - Sign requests:
+
+        - Certificates can be signed individually using sign command with the Agent Name
+
+        - Syntax:
+
+            $ sudo /opt/puppetlabs/bin/puppetserver ca sign --certname <node-name>
+
+        - Example:
+
+            $ sudo /opt/puppetlabs/bin/puppetserver ca sign --certname node1
+
+        - We’ll use the --all option to sign the remaining certificate:
+
+            $ sudo /opt/puppetlabs/bin/puppet cert sign --all
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    - Verifying the Installation:
+
+        - List out all the signed node Certificates
+
+            root@puppet-master:/tmp# sudo /opt/puppetlabs/bin/puppetserver ca list --all
+            Signed Certificates:
+                puppet-master    (SHA256)  BB:96:B1:D1:34:CC:E9:D2:E5:0C:62:7C:D5:14:B6:DF:AB:58:B8:EE:78:62:B1:4F:E3:CC:9E:C2:EF:09:B6:70  alt names: ["DNS:puppet", "DNS:puppet-master"]
+                puppet-agent-1   (SHA256)  F6:36:46:72:C5:D0:D1:1B:10:A4:9B:EA:AD:88:80:5B:8F:EE:95:95:10:48:67:94:2F:24:58:F1:05:BD:E4:58
+
+            root@puppet-master:/tmp#
+
+        - On master:
+
+            root@osboxes:/home/osboxes# sudo /opt/puppetlabs/bin/puppet agent --test
+            Info: Using configured environment 'production'
+            Info: Retrieving pluginfacts
+            Info: Retrieving plugin
+            Info: Caching catalog for osboxes
+            Info: Applying configuration version '1571986437'
+            Notice: Applied catalog in 0.05 seconds
+
+            root@osboxes:/home/osboxes#
+
+        - On Node:
+
+            root@puppet-agent-1:/tmp# /opt/puppetlabs/bin/puppet agent -t
+            Info: Using configured environment 'production'
+            Info: Retrieving pluginfacts
+            Info: Retrieving plugin
+            Info: Retrieving locales
+            Info: Caching catalog for puppet-agent-1
+            Info: Applying configuration version '1572100372'
+            Notice: Applied catalog in 0.03 seconds
+            root@puppet-agent-1:/tmp#
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Set Puppet Path:
+
+    - Follow the below steps:
+
+        $ vim ~/.bash_profile
+
+        - Add the below line and save it
+
+        export PATH=/opt/puppetlabs/bin:$PATH
+
+        $ source ~/.bash_profile
+
+        $ puppet --version
+====================================================================================================================================================================================================================================================
+
+Puppet Blocks:
+--------------
+
+    - Puppet provides the flexibility to integrate Reports with third-party tools using Puppet APIs.
+    - Four types of Puppet building blocks are:
+
+        1. Resources
+        2. Classes
+        3. Manifest
+        4. Modules
+
+===========================
+    - Puppet Resources:
+===========================
+
+        - Resources describe the state of the system
+        - Resources are the inbuilt functions that run at the back end to perform the required operations in puppet.
+        - In general, a system consists of files, users, services, processes, packages, etc.., These are called "Resources" in puppet
+        - Resources are the fundamental building blocks in Puppet
+        - All the operations on puppet agents are performed with the help of puppet resources.
+        - Puppet resources are the readymade tools that are used to perform various tasks and operations on any supported platform.
+        - We can use a single puppet resource to perform a specific task, or we can use multiple puppet resources together to perform some complex application configurations deployments.
+
+        - Example: 1
+
+            node default{ package {
+            "git":
+                ensure => "present"
+            }
+
+            }
+
+            - Here, "package" is a resource, "git" is a resource-title and "ensure" is an attribute
+            - Every resource has a set of attributes and every attribute has a set of values. Here, the value is "present"
+            - Attributes provide description that Puppet uses to manage resource
+
+        - Example: 2
+
+            node default { user {"Naveen":
+                            ensure => "present",
+                            password => "12345"
+            }
+            }
+
+            - Here, "user" is a resource and "Naveen" is a resource-title
+
+        - Resources can have different types. Puppet uses resources and resource types in order to describe a system's configuration.
+        - There are three kinds of resource types:
+
+            1. Puppet core or built-in resource types:
+
+                - Core or built-in resource types are the pre-built puppet resource types shipped with puppet software.
+                - All of the core or built-in Puppet resource types are written and maintained by Puppet team.
+
+            2. Puppet defined resource types:
+
+                - Defined resource types are lightweight resource types written in Puppet declarative language using a combination of existing resource types.
+
+            3. Puppet custom resource types:
+
+                - Custom resource types are completely customized resource types written in Ruby.
+
+        - In the terminal, type the following command to display a list of available inbuilt puppet resource types:
+
+            $ puppet resource --types
+
+        - To find out all the attributes associated with the puppet resource type, use the following command:
+
+            $ puppet describe <resource type name>
+
+===========================
+    - Puppet Classes:
+===========================
+
+        - A combination of different resources can be grouped together into a single unit called class.
+        - Puppet introduced classes to make the structure re-usable and organized.
+        - Classes are defined inside of Puppet Manifests
+        - Classes are not applied unless invoked by name
+        - Classes can be parameterized and parameters can be passed through variables
+
+        - Syntax:
+
+                class <class-name> {
+                <Resource declarations>
+                }
+
+        - classes must be unique and can be declared only once with the same name
+
+        - Example:
+
+                class ntpconfig {
+                    file {
+                        "/etc/ntp.conf":
+                     ensure=> "present", content=> "server 0.centos.pool.ntp.org iburst\n",
+                    }
+                }
+
+        - Class variables
+
+            - Variables are actually constants in Puppet and can not be reassigned once defined
+            - The default data type of variables in Puppet is any but can be changed and be definite such as String or Numbers
+            - Dollar($) symbol is used to define a variable name
+
+            - Example:
+
+                Class one{
+                    $cont = "value"
+                    file {‘/home/filename.txt':
+                    ensure => present,
+                    content => $cont,
+                    owner => "Naveen",
+                    ...
+                    }
+                    }
+
+        - Class Parameters:
+
+            - To use external data in a class, parameters are used
+            - It is used when class needs to configure itself with data other than the one gathered from facts
+            - Parameters can be used as variables, but:
+
+                - Can’t be set with assignment statement
+                - Can not look up from top or node scope
+
+            - Example:
+
+                class base::linux (String $user = "root") {
+                file { "etc/passwd":
+                owner: "root",
+                group: "root",
+                mode: "0644",
+                .....
+                }
+                }
+
+                - Parameters are declared along with the class declaration
+                - From the above example it is "(String $user = "root")"
+
+        - Class Declaration:
+
+            - From the above example, the code that we have written will never get executed unless we declare this class elsewhere.
+            - To use a defined class in code, use the include keyword.
+
+            - Example: demontp.pp
+
+                class ntpconfig {
+                file {
+                    "/etc/ntp.conf":
+                  ensure=> "present",
+                  content=> "server 0.centos.pool.ntp.org iburst\n",
+                }
+                }
+                include ntpconfig
+
+            - check whether the code has any syntax errors. Execute the following command:
+
+                $ puppet parser validate demontp.pp
+
+===========================
+    - Puppet Manifests:
+============================
+
+        - Manifest is a directory containing puppet DSL files (Ex: /etc/puppetlabs/code/environments/production/manifests)
+        - Manifests are puppet programs which are composed of puppet code
+        - Those files have a .pp extension. The .pp extension stands for puppet program.
+        - Manifests contain collection of resource declarations that are executed on a node
+        - The puppet code consists of definitions or declarations of Puppet Classes.
+
+        - Manifest file workflow:
+
+            - Puppet manifest consists of the following components:
+
+                - Files (these are plain files where Puppet has nothing to do with them, just to pick them up and place them in the target location)
+                - Resources
+                - Templates (these can be used to construct configuration files on the node)
+                - Nodes (all the definition related to a client node is defined here)
+                - Classes
+
+            - In Puppet, all manifest files use Ruby as their encoding language and get saved with .pp extension.
+            - "Import" statement in many manifest are used for loading files when Puppet starts
+            - In order to import all files contained in a directory, you can use the import statement in another way like import 'clients/*'.
+            - This will import all .pp files inside that directory.
+
+        - Working with variables:
+
+            - While writing a manifest, the user can define a new variable or use an existing variable at any point in a manifest.
+            - Puppet supports different kind of variables but few of them are frequently used such as strings and array of string
+            - Example: String Variable
+
+                $package = "vim"
+                package {  $package:
+                ensure => "installed"
+                }
+
+        - Using Loops:
+
+            - Loops are used when one wishes to go through multiple iterations on a same set of code till a defined condition is met.
+            - They are also used to do repetitive tasks with different set of values.
+            - Example: loop
+
+                $packages = ['vim', 'git', 'curl']
+
+                package { $packages:
+                   ensure => "installed"
+                }
+
+        - Using Conditionals:
+
+            - Puppet supports most of the conditional structure which can be found in traditional programming languages.
+            - Condition can be used to dynamically define whether to perform a particular task or a set of code should get executed.
+            - Example:
+
+                if $OperatingSystem != 'Linux' {
+                   warning('This manifest is not supported on this other OS apart from linux.')
+                } else {
+                   notify { 'the OS is Linux. We are good to go!': }
+                }
+
+        - Demo-1: Configure Agents using Manifests
+
+            - Example: Install git package in the agentResources
+
+                - create a file called "create_package.pp" under "/etc/puppetlabs/code/environments/production/manifests/" and add the following content: (On Puppet Server)
+
+                    node default{
+                    package {"git": ensure => "present"}
+                    exec {"apt-update": command => "/usr/bin/apt-get update"}
+                    }
+
+                - On Agent run the following command and check the result
+
+                    $ puppet agent -t
+
+                    root@puppet-agent-1:/etc/puppetlabs/puppet# puppet agent -t
+                    Info: Using configured environment 'production'
+                    Info: Retrieving pluginfacts
+                    Info: Retrieving plugin
+                    Info: Retrieving locales
+                    Info: Caching catalog for puppet-agent-1
+                    Info: Applying configuration version '1572124615'
+                    Notice: /Stage[main]/Main/Node[default]/Exec[apt-update]/returns: executed successfully
+                    Notice: Applied catalog in 10.33 seconds
+                    root@puppet-agent-1:/etc/puppetlabs/puppet#
+
+==================================
+    - Puppet Modules:
+==================================
+
+        - In Puppet, a module can be defined as a collection of manifests and data such as resources, classes, files, definition, and templates.
+        - They have specific directory structure
+        - They are the re-usable and sharable units in Puppet.
+        - They have a very specific directory structure and are self contained pieces of code
+        - Modules are the basic building blocks of puppet
+        - The defined directory structure of Modules enables Puppet to find and load classes, types, facts, functions, tasks, automatically
+        - The sub directories are not set and it is not necessary for every module to have every sub directory
+        - Modules are stored in "/etc/puppetlabs/code/environments/production/modules/"
+        - For example, the MySQL module to install and configure MySQL or the Jenkins module to manage Jenkins, etc..
+
+        - Demo-2: Create a module on the puppet master
+
+            - Pre-requisites:
+
+                - Install Puppet Development Kit (PDK)
+                - Here is the commands to download and configure PDK in ubuntu machine:
+
+                    $ wget https://apt.puppet.com/puppet-tools-release-bionic.deb
+                    $ sudo dpkg -i puppet-tools-release-bionic.deb
+                    $ sudo apt-get update
+                    $ sudo apt-get install pdk
+
+            - To create a puppet module firstly create a separate directory where you can create custom modules
+
+                $ cd /tmp/
+
+                $ mkdir modules
+
+            - Generate a module
+
+                - Now create a new custom module using the puppet development kit
+
+                    - Generates the basic components of a module and set up an infrastructure for testing it with PDK.
+
+                        $ pdk new module <module-name>
+
+                            - module-name should be followed by <username>-<module>
+
+            - Generate a class
+
+                - To generate the main class of the module, which is defined in an init.pp file, give the class the same name as the module.
+
+                    $ pdk new class <class_name>
+
+                        - PDK creates the new class manifest and a test file (as class_name_spec.rb) in your module's /spec/classes directory.
+
+            - Now you can edit manifests in ModuleName/manifests folder
+
+                - Note: init.pp file inside the manifests folder is executed whenever a module is called.
+                - Edit the init.pp manifest
+
+                    $ vi moduleName/manifests/init.pp
+
+            - Validate the module
+
+                $ pdk validate
+
+                    - Command should be run inside the module folder
+
+            - Now build the module
+
+                $ pdk build [--target-dir=<PATH>] [--force]
+
+            - Install the module on the master machine
+
+                $ puppet module install <path to tar.gz build file>
+
+            - Now, add the module to the site.pp file in the default manifest folder
+
+                $ vi /etc/puppetlabs/code/environments/production/manifests/site.pp
+
+                    class {'module_name':}
+
+            - On the puppet agent test the catalog
+
+                - Run the puppet agent test command to pull the catalog
+
+                    $ /opt/puppetlabs/bin/puppet agent -t
+
+            - Note: Since we changed the default index file of the apache2 localhost the change can be seen when we check the localhost on the web browser
+
+                http://localhost/
+
+            - Example:
+
+                - Create a new custom module (Naveennb-apache)
+
+                    root@puppet-master:/tmp# pdk new module my-apache
+                    pdk (INFO): Creating new module: my-apache
+
+                    We need to create the metadata.json file for this module, so we're going to ask you 4 questions.
+                    If the question is not applicable to this module, accept the default option shown after each question. You can modify any answers at any time by manually updating the metadata.json file.
+
+                    [Q 1/4] If you have a Puppet Forge username, add it here.
+                    We can use this to upload your module to the Forge when it's complete.
+                    --> naveennb
+
+                    [Q 2/4] Who wrote this module?
+                    This is used to credit the module's author.
+                    --> Naveen
+
+                    [Q 3/4] What license does this module code fall under?
+                    This should be an identifier from https://spdx.org/licenses/. Common values are "Apache-2.0", "MIT", or "proprietary".
+                    --> Apache-2.0
+
+                    [Q 4/4] What operating systems does this module support?
+                    Use the up and down keys to move between the choices, space to select and enter to continue.
+                    --> RedHat based Linux, Debian based Linux, Windows
+
+                    Metadata will be generated based on this information, continue? Yes
+                    pdk (INFO): Module 'apache' generated at path '/tmp/apache', from template 'file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git'.
+                    pdk (INFO): In your module directory, add classes with the 'pdk new class' command.
+
+                    root@puppet-master:/tmp#
+
+                - Check the created module
+
+                    root@puppet-master:/tmp/modules# ls
+                    apache
+                    root@puppet-master:/tmp/modules# cd apache/
+                    root@puppet-master:/tmp/modules/apache# ls
+                    appveyor.yml  CHANGELOG.md  data  examples  files  Gemfile  Gemfile.lock  hiera.yaml  manifests  metadata.json  Rakefile  README.md  spec  tasks  templates
+
+                    root@puppet-master:/tmp/modules/apache#
+
+                    root@puppet-master:/tmp/modules/apache# tree
+                    .
+                    ├── appveyor.yml
+                    ├── CHANGELOG.md
+                    ├── data
+                    │   └── common.yaml
+                    ├── examples
+                    ├── files
+                    ├── Gemfile
+                    ├── Gemfile.lock
+                    ├── hiera.yaml
+                    ├── manifests
+                    ├── metadata.json
+                    ├── Rakefile
+                    ├── README.md
+                    ├── spec
+                    │   ├── default_facts.yml
+                    │   └── spec_helper.rb
+                    ├── tasks
+                    └── templates
+
+                    7 directories, 11 files
+
+
+                - Generate a class
+
+                    root@puppet-master:/tmp/modules# cd apache/
+                    root@puppet-master:/tmp/modules/apache# pdk new class apache
+                    pdk (INFO): Creating '/tmp/modules/apache/manifests/init.pp' from template.
+                    pdk (INFO): Creating '/tmp/modules/apache/spec/classes/apache_spec.rb' from template.
+
+                    root@puppet-master:/tmp/modules/apache#
+
+
+                - Add the content to the init.pp file under manifest folder
+
+                    root@puppet-master:/tmp/modules/apache/manifests# vim init.pp
+
+                    class apache{
+                        exec {'apt-update':
+                        command => '/usr/bin/apt-get update'
+                        }
+
+                        package {'default-jdk':
+                        ensure => present
+                        }
+
+                        package {'apache2':
+                        ensure => present,
+                        require => Exec['apt-update']
+                        }
+
+                        exec {'apache_full_access':
+                        command => "/usr/sbin/ufw allow 'Apache Full'"
+                        }
+
+                        file {'/var/www/html/index.html':
+                        mode => '0644',
+                        content => "<html>
+                        <head><title>Demo Tutorial</title></head>
+                        <body>This is the Module Demo</body>
+                        </head>"
+                        }
+                    }
+
+                - Validate the module
+
+                    root@puppet-master:/tmp/modules/apache/manifests# cd ..
+
+                    root@puppet-master:/tmp/modules/apache# pdk validate
+                    pdk (INFO): Running all available validators...
+                    pdk (INFO): Using Ruby 2.5.7
+                    pdk (INFO): Using Puppet 6.10.0
+                    [✔] Checking metadata syntax (metadata.json tasks/*.json).
+                    [✔] Checking module metadata style (metadata.json).
+                    [✔] Checking YAML syntax (["**/*.yaml", "*.yaml", "**/*.yml", "*.yml"]).
+                    [✔] Checking Puppet manifest syntax (**/*.pp).
+                    [✔] Checking Puppet manifest style (**/*.pp).
+                    [✔] Checking Ruby code style (**/**.rb).
+                    [✔] Checking task names (tasks/**/*).
+                    warning: puppet-lint: manifests/init.pp:15:12: indentation of => is not properly aligned (expected in column 13, but found it in column 12)
+                    warning: puppet-lint: manifests/init.pp:22:10: indentation of => is not properly aligned (expected in column 13, but found it in column 10)
+                    info: puppet-epp: ./: Target does not contain any files to validate (**/*.epp).
+                    info: task-metadata-lint: ./: Target does not contain any files to validate (tasks/*.json).
+
+                    root@puppet-master:/tmp/modules/apache#
+
+
+                - Build the module
+
+                    root@puppet-master:/tmp/modules/apache# pdk build
+
+                    We need to update the metadata.json file for this module, so we're going to ask you 4 questions.
+                    If the question is not applicable to this module, accept the default option shown after each question. You can modify any answers at any time by manually updating the metadata.json file.
+
+                    [Q 1/4] Summarize the purpose of this module in a single sentence.
+                    This helps other Puppet users understand what the module does.
+                    --> Test module for practice
+
+                    [Q 2/4] If there is a source code repository for this module, enter the URL here.
+                    Skip this if no repository exists yet. You can update this later in the metadata.json.
+                    -->
+
+                    [Q 3/4] If there is a URL where others can learn more about this module, enter it here.
+                    Optional. You can update this later in the metadata.json.
+                    -->
+
+                    [Q 4/4] If there is a public issue tracker for this module, enter its URL here.
+                    Optional. You can update this later in the metadata.json.
+                    -->
+
+                    Metadata will be generated based on this information, continue? Yes
+                    pdk (INFO): Building Naveennb-apache version 0.1.0
+                    pdk (INFO): Build of Naveennb-apache has completed successfully. Built package can be found here: /tmp/modules/apache/pkg/Naveennb-apache-0.1.0.tar.gz
+                    root@puppet-master:/tmp/modules/apache#
+
+
+                - Install the module
+
+                    root@puppet-master:/tmp/modules/apache# puppet module install /tmp/modules/apache/pkg/Naveennb-apache-0.1.0.tar.gz
+                    Notice: Preparing to install into /etc/puppetlabs/code/environments/production/modules ...
+                    Notice: Downloading from https://forgeapi.puppet.com ...
+                    Notice: Installing -- do not interrupt ...
+                    /etc/puppetlabs/code/environments/production/modules
+                    └── Naveennb-apache (v0.1.0)
+
+                    root@puppet-master:/tmp/modules/apache#
+
+
+                - Test the catalog (On Puppet Agent)
+
+                    osboxes@puppet-agent-1:~$ sudo su
+                    [sudo] password for osboxes:
+                    root@puppet-agent-1:/home/osboxes# clear
+                    root@puppet-agent-1:/home/osboxes# /opt/puppetlabs/bin/puppet agent -t
+                    Info: Using configured environment 'production'
+                    Info: Retrieving pluginfacts
+                    Info: Retrieving plugin
+                    Info: Retrieving locales
+                    Info: Caching catalog for puppet-agent-1
+                    Info: Applying configuration version '1572291814'
+                    Notice: /Stage[main]/Apache/Exec[apt-update]/returns: executed successfully
+                    Notice: /Stage[main]/Apache/Package[default-jdk]/ensure: created
+                    Notice: /Stage[main]/Apache/Package[apache2]/ensure: created
+                    Notice: /Stage[main]/Apache/Exec[apache_full_access]/returns: executed successfully
+                    Notice: /Stage[main]/Apache/File[/var/www/html/index.html]/content:
+                    ......
+                    ......
+                    Info: Computing checksum on file /var/www/html/index.html
+                    Info: /Stage[main]/Apache/File[/var/www/html/index.html]: Filebucketed /var/www/html/index.html to puppet with sum 3526531ccd6c6a1d2340574a305a18f8
+                    Notice: /Stage[main]/Apache/File[/var/www/html/index.html]/content: content changed '{md5}3526531ccd6c6a1d2340574a305a18f8' to '{md5}eac766da28e43d2a803c87a2724d6ef4'
+                    Notice: Applied catalog in 932.91 seconds
+
+                    root@puppet-agent-1:/home/osboxes#
+
+                - Access the server from the browser
+
+                    http://192.168.56.116/
+
+                        - "This is the Module Demo" should be displayed in the page
+
+            - Demo-3:
+
+                - Deploy an application on the servers using Puppet
+
+
+=================================================================================================================================================================================================================
+
+Catalog Compilation:
+
+    - To configure a node, the Puppet Agent downloads a Catalog from the Puppet Server
+    - Catalog holds the information of the desired state of each node
+    - The Puppet Server Compiles the catalog from three main resources i.e. Manifests, Agent Provided Data, External Data
+
+    - Fetch the node object:
+
+        - After the puppet server receives the agent information, it asks for a configured node-terminus of a node
+        - The node-terminus returns a node object which provides information on what all resources are required by Node
+
+    - Set Variables:
+
+        - All the variables from the node object, node facts, and the node certificate are collected and set as top-scope Puppet variable
+        - Any manifest or template from then can use these variables for subsequent compilations
+
+    - Assess the main Manifest:
+
+        - Every node can specify a main manifest to use, otherwise the Puppet Server uses the main manifest from its config file.
+        - The main manifest evaluates the node definitions and any code outside of node definition.
+
+    - Load Classes from Modules:
+
+        - Classes are loaded inside modules, but the main manifest can also contain the class definition
+        - If the main manifests does not contain a class definition, Puppet automatically loads it from its collection of Modules
+
+    - Assess classes from node Object:
+
+        - After evaluating the main manifest and all the declared classes in it
+        - Nodes matched in the node definitions have their classes evaluated at the node scope i.e. accessing the node scope variables set by the main manifests.
+
+Node Classification:
+
+    - Node classification is done to assign classes, parameters, and variables to nodes
+    - Node Groups are created and then Nodes are added to these groups
+    - Nodes can be added manually or according to set rules dynamically
+
+Puppet Environment
+
+    - Puppet Environments enables users to categorize systems based on some pre defined criteria such as status(Development, Test, Production, etc.)
+    - Configuration can be set up according to environments and servers can be provisioned accordingly
+    - Puppet enables users to have different sources for modules and manifests for different environments

@@ -1,0 +1,528 @@
+=================================
+ANSIBLE
+=================================
+
+    - Ansible is a deployment automation tool which traditionally uses push approach to achieve its objectives, by managing all the servers through one single machine running the Ansible Configuration Management Tool.
+    - Ansible is simple open source IT engine which automates application deployment, intra service orchestration, cloud provisioning and many other IT tools
+    - Ansible ensures maintaining exact versions and up to date information to the software packages.
+    - Ansible is maintained by RedHat
+
+    - Ansible Push Approach:
+
+        - Ansible clients do not have any agents installed on them, therefore there is no concept of polling with central server.
+        - Ansible uses the Push approach instead. Still, Ansible is flexible enough to let the user implement Pull architecture as well.
+
+    - Difference between PUSH and PULL
+
+        PUSH:
+
+            - Push approach does not require agents set up on individual nodes like pull does
+            - Push based systems are completely Synchronous as you can see the changes made instantaneously and can fix the system if changes cause problems
+
+        PULL:
+
+            - Pull works in a master slave architecture which requires agents set up on all slave nodes
+            - Systems using pull architecture can scale quite easily which is not the case with push model
+
+
+Why Ansible?
+
+    - One of the most significant advantages of Ansible is that it is free to use by everyone.
+    - It does not need any special system administrator skills to install and use Ansible, and the official documentation is very comprehensive.
+    - Its modularity regarding plugins, modules, inventories, and playbooks make Ansible the perfect companion to orchestrate large environments.
+    - Ansible is much easier to work with compared to the likes of Puppet, Chef etc
+    - Ansible does not require agents set up on individual nodes
+    - Ansible also supports the pull architecture
+    - It’s simple enough for new users and also works at high enough level to work with other tools as well
+
+    - Simple:
+
+        - Ansible uses YAML which is very simple and readable
+        - No special coding skills required to write YAML
+
+    - Agentless:
+
+        - Ansible uses OpenSSH and WinRM as transport to achieve automation
+        - It is completely agentless, therefore making it more efficient and secure option
+
+    - Powerful:
+
+        - Ansible can be used to manage entire infrastructure of an application
+        - It can orchestrate the entire application and environment lifecycle, no matter where it is deployed
+
+    - Accessible:
+
+        - If someone automates something in Ansible, everyone on the team now knows how it is done
+
+Ansible Architecture:
+
+    - Ansible server:
+
+        - The machine where Ansible is installed and from which all tasks and playbooks will be ran
+
+    - Automation Engine:
+
+        - The Ansible automation engine contains everything needed to bring about automation in the infrastructure
+
+        - Modules:
+
+            - Basically, a module is a command or set of similar commands meant to be executed on the client-side
+            - Ansible connects to the nodes and pushes out small programs called "Modules"
+            - These modules bring the system to the desired state
+            - Ansible uses SSH to execute these modules and then removes them when finished
+
+        - Inventory:
+
+            - Ansible uses the inventory file to represent all the machines it is managing
+            - File containing data about the ansible client servers.
+            - Users can then group their machines to their own linking
+            - It is also possible to have multiple inventory files at the same time.
+
+            - Inventory hosts and groups:
+
+                - The host inventory file can contain host names either individually or in groups
+                - Host groups can be created by giving a group name within square brackets
+                - Group members can then be listed under, till there is a line break
+                - Example:
+
+                    [app-servers]
+                    ip_addresses of servers
+
+        - APIs:
+
+            - The API's in Ansible are there to support services like cloud and CLI
+            - Example:
+
+                - Python API is used for command line interface
+
+        - Plugins:
+
+            - Plugins acts as extension to Ansible
+            - Example:
+
+                - "Action plugin" lets you perform tasks on your Ansible machine before you execute a playbook
+
+    - Playbooks:
+
+        - Ansible uses playbooks to implement the changes desired by the users
+
+        - Plays:
+
+            - Playbooks contains "Play" which is called Execution of Playbooks
+            - Plays have tasks and tasks call modules
+
+        - Tasks:
+
+            - A task is a section that consists of a single procedure to be completed
+
+        - Modules are the units which actually execute on the servers
+
+    - CMDB: (Configuration Management Database)
+
+        - CMDB keeps a record of all the configuration changes made in the system
+        - This database could be kept on the cloud platform or on the physical server as well
+
+    - Cloud:
+
+        - Ansible has a huge support for numerous cloud applications
+        - These cloud applications can seamlessly be integrated with Ansible
+        - Ansible makes provisioning cloud infrastructure easy
+
+    - Hosts:
+
+        - The hosts are connected to the Ansible system via SSH connection
+
+    - Network:
+
+        - Different networks can be managed together giving each network separate access rights
+
+Other Keywords:
+
+    - Role:
+
+        - A way of organizing tasks and related files to be later called in a playbook
+
+    - Fact:
+
+        - Information fetched from the client system from the global variables with the gather-facts operation
+
+    - Handler:
+
+        - Task which is called only if a notifier is present
+
+    - Notifier:
+
+        - Section attributed to a task which calls a handler if the output is changed
+
+    - Tag:
+
+        - Name set to a task which can be used later on to issue just that specific task or group of tasks
+
+=======================================================================================================================================================================================================================================================
+
+Ansible Installation, Configuration & Validation:
+-------------------------------------------------
+
+    - Pre-requisites:
+
+        - Ansible requires a secure transport to nodes, hence openssh linux unix ) or winrm (windows) must be setup on each machine
+        - Latest python libraries must be installed on the Ansible machine
+
+        - Setting up SSH:
+
+            - Ansible uses SSH to communicate between nodes
+            - To set up SSH install the openssh server package on all of your machines
+
+                $ sudo apt install openssh-server
+
+        - Install the software-properties-common package
+
+            $ sudo apt install software-properties-common
+
+        - Install ansible personal package archive
+
+            $ sudo apt-add-repository ppa:ansible/ansible
+
+    - Install Ansible
+
+        $ sudo apt update
+
+        $ sudo apt install ansible
+
+    - Validate the Ansible Installation:
+
+        - You can check if you’re on the latest version of Ansible by running the version command
+
+            $ ansible --version
+
+        - If for some reason an older version of Ansible is installed on your system you can run the update command again to get the latest version
+
+    - Ansible Configuration:
+
+        - Default location is "/etc/ansible/"
+
+        - All the default configuration settings will be available in the file called "ansible.cfg"
+
+            $ cat /etc/ansible/ansible.cfg
+
+        - Create ssh key
+
+            $ ssh-keygen -t rsa
+
+            - We need to share the public key that is generated using the above command to all the machines that are managed by Ansible server and localhost as well
+
+            - Example:
+
+                - On Ansible Server
+
+                     $ cat /root/.ssh/id_rsa.pub
+
+                        - Copy the content from "/root/.ssh/id_rsa.pub" file to the Agents
+
+                    $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys (for both root and normal user or create user as "ansible" and do it)
+
+                - On Ansible Clients
+
+                    $ touch ~/.ssh/authorized_keys (If not available)
+
+                    $ vim ~/.ssh/authorized_keys (If the authorized_keys file exists)
+
+                        - Paste the public key that has been copied from the ansible server
+
+                - Check the password less ssh works from the server machine:
+
+                    $ ssh osboxes@192.168.56.115
+
+                        - From Ansible server, we should be able to ssh to the agent without asking for any passwords
+
+            - Validate the localhost:
+
+                - We can use the below command weather the ssh to ansible server is properly working or not
+
+                    $ ansible all -m ping
+
+                - Example:
+
+                    osboxes@Ansile-Master:~$ ansible all -m ping
+                    localhost | SUCCESS => {
+                        "ansible_facts": {
+                            "discovered_interpreter_python": "/usr/bin/python"
+                        },
+                        "changed": false,
+                        "ping": "pong"
+                    }
+                    osboxes@Ansile-Master:~$
+
+
+        - Setting up Hosts (Inventory)
+
+            - To set up hosts you need to edit the hosts file in the Ansible directory
+
+                $ vim /etc/ansible/hosts
+
+            - Example:
+
+                - Add clients to the Ansible server in the below format
+
+                    $ vim /etc/ansible/hosts
+
+                        localhost
+                        [nodes]
+                        192.168.56.118
+
+                - Now you can check if Ansible’s connection with your hosts in your inventory file is good
+                - Use the Ansible’s ping module to check whether or not Ansible is connecting to hosts
+
+                    - You can also check on servers individually
+
+                        osboxes@Ansile-Master:~$ ansible nodes -m ping
+                        192.168.56.118 | SUCCESS => {
+                            "ansible_facts": {
+                                "discovered_interpreter_python": "/usr/bin/python3"
+                            },
+                            "changed": false,
+                            "ping": "pong"
+                        }
+                        osboxes@Ansile-Master:~$
+
+            - Here is the sample content of a typical inventory file:
+
+                localhost
+
+                [webservers]
+                host[1:20].example.com
+
+                [appservers]
+                host[21:30].example.com
+
+                [dbservers]
+                host[31:35].example.com
+
+                [myinfra]
+                webservers
+                appservers
+                dbservers
+
+        - Like this we can add multiple nodes to the ansible server
+=====================================================================================================================================================================================================================================================
+
+The major components of Ansible are:
+
+    - Adhoc Commands (Ex: Shell Commands)
+    - Playbooks (Bash Scripts)
+    - Roles (Ex: Modules in Puppet)
+
+    Modules => task => plays => Playbooks => Roles
+
+
+Ansible Adhoc Commands:
+-----------------------
+
+    - Ad hoc commands are commands which can be run individually to perform quick functions.
+    - These commands need not be performed later.
+    - These can be used when you want to issue some commands on a server or a bunch of servers.
+    - Ad-hoc commands are not stored for future uses but represent a fast way to interact with the desired servers.
+    - For example, you have to reboot all your company servers. For this, you will run the Adhoc commands from ‘/usr/bin/ansible’.
+    - The Ansible command used earlier to check for working connection with hosts was indeed an Ad Hoc command
+    - Every task in Playbooks can be done by using Ad Hoc commands
+    - Ad hoc commands do nothing in terms of bringing in automation
+
+    - Demo-1: Ansible Ad-Hoc Commands
+
+        - Copy a file from Ansible server to a host using an Ansible ad-hoc command
+
+            - Syntax: ansible -i hosts all -m copy -a "src=SOURCE_PATH_TO_FILE dest=DESTINATION_PATH"
+
+            - Example:
+
+                osboxes@Ansile-Master:/etc/ansible$ ansible -i hosts nodes -m copy -a "src=/tmp/test.py dest=/tmp/test.py"
+                192.168.56.118 | CHANGED => {
+                    "ansible_facts": {
+                        "discovered_interpreter_python": "/usr/bin/python3"
+                    },
+                    "changed": true,
+                    "checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                    "dest": "/tmp/test.py",
+                    "gid": 1000,
+                    "group": "osboxes",
+                    "md5sum": "d41d8cd98f00b204e9800998ecf8427e",
+                    "mode": "0664",
+                    "owner": "osboxes",
+                    "size": 0,
+                    "src": "/home/osboxes/.ansible/tmp/ansible-tmp-1572372473.68-97910059988410/source",
+                    "state": "file",
+                    "uid": 1000
+                }
+
+                osboxes@Ansile-Master:/etc/ansible$
+
+        - Examples:
+
+            - Adding a user to a host using an Ansible ad-hoc command
+
+                - Syntax:
+
+                    $ ansible -b -K -m user -a ‘name=userName’ hostName/groupName
+
+            - Starting a service on a host
+
+                - Syntax:
+
+                    $ ansible -m service -a ‘name=serviceName state=requiredState’ hosts
+
+            - Check host facts
+
+                - Syntax:
+
+                    $ ansible -m setup hostsName/groupName
+
+            - Check the files of a particular directory in all the nodes
+
+                - Syntax:
+
+                    $ ansible all -a "ls -al <path-to-directory>"
+
+                - Example:
+
+                    osboxes@Ansile-Master:~$ ansible all -a "ls -al /home/osboxes/"
+
+                        - Here "-a" represents arguments
+
+====================================================================================================================================================================================================================================================
+
+PLAYBOOKS
+=========
+
+    - Playbooks are the files where Ansible code is written.
+    - Playbooks are one of the core features of Ansible and tell Ansible what to execute.
+    - They are like a to-do list for Ansible that contains a list of tasks.
+    - It is written in YAML(Yet Another Mark up Language)
+    - In comparison with ad-hoc commands, playbooks are used in complex scenarios, and they offer increased flexibility.
+    - Playbooks use YAML format, so there is not much syntax needed, but indentation must be respected.
+    - Playbook is a collection of plays
+    - Playbooks contain the steps which the user wants to execute on a particular machine.
+    - Playbooks are run sequentially.
+    - Playbooks are the building blocks for all the use cases of Ansible.
+    - On an advanced level playbooks can be used to:
+
+        - Handle multi tier rollouts
+        - Load balancing tasks for the servers
+
+    - Playbook Structure:
+
+        - Each playbook is an aggregation of one or more plays in it.
+        - Playbooks are structured using Plays. There can be more than one play inside a playbook.
+        - The function of a play is to map a set of instructions defined against a particular host.
+        - Below are the components of playbooks:
+
+            - Modules:
+
+                - Modules are units which actually get the work done in Ansible.
+                - Ansible’s module are used to control system resources, like services, packages, execute system commands, or files.
+                - There are over 450 in-built modules in Ansible
+                - Users can choose to either use a module from Ansible’s in built library or create their own custom modules
+
+                - Example: Playbook to install vim package and start the ntp service
+
+                    - name: install vim
+                      apt:
+                        pkg: vim
+                        state: present
+
+                    - name: start ntp service
+                      service:
+                        name: ntp
+                        state: started
+                        enabled: true
+
+
+                        - Here, In the above example the modules are "apt" and "service"
+
+                - Almost all of the modules support taking arguments in key value format
+
+            - Plugins:
+
+                - Plugin allows ansible to execute playbook tasks as job build step
+                - Plugins provide the extra functionality to the ansible
+                - Similar to modules, Ansible ships with a large number of plugins and users can also build and apply their own
+                - Plugins can act as front ends to modules i.e. they can execute some tasks before a specific module is called
+
+                - Example:
+
+                    from ansible.plugins.callback import CallbackBase
+
+                    class CallbackModule(CallbackBase):
+                    pass
+
+                    - Callback plugins enable you to hook into Ansible events for display or logging purposes
+
+            - Variables:
+
+                - Variable in playbooks are very similar to using variables in any programming language.
+                - It helps you to use and assign a value to a variable and use that anywhere in the playbook.
+                - One can put conditions around the value of the variables and accordingly use them in the playbook.
+                - Variables can be defined and used anywhere in Ansible even in inventory or in an Ad Hoc command
+                - Variables extend the functionality of conditionals and loops in Ansible
+                - In the playbook, we can give a variable in ‘variable_name: variable_value‘ format
+                - There are few places where you can define variables in an Ansible playbook.
+
+                    - In the playbook
+                    - In the inventory file
+                    - In a separate variable file
+                    - Using group_vars
+
+                - To define variables in a playbook, use "vars" key just above the task where you want to use the variable
+                - Once declared, you can use it inside the {{ }} tag.
+
+                - Example:
+
+                    - Let’s declare a variable by the name pkgname and assign it the value of the package name that we want to install, which is nginx
+                    - Once done, we can use the variable in a task.
+
+                        ---
+                        - hosts: webservers
+                          gather_facts: yes
+                          become_user: root
+
+                          vars:
+                            pkgname: nginx
+
+                          tasks:
+                          - name: Install "{{ pkgname }}"
+                            apt: pkg="{{ pkgname }}" state=present
+                            ...
+                            ...
+
+
+    - Writing Playbooks:
+
+        - Ansible Playbooks are written in YAML(Yet Another Mark up Language) and saved with the extension .yml
+        - YAML is a simple human readable language which focuses entirely on indentation to define blocks
+        - Multiple plays can be written in a single playbook
+
+        - Example: Sample Playbook
+
+            ---
+            - hosts: webservers
+              gather_facts: yes
+              become_user: root
+              tasks:
+              - name: Install Nginx
+                apt: pkg=nginx state=present
+                notify:
+                - restart nginx
+              - name: Enable Nginx during boot
+                service: name=nginx state=started enabled=yes
+              handlers:
+                - name: restart nginx
+                  service: name=nginx state=restarted
+
+            - hosts: dbservers
+              become_user: root
+              tasks:
+              - name: Install mysql
+                apt: pkg=mysql-server state=present
+
+            - Explanation:
+
+                -
