@@ -1,0 +1,130 @@
+Terraform Questions !!
+
+1. What is Terraform? Does it supports RDS
+
+2. What all u did terraform?
+
+What is Terraform? Does it supports RDS
+
+what do you do through terraform?
+
+What is Terraform? Does it supports RDS
+what do you do in terraform?
+what is your roles and responsibilities?
+1) What is a state file and what is the use of it ?
+
+ keep track of metadata, and to improve performance for large infrastructures. This state is stored by default in a local file named "terraform.
+
+2) where are you keeping the state file ?
+We use dynamodb for  the state file configuration with S3 bucket versioning. 
+Read the document for more information:
+https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
+
+3) how to declare a variable ?
+
+ In a Terraform Cloud workspace. Individually, with the -var command line option. In variable definitions ( . tfvars ) files, either you can pass it via command line or via variable section. 
+
+4) what is the difference between provisioner and provider?
+
+Provisioners are used to execute scripts on a local or remote machine as part of resource creation or destruction. Provisioners can be used to bootstrap a resource,
+
+A provider in Terraform is responsible for the lifecycle of a resource: create, read, update, delete. An example of a provider is AWS, which can manage resources of type aws_instance , aws_eip , aws_elb , etc.
+
+5) how to pass a value from one resource block to another ?
+${modulename.resourcename.variablename}
+Example:
+
+resource "aws_instance" "myserver" {
+  ami           = "ami-0a887e401f7654935" # us-west-2
+  instance_type = "t2.micro"
+  key_name = "${var.keypair_name}"
+        tags = {
+                Name = "myserver"
+          }
+
+}
+
+output "server_ip" {
+        value = "${aws_instance.myserver.public_ip}" → this we can say it as variables in other blocks 
+        description = "Pub Server ip"
+}
+
+
+
+6) how to reuse a module?
+Keep the modules in a central location which is accessible by everyone, start calling the code by loading the location where it exists like below.
+module "dev" {
+  source = "environments/dev"
+}
+ You can think of this module as an object in OOP, 
+
+7) What is the difference between Terraform init and terraform apply?
+
+The terraform init command is used to initialize a working directory containing Terraform configuration files. It downloads all the dependent binaries for the resources. 
+
+The terraform apply command is used to apply the changes required to reach the desired state of the configuration,
+
+8) how to validate the terraform file ?
+The terraform validate command validates the configuration files in a directory, referring only to the configuration and not accessing any remote services such as remote state, provider APIs, etc.
+Validate runs checks that verify whether a configuration is syntactically valid 
+9) What terraform plan does?
+
+The terraform plan command is used to create an execution plan. Terraform performs a refresh, unless explicitly disabled,
+
+10) how to create 10 ec2 instances using the same script ? ( count= 10) 
+
+Example:
+provider "aws" {
+        region = "us-east-1"
+}
+
+variable "ami_id" {
+        default = "ami-0323c3dd2da7fb37d"
+}
+variable "key_pair_name" {
+        default = "shaan_mahendra_nvirginia"
+
+}
+variable "server_count" {
+        default = "2"
+}
+resource "aws_instance" "ec2" {
+  ami           = "${var.ami_id}"
+  instance_type = "t2.micro"
+  key_name = "${var.key_pair_name}"
+  tags = {
+    Name = "dvsbatch-${count.index + 1}"
+  }
+  instance_type = "t2.micro"
+  count = "${var.server_count}"
+}
+
+output "pub_ip_address" {
+        value = "${aws_instance.ec2.*.public_ip}"
+}
+
+
+11) By mistake if you downgrade the instance from t2.large to t2.micro ,then what will happen when you run the terraform script?
+
+If the instance type is specified inside the terraform code, it will terminate the server & re-create the new one. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

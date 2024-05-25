@@ -1,0 +1,192 @@
+what was the product you deployed in kubernets?
+how many nodes and how many masters are there in your kubernets?
+explain me about the build complete life cycle How eactly build start in your organization and how it's build and how it's get deployeed?
+
+				</  Interview Q&A  />
+
+Kubernetes:
+==========================================
+1) what is taint and toleration 
+
+Taints are the opposite -- they allow a node to repel a set of pods. Tolerations are applied to pods, and allow (but do not require) the pods to schedule onto nodes with matching taints. Taints and tolerations work together to ensure that pods are not scheduled onto inappropriate nodes
+Example:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  tolerations:
+  - key: "example-key"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+
+2) What is node affinity and pod affinity?
+
+Node affinity is a set of rules used by the scheduler to determine where a pod can be placed. The rules are defined using custom labels on nodes and label selectors specified in pods. Node affinity allows a pod to specify an affinity (or anti-affinity) towards a group of nodes it can be placed on.
+
+The pod affinity rule says that the pod can be scheduled onto a node only if that node is in the same zone as at least one already-running pod
+
+https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+
+3) how to check the logs?
+
+kubectl describe pods ${POD_NAME}
+ 
+ 
+Managing Application Logs ::
+
+Getting pod logs ::
+
+kubectl logs nginxpd
+-> Get the logs from a specific container on a pod:
+kubectl logs counter -c count-log-1
+
+-> Get the logs from all containers on the pod:
+kubectl logs counter --all-containers=true
+
+-> Get the logs from containers with a certain label:
+kubectl logs -l app=nginx
+
+-> Get the logs from a previously terminated container within a pod:
+kubectl logs -p -c nginx nginx
+
+-> Stream the logs from a container in a pod:
+kubectl logs -f -c count-log-1 counter
+
+-> Tail the logs to only view a certain number of lines:
+kubectl logs --tail=20 nginx
+
+-> View the logs from a previous time duration:
+kubectl logs --since=1h nginx
+
+-> View the logs from a container within a pod within a deployment:
+kubectl logs deployment/nginx -c nginx
+
+-> Redirect the output of the logs to a file:
+kubectl logs counter -c count-log-1 > count.log
+
+
+4) How to check how many pods are running?
+
+kubectl get  pods- list resources
+Kubectl get pods --all-namespaces → list pods from all namespaces
+5) what are deployment strategy used in your project?
+Prepare two of them for the below link
+https://blog.container-solutions.com/kubernetes-deployment-strategies#:~:text=recreate%3A%20terminate%20the%20old%20version,proceed%20to%20a%20full%20rollout
+ 
+6) what is init container ?
+Init Containers are containers that run before the main container runs with your containerized application. They normally contain setup scripts that prepare an environment for your containerized application.
+Init containers can contain utilities or custom code for setup that are not present in an app image. For example, there is no need to make an image FROM another image just to use a tool like sed, awk, python, or dig during setup.
+The application image builder and deployer roles can work independently without the need to jointly build a single app image.
+Example:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+7) what is statefulset ?
+StatefulSet is the workload API object used to manage stateful applications. Manages the deployment and scaling of a set of Pods , and provides guarantees about the ordering and uniqueness of these Pods.
+8) what is ingress ?
+An API object that manages external access to the services in a cluster, typically HTTP. Ingress may provide load balancing, SSL termination and name-based virtual hosting.
+Or 
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by rules defined on the Ingress resource.
+9) difference between headfull and headless service?
+Default Kubernetes service type is clusterIP, When you create a headless service by setting clusterIP None, no load-balancing is done and no cluster IP is allocated for this service. Only DNS is automatically configured.
+10) difference between secret and configmap
+Config maps ideally stores application configuration in a plain text format whereas Secrets store sensitive data like password in an encrypted format.
+Both config maps and secrets can be used as volume and mounted inside a pod through a pod definition file.
+Config map:
+       kubectl create configmap myconfigmap
+ --from-literal=env=dev
+Secret:
+echo -n ‘admin’ > ./username.txt
+echo -n ‘abcd1234’ ./password.txt
+kubectl create secret generic mysecret --from-file=./username.txt --from-file=./password.txt
+ 
+11) What is livenessprobe and readinessprobe?
+livenessProbe
+livenessProbe: Indicates whether the Container is running. If the liveness probe fails, the kubelet kills the Container, and the Container is subjected to its restart policy. If a Container does not provide a liveness probe, the default state is Success.
+readinessProbe:
+readinessProbe: Indicates whether the Container is ready to service requests. If the readiness probe fails, the endpoints controller removes the Pod’s IP address from the endpoints of all Services that match the Pod. The default state of readiness before the initial delay is Failure. If a Container does not provide a readiness probe, the default state is Success.
+12) how to access other pods in a cluster ?
+Run a pod, and then connect to a shell in it using kubectl exec. Connect to other nodes, pods, and services from that shell.
+13) what is a pod
+Pods in a Kubernetes cluster are used in two main ways: Pods that run a single container. The "one-container-per-Pod" model is the most common Kubernetes use case; in this case, you can think of a Pod as a wrapper around a single container; Kubernetes manages Pods rather than managing the containers directly.
+ 
+14) how you will make sure that the database should start first and then application
+Make sure that you are  deploying the services (application and database) as different deployments. Once you deployed them make sure  you are giving the service name  as part of your application deployment. That's it if the database is up and running then the application will automatically connect to it. 
+ 
+15) Types of storage class used in your project?
+EBS if its  EKS
+NFS if its onprem dev cluster
+Glusterfs if  its onprem prod cluster
+16) difference between statefulset and stateless?
+A stateless application is one which depends on no persistent storage. ... A stateful application, on the other hand, has several other parameters it is supposed to look after in the cluster. 
+17) describe kubernetes architecture
+Place the class architecture but with 3 masters & 10 workers.
+18) difference between PV and pvc
+A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes. It is a resource in the cluster just like a node is a cluster resource.
+A PersistentVolumeClaim (PVC) is a request for storage by a user. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources. Pods can request specific levels of resources (CPU and Memory). 
+19) 2 containers are running inside a pod if one container goes down then will it affect other running container
+For best practice we need to create and deploy single pod and single containers.
+For this question NO other container will not affect.
+20)  Update the password in secret without restarting the pod or deployment ,is it possible ?
+Without restart you cannot get the updated value, its mandatory to restart  the deployment if its pod you need to recreate the  pod. 
+If its deployment:
+Kubectl rollout restart deploy deploymentname
+If its pod:
+Kubectl get -o yaml pod podname >mypod.yaml
+Kubectl delete pod podname 
+Kubectl create -f mypod.yaml
+ 
+21) how to rollback the deployment?
+Rollback to the previous deployed version
+kubectl rollout undo deployment/$DEPLOYMENT
+22) what is the reason for pod eviction?
+When a node in a Kubernetes cluster is running out of memory or disk, it activates a flag signaling that it is under pressure. ... At that moment, kubelet starts to reclaim resources, killing containers and declaring pods as failed until the resource usage is under the eviction threshold again.
+ 
+ 
+22) Pod is in pending state ,what are the possible reasons?
+If a Pod is stuck in Pending it means that it can not be scheduled onto a node. Generally this is because there are insufficient resources of one type 
+You don’t have enough resources: You may have exhausted the supply of CPU or Memory in your cluster, in this case you need to delete Pods, 
+You are using hostPort: When you bind a Pod to a hostPort there are a limited number of places that pod can be scheduled. In most cases, hostPort is unnecessary, try using a Service object to expose your Pod.
+23) how you will make sure that in rolling update strategy 2 pods are always available?
+----???
+24) crashloopbackoff, what are the possible reasons?
+A CrashloopBackOff means that you have a pod starting, crashing, starting again, and then crashing again.
+25) why you are using 3 master node in production?
+___???
+26) how you will make sure that pod should be running on a specific node?
+the recommended approaches all use label selectors to make the selection. Generally such constraints are unnecessary, as the scheduler will automatically do a reasonable placement
+Node Affinity — This is the enhanced version of the nodeSelector introduced in Kubernetes 1.4 in beta
+27) how to check what are the activities performed by the container while creating the pod?
+---?
+28) how to get the ip of a pod ?
+kubectl get pods -o wide
+ 
+ 
+29) Which network plugin you are using?
+--?
+30) how you are monitoring the kubernetes cluster and the containers
+Node resource utilization – there are many metrics in this area, all related to resource utilization. Network bandwidth, disk utilization, CPU, and memory utilization are examples of this. 
+The number of nodes – the number of nodes available is an important metric to follow.
+Running pods – the number of pods running will show you if the number of nodes available is sufficient
+31)  Job should be terminated after 40 seconds ? ActiveDeadLineSeconds: 40
+--?

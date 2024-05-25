@@ -1,0 +1,21 @@
+Python Questions !!
+
+1. Which scripting language you know?
+
+2. What is python language?
+
+2.What are the scripting languages you know?
+3.Are you  used any 3rd  part library to write the python scripts?
+
+What are the scripting languages you know?
+Are you  used any 3rd  part library to write the python scripts?
+Which is the most popular scripting language in DevOps?
+Ans. Python
+
+----
+
+how do u rate yourself in pyhton out of 10
+do u know what is a list comprehension?
+input=[1,2,2,6,2,4,5]--how do we write a program to most occured number in this list.
+ans:
+input.count(2) --> output 2times

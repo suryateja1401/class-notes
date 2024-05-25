@@ -1,0 +1,73 @@
+Ansible Questions !!
+
+Have you worked on ansible/chef?
+
+Why we use ansible?
+
+Did you use ansible? And why you used it?
+
+Write a ansible playbook for installing Apache service?
+
+Explain about Roles definition?
+
+What all u did in ansible?
+
+Write any of the use case of Ansible program and explain.
+
+Can you write any given ansible program?
+
+Write a ansible playbook for installing Apache service?
+
+In configuration management which tool you are working?(Ansible)
+
+What is the difference between Ansible, cheff and puppet?
+
+If I have set of DB   servers and I have a set of Application servers? I do have some have set of web servers? I want to push something in Application servers, how can we push it?
+
+Which playbook you are implemented in your environment?
+
+I want to create some users in the  100 servers, same user present in the 100 servrers?
+
+What are the setions are there in playbook?
+
+What are the setions are there in playbook?
+
+Can you explain ansible and configuring notes to ansible?
+
+Q22. Differentiate between Asset Management and Configuration Management
+Ans. Asset Management, broadly defined, refers to any system that monitors and maintains things of value to an entity or group.
+Configuration Management is the process of planning for, identifying, controlling and verifying the Configurations Items (CIs) within a service, recording their status and, in support of Change Management, assessing the potential IT impact of changing those items.
+
+Q23. What is Puppet?
+Ans. It is a Configuration Management tool which is used to automate administration tasks.
+
+
+which perpose you are using Ansible?
+
+how do you rolback an application throw Ansible?
+
+i have some task that i have go through an ansible, i have 10 machines some tasks are comman dependent, how can we reuse that tasks?
+
+=============
+
+Write a ansible playbook for installing Apache service?
+In configuration management which tool you are working?(Ansible)
+What is the difference between Ansible, cheff and puppet?
+If I have set of DB   servers and I have a set of Application servers? I do have some have set of web servers? 
+	I want to push something in Application servers, how can we push it?
+Which playbook you are implemented in your environment?
+I want to create some users in the  100 servers, same user present in the 100 servrers?
+What sections are there in playbook?
+Can you explain ansible and configuring notes to ansible?
+Differentiate between Asset Management and Configuration Management
+Ans. Asset Management, broadly defined, refers to any system that monitors and maintains things of value to an entity or group.
+Configuration Management is the process of planning for, identifying, controlling and verifying the Configurations Items (CIs) within a service, recording their status and, in support of Change Management, assessing the potential IT impact of changing those items.
+What is Puppet?
+Ans. It is a Configuration Management tool which is used to automate administration tasks.
+which perpose you are using Ansible?
+how do you rolback an application throw Ansible?
+i have some task that i have go through an ansible, i have 10 machines some tasks are comman dependent, how can we reuse that tasks?
+
+
+
+

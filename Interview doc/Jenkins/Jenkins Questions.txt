@@ -1,0 +1,119 @@
+Jenkins Questions !!
+
+1. How can we trigger a Jenkins build once a commit has been done in source code repository(Git/Svn)?
+
+2. Explain about CI and CD of your project currently you are working?
+
+3. In how many ways can we install Jenkins?
+
+4. How do you update Jenkins? Via ui or how?
+
+5. Why we use  SCM plugin ?
+
+6. While updating will you take backup?
+
+7. What is Jenkins server crashed? How do you restore?
+
+8. When new changes in git, How Jenkins trigger the execution of tests on target server?
+
+9. How Jenkins know in which account  (AWs acc) it has to lunch instances to execute the tests? Where you mentioned that details?
+
+10. Explain about Jenkins?
+
+11. What is CI & CD in Devops?
+
+How you have setup the CICD pipeline?
+
+Why jdk can’t be installed thru wget and going for winscp?
+
+If Jenkins we are installing, why git is needed to be install in CICD pipeline.
+
+What are the things are you do in Jenkins?
+
+What do you mean by continues integration and continoues delivery?
+
+What are the most plugins you  used in Jenkins?
+
+For integrating the ansble you have to use some  plugin for  Jenkins?
+
+Do you automated anything in the Jenkins?
+
+5.What level of knowledge you have in Jenkins?
+
+16.In Jenkins ways we can install Jenkins?
+
+Q3. What is Continuous Delivery?
+Ans. It is practice of delivering the software for testing as soon as it is built by CI (Continuous Integration) servers.
+
+Q11. Why do you need a Continuous Integration of Dev & Testing?
+Ans. Continuous Integration of Dev and Testing improves the quality of software, and reduces the time taken to deliver it, by replacing the traditional practice of testing after completing all development.
+
+
+Q17. What testing is necessary to insure a new service is ready for production?
+Ans. Continuous testing
+
+Q15. What is meant by Continuous Integration?
+Ans. It is a development practice that requires developers to integrate code into a shared repository several times a day.
+
+Q18. What is Continuous Testing?
+Ans. Continuous Testing is the process of executing automated tests as part of the software delivery pipeline to obtain immediate feedback on the business risks associated with in the latest build.
+
+Q19. What is Automation Testing?
+Ans. Automation testing or Test Automation is a process of automating the manual process to test the application/system under test.
+
+Q20. What are the key elements of continuous testing?
+Ans. Risk assessment, policy analysis, requirements traceability, advanced analysis, test optimisation, and service virtualisation
+
+Q21. What are the Testing types supported by Selenium?
+Ans. Regression testing and functional testing
+
+1.what is the use of Jenkins?
+
+=======================
+What are the things are you do in Jenkins?
+What do you mean by continues integration and continoues delivery?
+What are the most plugins you  used in Jenkins?
+For integrating the ansble you have to use some  plugin for  Jenkins?
+Do you automated anything in the Jenkins?
+What level of knowledge you have in Jenkins?
+In Jenkins ways we can install Jenkins?
+what is the use of Jenkins?
+how do you maintain more than unexpected request how do you make it scalable?
+when do you do stress testing?
+
+What testing is necessary to insure a new service is ready for production?
+Ans. Continuous testing
+
+What is Continuous Delivery?
+Ans. It is practice of delivering the software for testing as soon as it is built by CI (Continuous Integration) servers.
+
+Why do you need a Continuous Integration of Dev & Testing?
+Ans. Continuous Integration of Dev and Testing improves the quality of software, and reduces the time taken to deliver it, by replacing the traditional practice of testing after completing all development.
+
+What is meant by Continuous Integration?
+Ans. It is a development practice that requires developers to integrate code into a shared repository several times a day.
+
+What is Continuous Testing?
+Ans. Continuous Testing is the process of executing automated tests as part of the software delivery pipeline to obtain immediate feedback on the business risks associated with in the latest build.
+
+What is Automation Testing?
+Ans. Automation testing or Test Automation is a process of automating the manual process to test the application/system under test.
+
+What are the key elements of continuous testing?
+Ans. Risk assessment, policy analysis, requirements traceability, advanced analysis, test optimisation, and service virtualisation
+
+What are the Testing types supported by Selenium?
+Ans. Regression testing and functional testing
+
+=====
+what type of pipelines u have used?--declarative and scripted
+two types of pipelines?which one u have used
+r u aware of groovy ?have u worked with groovy
+do u know what is a shared library in groovy?
+what have u done with groovy?
+have u written any pipeline?where u have used groovy?
+what exactly groovy scripting will do,in which part?
+in jenkins how do u store u r configurations?or u r pipelines how do u store and
+how do u store u r jenkins configuration...is it backed up somewhere?
+what about u r pipelines backup?
+have u created this dynamic agents?

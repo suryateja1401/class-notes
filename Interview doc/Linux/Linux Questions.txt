@@ -1,0 +1,100 @@
+
+Linux Questions !!
+
+
+1. If I give a physical server , how will u install linux os?
+
+
+2. If I have 32 gb ram, server and 98 % ustilized and 2% free, how can you free the memory?
+
+
+3. How can you increase the performance of a server?
+
+
+4. What is meant by proxy?
+
+
+5. How load balancer works?
+
+6. How can we set java home path for a user in linux?
+
+7. How can we do a password less ssh from 1 server to another in linux?
+
+
+8. How can we check the load average in linux?
+
+9. Using which apache module can we setup load balancing?
+
+
+10. What does HTTP 503 signify?
+
+
+11. What if cpu utilization reaches upto max?
+
+12. How can we find which port tomcat is running on?
+
+13. What is the difference between logs and system logs?
+
+14. What is LVM, Explain about it?
+
+15. I will give you 1 linux server  with a user name and password. What information you can provide me about that server?
+
+16. How can we find which service is using which port?
+
+17. What is the importance of Route Table?
+
+18. In linux which flaour you worked on?
+
+19. In linux we need a system, files which were created should be default permission as 511?
+
+20. Users are complaining network is very slow, what u will do?
+
+21. Why we are using apache services?
+
+
+File system check commands.
+
+Which operating system you are working?
+
+In Linux what are the commands mostly used in your environment?
+
+Explain me about the permission 777 and 655 and 755?
+
+What chown does?
+
+What are the other command you used?
+
+I have one server thing that  how can we check our Java is running or not?
+
+Checking the particular process who can you check?
+
+What is the ps –ef means?
+
+6.Coming to the linux administration  whenever user login to the linux server I want a welcome message to be displayed, how we will do that?
+
+7.There is a process in linix how we will convert to the service?
+
+what is the role of /etc/hosts file?
+
+
+
+8.In a folder people how  creates a file only there should be having the delete permition? other people don’t have to delete file, How can we achieve that?
+=====================
+
+In Linux what are the commands mostly used in your environment?
+Explain me about the permission 777 and 655 and 755?
+What chown does?
+What are the other command you used?
+I have one server thing that  how can we check our Java is running or not?
+Checking the particular process who can you check?
+What is the ps –ef means?
+Coming to the linux administration  whenever user login to the linux server I want a welcome message to be displayed, how we will do that?
+There is a process in linix how we will convert to the service?
+In a folder people how  creates a file only there should be having the delete permition? other people don’t have to delete file, How can we achieve that?
+How does HTTP work?
+Ans. The HTTP protocol works in a client and server model like most other protocols. A web browser using which a request is initiated is called as a client and a web server software which responds to that request is called a server. World Wide Web Consortium and the Internet Engineering Task Force are two important spokes in the standardization of the HTTP protocol.
+Describe two-factor authentication?
+Ans. Two-factor authentication is a security process in which the user provides two means of identification from separate categories of credentials; one is typically a physical token, such as a card, and the other is typically something memorized, such as a security code.
+
+
+

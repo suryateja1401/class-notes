@@ -1,0 +1,96 @@
+Git and GIt Hub Questions !!
+
+Difference between git and svn?
+How you push your code in git to release?
+What is the difference between git and github?
+What is the difference between git and git hub
+If I want to create a branch in git how can we create?
+If we wat to switch that branch  how can we switch ?
+What git status do?
+how to check the status in staging area how can we check it?
+I create one branch if we want to upload  something to my repository in the Git Hub? For that what I have to do?
+I created a repo but you guys are not able to commit any changes to my repo? What is the issue?
+What is the difference between GIT and SVN?
+git and git hub what are the things you do?
+What is the default branch?
+If you want to switch the other  branch  what is the command you  use?
+New changes in the master branch and you are developing a develop branch? How  can  you verbose those changes in develop branch?
+When we will use git rebase command?
+If you get any conflicts how you can resolve it?
+
+What is Version control? 
+
+Ans. It is a system that records changes to a file or set of files over time so that you can recall specific versions later.
+
+What are the uses of Version control?
+ 
+Revert files back to a previous state.
+
+Revert the entire project back to a previous state.
+
+Compare changes over time.
+
+See who last modified something that might be causing a problem.
+
+Who introduced an issue and when.
+
+What is Git?
+Ans. Git is a Distributed Version Control system (DVCS). It can track changes to a file and allows you to revert back to any particular change.
+
+In Git how do you revert a commit that has already been pushed and made public?
+Ans. It can be done in two ways:
+By removing or fixing the bad file in a new commit and pushing it to the remote repository. Once the necessary changes to the file has been made, commit it to the remote repository. Use: git commit -m “commit message”
+By creating a new commit that undoes all changes that were made in the bad commit. To do this, use command: git revert <name of bad commit>
+
+What is Git bisect?
+
+Ans. Git bisect is used to find the commit that introduced a bug by using binary search.
+
+what is squash?
+
+If you want to know particular lines who has written it how do you find that?
+
+========
+If I want to create a branch in git how can we create?
+If we wat to switch that branch  how can we switch ?
+What git status do?
+I create one branch if we want to upload  something to my repository in the Git Hub? For that what I have to do?
+I created a repo but you guys are not able to commit any changes to my repo? What is the issue?
+What is the difference between GIT and SVN?
+git and git hub what are the things you do?
+What is the default branch?
+If you want to switch the other  branch  what is the command you  use?
+New changes in the master branch and you are developing a develop branch? How  can  you verbose those changes in develop branch?
+When we will use git rebase command?
+If you get any conflicts how you can resolve it?
+What is Version control?
+Ans. It is a system that records changes to a file or set of files over time so that you can recall specific versions later.
+What are the uses of Version control?
+Revert files back to a previous state.
+Revert the entire project back to a previous state.
+Compare changes over time.
+See who last modified something that might be causing a problem.
+Who introduced an issue and when.
+what is squash?
+
+What is Git?
+Ans. Git is a Distributed Version Control system (DVCS). It can track changes to a file and allows you to revert back to any particular change.
+
+In Git how do you revert a commit that has already been pushed and made public?
+Ans. It can be done in two ways:
+
+By removing or fixing the bad file in a new commit and pushing it to the remote repository. Once the necessary changes to the file has been made, commit it to the remote repository. Use: git commit -m “commit message”
+By creating a new commit that undoes all changes that were made in the bad commit. To do this, use command: git revert <name of bad commit>
+
+What is Git bisect?
+Ans. Git bisect is used to find the commit that introduced a bug by using binary search.
+
+
+---
+whats u r experince with git out of this?
+what is the difference between git rebase and git merge?
+how do we store binaries in git, have work with binaries in git?
+what is a difference between git fetch and git pull?
+do u know what is git submodule,do u work with git submodule?
+
+

@@ -1,0 +1,307 @@
+AWS Questions !!
+
+1. What is meant by ec2 instance and what you does on it?
+
+2. What is NACL gateway?
+
+3. How load balancer works?
+
+4. What is VPC Peering?
+
+5. VPC peering is possible between different regions?
+
+6. What automation work you did?
+
+7. What you worked on ec2-instances?
+
+8. What is Cloud watch? Why we use cloud watch?
+
+9. What is the difference between cloud watch and cloud trail ?
+
+10. What is vpc? Why we use vpc?
+
+11. What is your role in AWS?
+
+12. Have you create instance manually or using scripts?
+
+13. What are the major services we have in AWS?
+
+14. What is the difference between ELB and ALB?
+
+15. Have you done any connection between 2 regions and how to do that?
+
+16. What is S3 bucket? Explain about it?
+
+17. What is EFS in cloud?
+
+18. Explain difference between cloud & other environment?
+
+19. Can we restart RDS instance?
+
+20. Autoscaling Group threshold when an instance in the asg goes down?
+
+21. What is sessions stickiness?
+
+22. I have a machine in 1 regions and  want to use that machine in different region?
+
+23. What is the importance of Route Table?
+
+24. What if not define Internet gateway in Route table?
+
+25. I have 2 VPCs in same or different region, I want to establish the connection between that 2 VPCs, How?
+
+26. How to take manual backup of RDS instance? (Not default backup)
+
+27. I have 1 web application which needs a common storage, where my app is global application where it is accecible by different customers. 
+I want a shared volume to be created, so that all changes will be to that volume so that no need to maintain the multi server. Can we do that?
+(I want a common storage for accessing bymultiple instances)?
+
+
+28. What is Lambda and what is its use?
+
+29. What languages does lambda supports?
+
+30. AWS supports python?
+
+31. What is region and availability zone?
+
+32. Why to go for VPC? Explain configuration.
+
+33. Worked on AWS CLI?
+
+34. Worked on RDS? What are the types available?
+
+35. Worked on lambda?
+
+When instance is slow, what you will do.
+
+Not able to connect to a EC2 instance, what all the things will do?
+
+How to connect to EC2 instance using the private ip. What is the name of the EC2 service involved here. (elastic ip)
+
+Location of the main html page.
+
+How to achieve auto scaling?
+
+On security group of ELB. How the load balancer knows one instance is not working? 
+
+How we will work with S3 storage?
+
+What is the difference between S3 and EBS?
+
+A zip file is copied to a wrong location, particularly under S3 repository. Now, in order to do the correction, any down time is reqd?
+
+How to create the RDS. Configuration in detail.
+
+Write the CICD pipeline. They were saying, was looking for different particularly with AWS services.
+
+What are the parameters to consider for creating ec2-instance.
+
+What is VPC?
+
+Installation steps in RDS?
+
+How to stop the RDS instance.
+
+Expalin what S3 bucket do?
+
+What is a worker with respect to SWF?
+
+You have reached your account limit for the number of CloudFormation stacks in a region.How do you increase your limit?
+
+Which operation could return temporarily inconsistent results?
+
+Your CloudFormation template launches a two-tier web application in us-east-1. When you attempt to create a development stack in us-west-1,What is the problem if the process fails?
+
+Tell about VPC? 
+
+Aws Beanstalk  supports what?? How to configure it?
+
+What is your role in AWS?
+
+Autoscaling Group threshold when an instance in the asg goes down?
+
+What is sessions stickiness?
+
+I have a machine in 1regions and  want to use that machine in deifferent region?
+
+What is the importance of Route Table?
+
+What if not defineInternet gate way in Route table?
+
+I have 2 VPCs in same or different region, I want to establish the connection between that 2 VPCs, How?
+
+What is the difference between Cloud Watch and Cloud trail?
+
+How to take manual backup of RDS instance? (Not default backup)
+
+Which services you had working on AWS?
+
+In IAM I have a 10 users I want to segregate 10 users  2 in development  and  2 in Administrative and   other 2 in billing how can we set the permission?
+
+What is the default security group when we are creating a instance?
+
+What type of ELB you worked?
+
+In s3 what sort of things we can do? Why we use s3?
+
+What are the types in s3?
+
+What we use glacier?
+
+17.Coming to AMI and Security groups can you explain me how can we custome AMI and what are the security groups provide that AMI?
+
+18.How you will create a customized image?
+
+19.If you want to Automate the AMI process how can you do it?
+
+20.I give a application? Some wibesite I want? How you will design architech tell me what are the permitions you will give the security groups ?
+
+21.You create a subnet that subnet is open to the internet?
+
+22.Do you have any operational stuff?
+
+Q25. Describe two-factor authentication?
+Ans. Two-factor authentication is a security process in which the user provides two means of identification from separate categories of credentials; one is typically a physical token, such as a card, and the other is typically something memorized, such as a security code.
+These are some of the popular questions asked in DevOps interviews. Always be prepared to answer all types of questions — technical skills, interpersonal, leadership or methodology. If you are someone who has recently started your career in DevOps, you can always get certified in the various tools and skills needed to be an expert in the field.
+
+what are the different types of load balancers?what is the difference between them?
+
+which load balancer you are using?
+
+what is S3 bucket?
+
+what is the difference between public subnet and private subnet?
+
+do you add internet gateway to the private subnet?
+
+how can we add one DNS server to another server?
+
+2.how do you maintain more than unexpected request how do you make it scalable?
+
+3.when do you do stress testing?
+
+4.What is VPC?
+
+5.In ec2 also we can create IP? what is the difference between ec2IP adress and VPC IP adress?
+
+where did you used cloud watch?
+
+How do you monitoring the Application?
+
+how do you configure that application errors?
+
+what is ELB?
+
+===================
+What is your role in AWS?
+Which services you had   working on AWS?
+what is the toughest challenge faced in your project?
+Autoscaling Group threshold when an instance in the asg goes down?
+What is sessions stickiness?
+I have a machine in 1regions and  want to use that machine in deifferent region?
+What is the importance of Route Table?
+What if not define Internet gate way in Route table?
+I have 2 VPCs in same or different region, I want to establish the connection between that 2 VPCs, How?
+What is the difference between Cloud Watch and Cloud trail?
+How to take manual backup of RDS instance? (Not default backup)
+In IAM I have a 10 users I want to segregate 10 users  2 in development  and  2 in Administrative and   other 2 in billing how can we set the permission?
+What is the default security group when we are creating a instance?
+What type of ELB you worked?
+In s3 what sort of things we can do? Why we use s3?
+What are the types in s3?
+What we use glacier?
+What is the difference between git and git hub
+Coming to AMI and Security groups can you explain me how can we custome AMI and what are the security groups provide that AMI?
+How you will create a customized image?
+If you want to Automate the AMI process how can you do it?
+I give a application? Some wibesite I want? How you will design architech tell me what are the permitions you will give the security groups ?
+You create a subnet that subnet is open to the internet?
+What’s a PTR in DNS?
+Ans. Pointer (PTR) record is used for revers DNS (Domain Name System) lookup.
+what are the different types of load balancers?what is the difference between them?
+which load balancer you are using?
+what is S3 bucket?
+what is the difference between public subnet and private subnet?
+do you add internet gateway to the private subnet?
+how can we add one DNS server to another server?
+what is the role of /etc/hosts file?
+What is VPC?
+In ec2 also we can create IP? what is the difference between ec2IP adress and VPC IP adress?
+what is dedicated server?
+where did you used cloud watch?
+How do you monitoring the Application?
+how do you configure that application errors?
+what is ELB?
+
+===
+1) What is EFS ?
+
+Amazon Elastic File System (Amazon EFS) provides a simple, scalable, fully managed elastic NFS file system for use with AWS Cloud services and on-premises resources.
+2) how to configure S3 with SDN?
+
+2) how to configure S3 with SDN?
+
+1. Go to the AWS Console
+2. Create an Amazon S3 bucket
+3. Create an Amazon CloudFront distribution
+4. Specify your distribution settings
+5. Configure your origin
+6. Configure Origin Access Identity
+7. Configure default cache behavior
+8. Configure your TTLs
+9. Configure additional features
+10. Test your CloudFront distribution
+
+
+3) s3 lifecycle policy
+
+An S3 Lifecycle configuration is a set of rules that define actions that Amazon S3 applies to a group of objects. ... For example, you might choose to transition objects to the S3 Standard-IA storage class 30 days after you created them, or archive objects to the S3 Glacier storage class one year after creating them.
+
+4) static website hosting using s3
+
+To configure your bucket for static website hosting, you can use the AWS Management Console without writing any code. You can also create, update, and delete the website configuration programmatically by using the AWS SDKs. The SDKs provide wrapper classes around the Amazon S3 REST API.
+
+5) Describe your project architecture ?
+
+-------------
+6) What is private subnet and public subnet?
+A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway. A private subnet with a size /24 IPv4 CIDR block (example: 10.0. ... This connects the VPC to the Internet and to other AWS services.
+
+
+7) what is NAT gateway ?  other way , No one can access the database server from internet but from database server we can download the patch?
+
+A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway. A private subnet with a size /24 IPv4 CIDR block (example: 10.0. ... This connects the VPC to the Internet and to other AWS services.
+
+8) can we mount s3 on ec2 instance?
+
+A S3 bucket can be mounted in a AWS instance as a file system known as S3fs. S3fs is a FUSE file-system that allows you to mount an Amazon S3 bucket as a local file-system
+
+9) can we make s3 bootable?
+
+You can still save an Amazon Machine Image (AMI) in an Amazon S3 bucket and boot it from the local instance store, but you can now also choose to save AMIs as Amazon EBS snapshots and boot directly from an Amazon EBS volume
+
+10) what are routing policy in rout53?
+
+When you create a record, you choose a routing policy, which determines how Amazon Route 53 responds to queries: Simple routing policy – Use for a single resource that performs a given function for your domain
+
+12) how to take snapshots of a rds database in every 3 hours?
+
+
+13) how to get the public ips of all ec2 instance under a single user acount ?
+
+In the navigation pane, choose Instances. Select your instance. In the details pane, get the public IP address from the IPv4 Public IP field
+
+
+14)  users are complaining they are not able to access the server ,what is approach to fix this ?
+
+https://aws.amazon.com/premiumsupport/knowledge-center/error-access-service/
+
+15) differnece between security group and NACL?
+
+Security groups are stateful: This means any changes applied to an incoming rule will be automatically applied to the outgoing rule e.g. If you allow an incoming port 80, the outgoing port 80 will be automatically opened.
+
+Network ACLs are stateless: This means any changes applied to an incoming rule will not be applied to the outgoing rule. e.g. If you allow an incoming port 80, you would also need to apply the rule for outgoing traffic.
+
+
+
